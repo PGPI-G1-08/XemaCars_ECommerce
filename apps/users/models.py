@@ -13,6 +13,9 @@ class Customer(models.Model):
         field_name="customer",
         to="payments.PaymentMethod",
     )
+    preferred_delivery_point = models.ForeignKey(
+        "products.DeliveryPoint", on_delete=models.SET_NULL, null=True
+    )
 
     def __str__(self):
         return self.user.username
