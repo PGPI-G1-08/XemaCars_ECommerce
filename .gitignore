@@ -15,4 +15,4 @@ __pycache__/
 
 # Django stuff:
 
-migrations/*
+migrations/
