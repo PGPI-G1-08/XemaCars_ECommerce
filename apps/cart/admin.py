@@ -10,8 +10,8 @@ class CartProductInline(admin.TabularInline):
 
 
 class CartAdmin(admin.ModelAdmin):
-    list_display = ()
-    search_fields = ()
+    list_display = ("customer",)
+    search_fields = ("customer",)
 
     inlines = [
         CartProductInline,

@@ -13,3 +13,6 @@ class Customer(models.Model):
         field_name="customer",
         to="payments.PaymentMethod",
     )
+
+    def __str__(self):
+        return self.user.username
