@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from apps.orders.models import OrderProduct
+
 # Create your models here.
 
 
@@ -24,7 +26,17 @@ class CartProduct(models.Model):
     class Meta:
         unique_together = ("cart", "product")
 
-    # Check start is before end_date when creating a cart product
     def clean(self):
         if self.start_date >= self.end_date:
-            raise ValidationError("Start date must be before end date")
+            raise ValidationError("La fecha de inicio debe ser anterior a la de fin")
+
+        product_orders_in_range = OrderProduct.objects.filter(
+            product=self.product,
+            start_date__lte=self.end_date,
+            end_date__gte=self.start_date,
+        )
+
+        if product_orders_in_range.exists():
+            raise ValidationError(
+                "El producto ya está reservado en ese rango de fechas"
+            )

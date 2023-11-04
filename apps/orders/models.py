@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -15,14 +17,6 @@ class Order(models.Model):
         "products.DeliveryPoint", on_delete=models.SET_NULL, null=True
     )
 
-    # Estado de la reserva
-    STATUS = (
-        ("No empezado", "No empezado"),
-        ("En posesión", "En posesión"),
-        ("Finalizado", "Finalizado"),
-    )
-    order_status = models.CharField(max_length=255, choices=STATUS)
-
     @property
     def total(self):
         total = 0
@@ -37,10 +31,29 @@ class OrderProduct(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
+    @property
+    def order_product_status(self):
+        if self.start_date > date.today():
+            return "No empezado"
+        elif self.start_date <= date.today() and date.today() <= self.end_date:
+            return "En posesión"
+        else:
+            return "Finalizado"
+
     class Meta:
         unique_together = ("order", "product")
 
-    # Check start is before end_date when creating a cart product
     def clean(self):
         if self.start_date >= self.end_date:
-            raise ValidationError("Start date must be before end date")
+            raise ValidationError("La fecha de inicio debe ser anterior a la de fin")
+
+        product_orders_in_range = OrderProduct.objects.filter(
+            product=self.product,
+            start_date__lte=self.end_date,
+            end_date__gte=self.start_date,
+        ).exclude(order=self.order)
+
+        if product_orders_in_range.exists():
+            raise ValidationError(
+                "El producto ya está reservado en ese rango de fechas"
+            )
