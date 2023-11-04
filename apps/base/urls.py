@@ -1,4 +1,4 @@
-from apps.landing import views
+from apps.base import views
 from django.urls import path
 
 urlpatterns = [
