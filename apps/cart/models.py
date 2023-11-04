@@ -10,6 +10,13 @@ class Cart(models.Model):
     )
     products = models.ManyToManyField("products.Product", through="CartProduct")
 
+    @property
+    def total(self):
+        total = 0
+        for product in self.products.all():
+            total += product.price
+        return total
+
 
 class CartProduct(models.Model):
     cart = models.ForeignKey("Cart", on_delete=models.CASCADE)
