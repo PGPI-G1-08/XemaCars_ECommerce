@@ -11,7 +11,12 @@ class DeliveryPointAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "image_url")
+    list_display = (
+        "name",
+        "price",
+        "brand",
+        "combustion_type",
+    )
     search_fields = ("name",)
 
 
