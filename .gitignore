@@ -1,5 +1,18 @@
+# Configuration files
+
 .venv/*
-
 */.env
-
 .git/*
+
+# Compiled files
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*cpython*
+
+
+# Django stuff:
+
+migrations/*
