@@ -10,6 +10,14 @@ class CartProductInline(admin.TabularInline):
 
 
 class CartAdmin(admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        # Disable delete
+        return False
+
+    def has_add_permission(self, request):
+        # Disable add
+        return False
+
     list_display = ("customer",)
     search_fields = ("customer",)
 

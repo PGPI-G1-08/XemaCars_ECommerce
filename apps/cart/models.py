@@ -5,9 +5,6 @@ from django.db import models
 
 
 class Cart(models.Model):
-    customer = models.OneToOneField(
-        "users.Customer", on_delete=models.CASCADE, primary_key=True
-    )
     products = models.ManyToManyField("products.Product", through="CartProduct")
 
     @property

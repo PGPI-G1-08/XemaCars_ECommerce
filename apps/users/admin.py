@@ -6,6 +6,7 @@ from .models import Customer
 
 
 class CustomerAdmin(admin.ModelAdmin):
+    exclude = ("cart",)
     list_display = ("user", "phone_number")
     search_fields = ("user",)
 
