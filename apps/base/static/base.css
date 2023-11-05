@@ -137,10 +137,17 @@ header {
     z-index: 1;
 }
 
-header h1 {
+#homepage-link {
+    -webkit-user-select: none;
+    user-select: none;
     color: var(--white);
+    text-decoration: none;
     padding: 0 20px;
     font-weight: bold;
+}
+
+#homepage-link:hover {
+    color: var(--orange)
 }
 
 .header-auth {

@@ -15,7 +15,7 @@
     </head>
     <body>
         <header class="header">
-            <h1>XemaCars</h1>
+            <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
             <!-- show profile icon if user is logged in -->
             {% if user.is_authenticated %}
                 <div>
