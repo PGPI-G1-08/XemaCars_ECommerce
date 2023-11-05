@@ -240,7 +240,7 @@ footer a{
     cursor: pointer;
 }
 
-.primary-button:hover {
+.primary-button:hover, .form button[type="submit"]:hover {
     background-color: var(--dark-orange);
 }
 
@@ -292,6 +292,16 @@ footer a{
     margin: 0 auto;
 }
 
+.form-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    margin: 50px 0;
+    background-color: var(--card-semi-transparent);
+}
+
 .form-field:not(.checkbox) {
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -324,11 +334,14 @@ footer a{
     width: 10%
 }
 
-.form input[type="submit"] {
+.form input[type="submit"], button[type="submit"] {
+    margin: 0 auto;
+    padding: 10px 20px;
     font-family: var(--fuente1);
     color: var(--white);
     background-color: var(--orange);
     border: none;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -348,4 +361,12 @@ footer a{
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black"><path d="M7 7l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
+}
+
+.form-errors {
+    margin: 3px 0;
+    background-color: var(--orange);
+    border: 1px solid var(--dark-orange);
+    border-radius: 0.25em;
+    padding: 0.5em;
 }
