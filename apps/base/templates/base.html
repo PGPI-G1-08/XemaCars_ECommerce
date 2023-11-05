@@ -19,11 +19,11 @@
             <!-- show profile icon if user is logged in -->
             {% if user.is_authenticated %}
                 <div>
-                    <a href="/profile" class="material-icons">account_circle</a>
+                    <a href="/profile" class="material-icons header-auth">account_circle</a>
                 </div>
             {% else %}
                 <div>
-                    <a href="/signup">Registrarse</a><a href="/signin">Iniciar Sesión</a>
+                    <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
                 </div>
             {% endif %}
         </header>

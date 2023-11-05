@@ -143,19 +143,36 @@ header h1 {
     font-weight: bold;
 }
 
-header div a {
+.header-auth {
     font-family: var(--fuente3);
     text-decoration: none;
     color: var(--white);
     height: 100%;
     padding: 20px;
+    position: relative;
+  }
+  
+.header-auth:hover {
+    color: var(--orange);
 }
 
-header div a:hover {
-    background-color: var(--grey);
-    color: var(--black)
+.header-auth:hover:after {
+    transform: scaleX(1.1);
+    transform-origin: bottom center;
 }
 
+.header-auth:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 1px;
+    left: 0px;
+    transform: scaleX(0);
+    background: var(--orange);
+    transform-origin: bottom center;
+    transition: transform 0.3s ease-out;
+}
 
 
 /* FOOTER */
