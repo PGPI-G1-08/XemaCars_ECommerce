@@ -157,6 +157,8 @@ header {
     height: 100%;
     padding: 20px;
     position: relative;
+    text-transform: uppercase;
+    font-weight: bold;
   }
   
 .header-auth:hover {
@@ -180,6 +182,7 @@ header {
     transform-origin: bottom center;
     transition: transform 0.3s ease-out;
 }
+
 
 
 /* FOOTER */
