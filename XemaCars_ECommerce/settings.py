@@ -50,17 +50,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "apps.base",
+    "apps.products",
+    "apps.users",
+    "apps.orders",
+    "apps.cart",
+    "apps.payments",
+    "apps.opinions",
 ]
-
-MODULES = [
-    "products",
-    "orders",
-    "payments",
-    "cart",
-    "users",
-]
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
