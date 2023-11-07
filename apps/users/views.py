@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
-
+import logging
 
 from .forms import LoginForm
+from .models import Customer
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -58,8 +58,12 @@ class RegisterView(APIView):
         message = None
 
         if form.is_valid():
+            first_name = form.cleaned_data.get("first_name")
+            last_name = form.cleaned_data.get("last_name")
             username = form.cleaned_data.get("username")
             email = form.cleaned_data.get("email")
+            phone_number = form.cleaned_data.get("phone_number")
+            password = form.cleaned_data.get("password1")
 
             if (
                 User.objects.filter(username=username).exists()
@@ -67,10 +71,21 @@ class RegisterView(APIView):
             ):
                 message = "El usuario ya existe."
             else:
-                form.save()
+                user = User(
+                    username=username,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                )
+                user.set_password(password)
+                user.save()
+
+                customer = Customer(user=user, phone_number=phone_number)
+                customer.save()
+
                 return redirect("/signin")
         else:
-            print(form.errors.values())
+            logging.warning(form.errors.as_text())
 
         return render(request, "users/signup.html", {"form": form, "message": message})
 
