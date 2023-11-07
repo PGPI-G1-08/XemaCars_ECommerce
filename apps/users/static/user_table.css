@@ -3,6 +3,10 @@ h1 {
     text-align: center;
 }
 
+.material-icons.header-profile {
+    color: var(--dark-orange);
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -13,7 +17,11 @@ h1 {
     display: flex;
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px;
-    flex-direction: row;
-    width: 380px;
+    width: 400px;
     height: 220px;
+    justify-content: space-between;
+    align-items: center;
+}
+.user-image{
+    margin: 10px;
 }
