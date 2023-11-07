@@ -18,8 +18,9 @@
             <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
             <!-- show profile icon if user is logged in -->
             {% if user.is_authenticated %}
-                <div>
-                    <a href="/profile" class="material-icons header-auth">account_circle</a>
+                <div class="">
+                    <a href="/profile" class="material-icons header-profile">account_circle<span>{{user.username}}</span></a>               
+                    <a href="/logout" class="material-icons header-profile">logout</a>
                 </div>
             {% else %}
                 <div>
