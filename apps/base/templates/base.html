@@ -19,6 +19,9 @@
             <!-- show profile icon if user is logged in -->
             {% if user.is_authenticated %}
                 <div class="">
+                    {% if user.is_superuser %}
+                        <a href="/products/add" class="header-profile">Añadir Producto</a>
+                    {% endif %}
                     <a href="/profile" class="material-icons header-profile">account_circle<span>{{user.username}}</span></a>               
                     <a href="/logout" class="material-icons header-profile">logout</a>
                 </div>
