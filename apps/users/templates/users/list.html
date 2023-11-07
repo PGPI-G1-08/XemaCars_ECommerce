@@ -1,38 +1,29 @@
 {% extends 'base.html'%}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}List Users{% endblock %}
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
-<link rel="stylesheet" href="{% static "user-table.css" %}">
+<link rel="stylesheet" href="{% static "user_table.css" %}">
 {% endblock %}
 
 {% block content %}
     <h1>Usuarios</h1>
-    <div class="user_table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in customers %}
-                <tr>
-                    <td>{{ customer.user.username }}</td>
-                    <td>{{ customer.user.first_name }}</td>
-                    <td>{{ customer.user.last_name }}</td>
-                    <td>{{ customer.user.email }}</td>
-                    <td>{{ customer.phone_number }}</td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card-container">
+        {% for customer in customers %}
+        <div class="card">
+            <div class="user-info">
+                <div class="card-title">{{ customer.user.username }}</div>
+                <p class="card-text">
+                    First Name: {{ customer.user.first_name }}<br>
+                    Last Name: {{ customer.user.last_name }}<br>
+                </p>
+            </div>
+            <div class="user-image">
+                <img class="card-img" src="{% static 'user-icon.png' %}" alt="User Icon">
+            </div>
+        </div>
+        {% endfor %}
     </div>
 {% endblock %}
