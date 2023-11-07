@@ -46,3 +46,25 @@ footer {
     align-items: center;
     z-index: 1;
 }
+
+.button-products {
+    text-align: center; /* Center the text */
+    display: inline-block; /* Make the div take up only as much width as the content */
+    padding: 10px 20px; /* Add padding to create a button shape */
+    border-radius: 20px; /* Make it rounded */
+    background-color: #eff0f0; /* Background color for the button */
+    color: #fff; /* Text color */
+    text-decoration: none; /* Remove the underline from the link */
+    transition: background-color 0.3s; /* Add a smooth transition effect for hover */
+
+    /* Optionally, you can add more styles for hover effect */
+}
+
+.button-products a {
+    color: var(--dark-orange); /* Text color for the link */
+    text-decoration: none; /* Remove the underline from the link */
+}
+
+.button-products:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+}

@@ -38,3 +38,9 @@ class ProductAddView(TemplateView):
             return render(request, "product-add.html", {"form": form})
         else:
             return render(request, "forbidden.html")
+
+
+class ProductListView(TemplateView):
+    def get(self, request):
+        products = Product.objects.all()
+        return render(request, "product-list.html", {"products": products})
