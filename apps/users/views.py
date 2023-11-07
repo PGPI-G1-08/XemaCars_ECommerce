@@ -1,11 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
-
-
+from apps.users.models import Customer
 from .forms import LoginForm
 
 from django.contrib.auth.models import User
@@ -78,3 +76,12 @@ class RegisterView(APIView):
         form = RegisterForm(None)
 
         return render(request, "users/signup.html", {"form": form, "message": None})
+
+
+class UserListView(TemplateView):
+    def get(self, request):
+        Customers = Customer.objects.all()
+        if request.user.is_superuser:
+            return render(request, 'users/list.html', {'customers': Customers})
+        else:
+            return render('forbidden.html')
