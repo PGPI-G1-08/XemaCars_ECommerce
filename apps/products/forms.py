@@ -3,19 +3,7 @@ from .models import Product
 from django.db import models
 
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = [
-            "name",
-            "brand",
-            "year",
-            "combustion_type",
-            "description",
-            "price",
-            "image_url",
-            "available",
-        ]
+class ProductForm(forms.Form):
 
     name = forms.CharField(
         required=True,
@@ -42,7 +30,7 @@ class ProductForm(forms.ModelForm):
     )
 
     description = forms.CharField(
-        required=True,
+        required=False,
         widget=forms.TextInput(attrs={"placeholder": "Descripción"}),
     )
     price = forms.FloatField(
@@ -50,9 +38,11 @@ class ProductForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "Precio"}),
     )
     image_url = forms.CharField(
+        required=False,
         widget=forms.TextInput(attrs={"placeholder": "URL de la imagen"}),
     )
     available = forms.BooleanField(
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Disponible"}),
+        required=False,
+        widget=forms.CheckboxInput(attrs={"placeholder": "Disponible"}),
     )
+
