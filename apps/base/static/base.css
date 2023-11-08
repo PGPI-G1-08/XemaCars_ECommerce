@@ -274,6 +274,25 @@ footer a{
     background-color: var(--dark-orange);
 }
 
+/* SECONDARY BUTTON */
+
+.secondary-button {
+    color: var(--orange);
+    padding: 7px 17px;
+    border: 3px solid var(--orange);
+    border-radius: var(--border-radius);
+    font-family: var(--fuente1);
+    cursor: pointer;
+}
+
+.secondary-button:hover{
+    background-color: var(--dark-orange);
+    color: var(--white);
+}
+
+
+
+
 
 
 /* CARD */

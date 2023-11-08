@@ -11,6 +11,8 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .card {
@@ -18,10 +20,22 @@ h1 {
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px;
     width: 400px;
-    height: 220px;
+    height: 230px;
     justify-content: space-between;
     align-items: center;
 }
 .user-image{
     margin: 10px;
+}
+
+
+.buttons-yes-no{
+    display: flex;
+    gap: 10px;
+    margin: 15px;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
 }

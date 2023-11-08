@@ -85,3 +85,19 @@ class UserListView(TemplateView):
             return render(request, 'users/list.html', {'customers': Customers})
         else:
             return render('forbidden.html')
+
+class UserDeleteView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            customer = Customer.objects.get(pk=pk)
+            return render(request, 'users/delete.html', {'customer': customer})
+        else:
+            return render('forbidden.html')    
+        
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            customer = Customer.objects.get(pk=pk)
+            customer.delete()
+            return redirect('/users/list')
+        else:
+            return render('forbidden.html')
