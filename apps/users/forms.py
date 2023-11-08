@@ -45,3 +45,23 @@ class RegisterForm(UserCreationForm):
         required=True,
         widget=forms.PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
     )
+
+class EditForm(forms.Form):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre"}),
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Apellido"}),
+    )
+    email = forms.EmailField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Correo electrónico"}),
+    )
+    phone_number = forms.IntegerField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Número de teléfono"}),
+    )
+
+ 

@@ -1,0 +1,52 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Borrar usuarios{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "user_table.css" %}">
+
+{% endblock %}
+
+{% block content %}
+    <section class="form-card">
+        <section class="card">
+            {% if form.errors %}
+            {% for field, errors in form.errors.items %}
+            <section class="form-errors">
+                <p class="text-white">{{ errors|striptags }}</p>
+            </section>
+            {% endfor %}
+            {% endif %}
+            <form method=POST class="form">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label for="id_first_name">
+                        Nombre
+                    </label>
+                    {{ form.first_name }}
+                </div>
+                <div class="form-field">
+                    <label for="id_last_name">
+                        Apellido
+                    </label>
+                    {{ form.last_name }}
+                </div>
+                <div class="form-field">
+                    <label for="id_email">
+                        Email
+                    </label>
+                    {{ form.email }}
+                </div>
+                <div class="form-field">
+                    <label for="id_phone_number">
+                        Teléfono
+                    </label>
+                    {{ form.phone_number }}
+                </div>
+                <button type="submit">Guardar</button>
+            </form>
+        </section>
+    </section>
+{% endblock %}

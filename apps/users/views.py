@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 
-from apps.users.forms import LoginForm, RegisterForm
+from apps.users.forms import LoginForm, RegisterForm, EditForm
 
 
 class LoginView(TemplateView):
@@ -85,7 +85,8 @@ class UserListView(TemplateView):
             return render(request, 'users/list.html', {'customers': Customers})
         else:
             return render('forbidden.html')
-
+        
+           
 class UserDeleteView(TemplateView):
     def get(self, request, pk):
         if request.user.is_superuser:
@@ -101,3 +102,34 @@ class UserDeleteView(TemplateView):
             return redirect('/users/list')
         else:
             return render('forbidden.html')
+
+class UserEditView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            form = EditForm()
+            customer = Customer.objects.get(pk=pk)
+            return render(request, 'users/edit.html', {'customer': customer, 'form': form})
+        else:
+            return render('forbidden.html')   
+    
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            customer = Customer.objects.get(pk=pk)
+            form = EditForm(request.POST)
+            if form.is_valid():
+                if form.cleaned_data.get("first_name"):
+                    customer.user.first_name = form.cleaned_data.get("first_name")
+                if form.cleaned_data.get("last_name"):
+                    customer.user.last_name = form.cleaned_data.get("last_name")
+                if form.cleaned_data.get("email"):
+                    customer.user.email = form.cleaned_data.get("email")
+                if form.cleaned_data.get("phone_number"):
+                    customer.phone_number = form.cleaned_data.get("phone_number") 
+                customer.user.save()      
+                customer.save()
+                return redirect('/users/list')
+            else:
+                return render(request, 'users/edit.html', {'customer': customer, 'form': form})
+        else:
+            return render('forbidden.html')
+        
