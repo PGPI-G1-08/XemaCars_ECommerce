@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+{% endblock %}
+
+{% block content %}
+    <section class="form-card">
+        <h2>Detalles del producto</h2>
+        {{ product.name}}
+        {{ product.description}}
+        {{ product.price}}
+        {{ product.image}}
+    </section>
+{% endblock %}
