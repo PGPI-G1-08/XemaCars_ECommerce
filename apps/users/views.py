@@ -65,31 +65,25 @@ class RegisterView(APIView):
             phone_number = form.cleaned_data.get("phone_number")
             password = form.cleaned_data.get("password1")
 
-            if (
-                User.objects.filter(username=username).exists()
-                or User.objects.filter(email=email).exists()
-            ):
-                message = "El usuario ya existe."
-            else:
-                user = User(
-                    username=username,
-                    email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                )
-                user.set_password(password)
-                user.save()
+            user = User(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+            )
+            user.set_password(password)
+            user.save()
 
-                customer = Customer(user=user, phone_number=phone_number)
-                customer.save()
+            customer = Customer(user=user, phone_number=phone_number)
+            customer.save()
 
-                return redirect("/signin")
+            return redirect("/signin")
         else:
             logging.warning(form.errors.as_text())
 
-        return render(request, "users/signup.html", {"form": form, "message": message})
+        return render(request, "users/signup.html", {"form": form})
 
     def get(self, request):
         form = RegisterForm(None)
 
-        return render(request, "users/signup.html", {"form": form, "message": None})
+        return render(request, "users/signup.html", {"form": form})

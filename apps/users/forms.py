@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class LoginForm(forms.Form):
@@ -45,3 +46,15 @@ class RegisterForm(UserCreationForm):
         required=True,
         widget=forms.PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
     )
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data["phone_number"]
+        if len(str(phone_number)) != 9:
+            raise forms.ValidationError("El número de teléfono debe tener 9 dígitos")
+        return phone_number
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("El usuario ya existe")
+        return username
