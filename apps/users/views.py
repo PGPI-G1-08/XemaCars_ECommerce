@@ -100,6 +100,7 @@ class UserDeleteView(TemplateView):
     def post(self, request, pk):
         if request.user.is_superuser:
             customer = Customer.objects.get(pk=pk)
+            customer.user.delete()
             customer.delete()
             return redirect('/users/list')
         else:
