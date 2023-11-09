@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class LoginForm(forms.Form):
@@ -64,7 +65,12 @@ class EditForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"placeholder": "Número de teléfono"}),
     )
-    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise ValidationError("Email already exists")
+        return email
+
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
         if phone_number and len(str(phone_number)) != 9:
