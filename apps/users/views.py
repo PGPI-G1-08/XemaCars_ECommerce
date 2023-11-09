@@ -4,15 +4,14 @@ from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 import logging
-
+from apps.users.models import Customer
 from .forms import LoginForm
 from .models import Customer
 
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 
 
-from apps.users.forms import LoginForm, RegisterForm
+from apps.users.forms import LoginForm, RegisterForm, EditForm
 
 
 class LoginView(TemplateView):
@@ -87,3 +86,65 @@ class RegisterView(APIView):
         form = RegisterForm(None)
 
         return render(request, "users/signup.html", {"form": form})
+
+
+class UserListView(TemplateView):
+    def get(self, request):
+        Customers = Customer.objects.all()
+        if request.user.is_superuser:
+            return render(request, "users/list.html", {"customers": Customers})
+        else:
+            return render(request, "forbidden.html")
+
+
+class UserDeleteView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            customer = get_object_or_404(Customer, pk=pk)
+            return render(request, "users/delete.html", {"customer": customer})
+        else:
+            return render(request, "forbidden.html")
+
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            customer = Customer.objects.get(pk=pk)
+            customer.user.delete()
+            customer.delete()
+            return redirect("/users/list")
+        else:
+            return render(request, "forbidden.html")
+
+
+class UserEditView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            form = EditForm()
+            customer = Customer.objects.get(pk=pk)
+            return render(
+                request, "users/edit.html", {"customer": customer, "form": form}
+            )
+        else:
+            return render(request, "forbidden.html")
+
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            customer = get_object_or_404(Customer, pk=pk)
+            form = EditForm(request.POST)
+            if form.is_valid():
+                if form.cleaned_data.get("first_name"):
+                    customer.user.first_name = form.cleaned_data.get("first_name")
+                if form.cleaned_data.get("last_name"):
+                    customer.user.last_name = form.cleaned_data.get("last_name")
+                if form.cleaned_data.get("email"):
+                    customer.user.email = form.cleaned_data.get("email")
+                if form.cleaned_data.get("phone_number"):
+                    customer.phone_number = form.cleaned_data.get("phone_number")
+                customer.user.save()
+                customer.save()
+                return redirect("/users/list")
+            else:
+                return render(
+                    request, "users/edit.html", {"customer": customer, "form": form}
+                )
+        else:
+            return render(request, "forbidden.html")
