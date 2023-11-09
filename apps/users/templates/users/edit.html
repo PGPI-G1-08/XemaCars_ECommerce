@@ -25,25 +25,25 @@
                     <label for="id_first_name">
                         Nombre
                     </label>
-                    {{ form.first_name }}
+                    <input type="text" name="first_name" id="id_first_name" value="{{ customer.user.first_name }}">
                 </div>
                 <div class="form-field">
                     <label for="id_last_name">
                         Apellido
                     </label>
-                    {{ form.last_name }}
+                    <input type="text" name="last_name" id="id_last_name" value="{{ customer.user.last_name }}">
                 </div>
                 <div class="form-field">
                     <label for="id_email">
-                        Email
+                        Correo
                     </label>
-                    {{ form.email }}
+                    <input type="email" name="email" id="id_email" value="{{ customer.user.email }}">
                 </div>
                 <div class="form-field">
-                    <label for="id_phone_number">
-                        Teléfono
+                    <label for="id_phone">
+                        Telefono
                     </label>
-                    {{ form.phone_number }}
+                    <input type="text" name="phone" id="id_phone" value="{{ customer.phone }}">
                 </div>
                 <button type="submit">Guardar</button>
             </form>
