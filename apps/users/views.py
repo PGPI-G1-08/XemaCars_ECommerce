@@ -9,6 +9,8 @@ from .forms import LoginForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
+from django.shortcuts import get_object_or_404
+
 
 from apps.users.forms import LoginForm, RegisterForm, EditForm
 
@@ -84,16 +86,16 @@ class UserListView(TemplateView):
         if request.user.is_superuser:
             return render(request, 'users/list.html', {'customers': Customers})
         else:
-            return render('forbidden.html')
+            return render(request, 'forbidden.html')
         
            
 class UserDeleteView(TemplateView):
     def get(self, request, pk):
         if request.user.is_superuser:
-            customer = Customer.objects.get(pk=pk)
+            customer = get_object_or_404(Customer, pk=pk)
             return render(request, 'users/delete.html', {'customer': customer})
         else:
-            return render('forbidden.html')    
+            return render(request, 'forbidden.html')    
         
     def post(self, request, pk):
         if request.user.is_superuser:
@@ -101,7 +103,7 @@ class UserDeleteView(TemplateView):
             customer.delete()
             return redirect('/users/list')
         else:
-            return render('forbidden.html')
+            return render(request, 'forbidden.html')
 
 class UserEditView(TemplateView):
     def get(self, request, pk):
@@ -110,11 +112,11 @@ class UserEditView(TemplateView):
             customer = Customer.objects.get(pk=pk)
             return render(request, 'users/edit.html', {'customer': customer, 'form': form})
         else:
-            return render('forbidden.html')   
+            return render(request, 'forbidden.html')   
     
     def post(self, request, pk):
         if request.user.is_superuser:
-            customer = Customer.objects.get(pk=pk)
+            customer = get_object_or_404(Customer, pk=pk)
             form = EditForm(request.POST)
             if form.is_valid():
                 if form.cleaned_data.get("first_name"):
@@ -131,5 +133,5 @@ class UserEditView(TemplateView):
             else:
                 return render(request, 'users/edit.html', {'customer': customer, 'form': form})
         else:
-            return render('forbidden.html')
+            return render(request, 'forbidden.html')
         

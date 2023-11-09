@@ -11,13 +11,8 @@
 
 {% block content %}
     <section class="form-card">
-        <h2>Are you sure you want to delete this user?</h2>
-        <div class="buttons-yes-no">
-            <form method="POST">
-                {% csrf_token %}
-                <input class="primary-button" type="submit" value="Yes">
-            </form>
-            <a class="secondary-button" href="/users/list">No</a>
-        </div>
+        <h2>Access Forbidden</h2>
+        <p>You don't have permission to access this page.</p>
+        <a class="primary-button" href="/">Go to Home Page</a>
     </section>
 {% endblock %}
