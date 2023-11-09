@@ -1,0 +1,38 @@
+h2{
+    text-align: center;
+    margin: 10px 0;
+}
+.product-card {
+    width: 70%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.product-details {
+    display: flex;
+    height: 380px;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.detail-image{
+    width: 60%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.detail-info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.brand-year{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
