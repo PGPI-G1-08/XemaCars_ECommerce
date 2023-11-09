@@ -65,11 +65,6 @@ class EditForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"placeholder": "Número de teléfono"}),
     )
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if email and User.objects.filter(email=email).exists():
-            raise ValidationError("Email already exists")
-        return email
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
