@@ -5,13 +5,14 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
-<link rel="stylesheet" href="{% static "user_table.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
 
 {% endblock %}
 
 {% block content %}
     <section class="form-card">
         <section class="card">
+            <h3 class="card-title">Editar usuario {{ customer.user.username }}</h3>
             {% if form.errors %}
             {% for field, errors in form.errors.items %}
             <section class="form-errors">
