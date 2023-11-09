@@ -23,6 +23,16 @@ h2{
     background-position: center;
 }
 
+.car-img{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+
+}
+
+.combustion{
+    margin-bottom: 5px;
+}
 .detail-info {
     width: 40%;
     display: flex;
@@ -35,7 +45,7 @@ h2{
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 a{
