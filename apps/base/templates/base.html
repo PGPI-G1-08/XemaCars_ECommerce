@@ -19,7 +19,7 @@
             <!-- show profile icon if user is logged in -->
             {% if user.is_authenticated %}
                 <div class="dropdown">
-                        <button class="dropbtn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
+                        <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
                         <div class="dropdown-content">
                             <a href="/profile">Perfil</a>
                             <a href="/logout">Cerrar Sesión</a>

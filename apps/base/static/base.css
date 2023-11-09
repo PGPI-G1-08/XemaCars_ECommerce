@@ -57,6 +57,7 @@ h3 {
     font-size: var(--h3);
     color: var(--orange);
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
 h4 {
@@ -229,7 +230,7 @@ header {
     z-index: 1;
 }
 
-.dropbtn {
+.drop-btn {
     background-color: var(--black);
     color: var(--white);
     font-family: var(--fuente3);
@@ -367,16 +368,10 @@ footer a{
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-}
-
-.form-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-x: hidden;
-    margin: 50px 0;
-    background-color: var(--card-semi-transparent);
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
 }
 
 .form-field:not(.checkbox) {
@@ -441,9 +436,13 @@ footer a{
 }
 
 .form-errors {
-    margin: 3px 0;
+    margin: 0.5em;
     background-color: var(--orange);
     border: 1px solid var(--dark-orange);
     border-radius: 0.25em;
     padding: 0.5em;
+}
+
+.form-errors-container {
+    margin: 2em 0;
 }
