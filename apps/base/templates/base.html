@@ -18,35 +18,37 @@
         <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
         <!-- show profile icon if user is logged in -->
         {% if user.is_authenticated %}
-        {% if user.is_superuser %}
-        <a href="/users/list" class="header-profile">Usuarios</a>
-        {% endif %}
-        <div class="dropdown">
-            <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
-            <div class="dropdown-content">
-                <a href="/profile">Perfil</a>
-                <a href="/logout">Cerrar Sesión</a>
-            </div>
-            {% else %}
-            <div>
-                <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
-            </div>
+        <div>
+            {% if user.is_superuser %}
+            <a href="/users/list" class="header-profile">Usuarios</a>
             {% endif %}
-        </header>
-        <section class="content">
-            {% block content %}
-            {% endblock %}
-        </section>
-        <footer>
-            <div class="footer-info">
-                <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
-                <span class="material-symbols-outlined">location_on</span> <p>Calle Mayor 123</p>| 
-                <span class="material-symbols-outlined">call</span> <p>+34 666 66 66 66</p>|
-                <span class="material-symbols-outlined">mail</span> <p>contacto@xemacars.com</p>|
-                <a id="about-us-link" href="{% url 'about-us' %}">Sobre Nosotros</a> 
+            <div class="dropdown">
+                <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
+                <div class="dropdown-content">
+                    <a href="/profile">Perfil</a>
+                    <a href="/logout">Cerrar Sesión</a>
+                </div>
             </div>
-            <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
-        </footer>
-    </body>
-    </html>
-    
+        </div>
+        {% else %}
+        <div>
+            <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
+        </div>
+        {% endif %}
+    </header>
+    <section class="content">
+        {% block content %}
+        {% endblock %}
+    </section>
+    <footer>
+        <div class="footer-info">
+            <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
+            <span class="material-symbols-outlined">location_on</span> <p>Calle Mayor 123</p>| 
+            <span class="material-symbols-outlined">call</span> <p>+34 666 66 66 66</p>|
+            <span class="material-symbols-outlined">mail</span> <p>contacto@xemacars.com</p>|
+            <a id="about-us-link" href="{% url 'about-us' %}">Sobre Nosotros</a> 
+        </div>
+        <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
