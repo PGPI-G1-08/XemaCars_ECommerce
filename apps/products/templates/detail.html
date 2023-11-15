@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "details.css" %}">
+{% endblock %}
+
+{% block content %}
+    <h2>Detalles del producto</h2>  
+    <section class="product-card">
+        <div class="product-details">
+            <div class="detail-image">
+                <img class="car-img" src="{{ product.image_url }}" alt="{{ product.name }}">
+            </div>
+            <div class="detail-info">
+                <h2>{{ product.name }}</h2>
+                <div class="brand-year">
+                    <h4 class="product-brand">{{ product.brand }}</h4>
+                    <h4> - </h4>
+                    <h4 class="product-year">{{ product.year }}</h4>
+                </div>
+                <div class="combustion">
+                    <h4 class="product-combustion">{{ product.combustion_type }}</h4>
+                </div>
+                <p>{{ product.description }}</p>
+                <h2 class="product-price">{{ product.price }} €</h2>
+                <a href="/products" class="primary-button">Comprar</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
