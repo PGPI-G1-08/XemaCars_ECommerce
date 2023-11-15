@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Login{% endblock %}
@@ -9,36 +9,29 @@
 {% endblock %}
 
 {% block content %}
-    <img src="{% static 'hero.jpg' %}" alt="hero">
-    <section class="form-card">
-        <section class="card">
-            <h3 class="card-title">Bienvenido a XemaCars Ltd.</h3>
-            {% if message %}
-                <p class="form-errors text-white">{{ message }}</p>
-            {% endif %}
-            <form method="post" class="form">
-                {% csrf_token %}
-                <div class="form-field">
-                    <label for="id_username">
-                        Usuario
-                    </label>
-                    {{ form.username }}
-                </div>
-                <div class="form-field">
-                    <label for="id_password">
-                        Contraseña
-                        
-                    </label>
-                    {{ form.password }}
-                </div>
-                <div class="form-field">
-                    <label for="id_remember_me">
-                        {{ form.remember_me }}
-                        Recuérdame
-                    <label/>
-                </div>
-                <button class="primary-button" type="submit">Iniciar Sesión</button>
-            </form>
-        </section>
-    </section>
+<img src="{% static 'hero.jpg' %}" alt="hero">
+{% if message %}
+<p class="form-errors text-white">{{ message }}</p>
+{% endif %}
+<form method="post" class="form">
+    <h3 class="card-title">Bienvenido a XemaCars Ltd.</h3>
+    {% csrf_token %}
+    <div class="form-field">
+        <label for="id_username">
+            Usuario
+        </label>
+        {{ form.username }}
+    </div>
+    <div class="form-field">
+        <label for="id_password">
+            Contraseña
+            
+        </label>
+        {{ form.password }}
+    </div>
+    <div class="form-field">
+       <label for="id_remember_me">Recuérdame</label><span>{{ form.remember_me }}</span>
+    </div>
+    <button class="primary-button" type="submit">Iniciar Sesión</button>
+</form>
 {% endblock %}

@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 {% load i18n static %}
 <html lang="es">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>XemaCars | {% block title %}{% endblock %}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans&family=Poppins:wght@500&display=swap" rel="stylesheet">        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-        <link rel="stylesheet" href="{% static "base.css" %}">
-        {% block extrahead %}{% endblock %}
-    </head>
-    <body>
-        <header class="header">
-            <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
-            <!-- show profile icon if user is logged in -->
-            {% if user.is_authenticated %}
-                <div class="">
-                    {% if user.is_superuser %}
-                        <a href="/users/list" class="header-profile">Usuarios</a>
-                    {% endif %}
-                    <a href="/profile" class="material-icons header-profile">account_circle<span>{{user.username}}</span></a>               
-                    <a href="/logout" class="material-icons header-profile">logout</a>
-                </div>
-            {% else %}
-                <div>
-                    <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
-                </div>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XemaCars | {% block title %}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans&family=Poppins:wght@500&display=swap" rel="stylesheet">        
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="{% static "base.css" %}">
+    {% block extrahead %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
+        <!-- show profile icon if user is logged in -->
+        {% if user.is_authenticated %}
+        <div>
+            {% if user.is_superuser %}
+            <a href="/users/list" class="header-profile">Usuarios</a>
             {% endif %}
-        </header>
-        <section class="content">
-            {% block content %}
-            {% endblock %}
-        </section>
-        <footer>
-            <div class="footer-info">
-                <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
-                <span class="material-symbols-outlined">location_on</span> <p>Calle Mayor 123</p>| 
-                <span class="material-symbols-outlined">call</span> <p>+34 666 66 66 66</p>|
-                <span class="material-symbols-outlined">mail</span> <p>contacto@xemacars.com</p>|
-                <a id="about-us-link" href="{% url 'about-us' %}">Sobre Nosotros</a> 
+            <div class="dropdown">
+                <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
+                <div class="dropdown-content">
+                    <a href="/profile">Perfil</a>
+                    <a href="/logout">Cerrar Sesión</a>
+                </div>
             </div>
-            <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
-        </footer>
-    </body>
+        </div>
+        {% else %}
+        <div>
+            <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
+        </div>
+        {% endif %}
+    </header>
+    <section class="content">
+        {% block content %}
+        {% endblock %}
+    </section>
+    <footer>
+        <div class="footer-info">
+            <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
+            <span class="material-symbols-outlined">location_on</span> <p>Calle Mayor 123</p>| 
+            <span class="material-symbols-outlined">call</span> <p>+34 666 66 66 66</p>|
+            <span class="material-symbols-outlined">mail</span> <p>contacto@xemacars.com</p>|
+            <a id="about-us-link" href="{% url 'about-us' %}">Sobre Nosotros</a> 
+        </div>
+        <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
+    </footer>
+</body>
 </html>
