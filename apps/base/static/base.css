@@ -362,12 +362,17 @@ footer a{
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     padding: 10px;
+    text-decoration: none;
 }
 
 .card-title {
     color: var(--orange);
     font-family: var(--fuente2);
     font-size: var(--h2);
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .card-text {
@@ -376,11 +381,23 @@ footer a{
     font-size: var(--body-text);
 }
 
+.card-price {
+    color: var(--black);
+    font-family: var(--fuente3);
+    font-size: var(--h3);
+}
+
 .card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-radius: var(--border-radius);
+}
+
+#price-available {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 

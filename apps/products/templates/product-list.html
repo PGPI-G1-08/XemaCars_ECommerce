@@ -14,18 +14,20 @@
 
 </pre>
 {% for product in products %}
-<section class="card-container">
-    <div class="primary-button">
-        <a href="/products/details/{{ product.id }}">
-            <div class="card"> 
-                <img src= "{{ product.image_url }}">
-                <h2 class="card-title">{{ product.name }}</h2>
-                <h1 class="card-title">{{ product.price }}</h1>
-                <p class="card-text">{{ product.description }}</p>
-            </div>
-        </a>   
-    </div>
-    
+<section class="card-container"></section>
+    <a class="card" href="/products/details/{{ product.id }}">
+        <img src= "{{ product.image_url }}">
+        <h2 class="card-title">{{ product.name }}</h2>
+        <div id="price-available">
+            <p class="card-price">{{ product.price }} €</p>
+            {% if product.available %}
+                <p class="card-text">Disponible</p>
+            {% else %}
+                <p class="card-text">No Disponible</p>
+            {% endif %}
+        </div>
+        
+    </a>     
 </section>
 {% endfor %}
 {% endblock %}
