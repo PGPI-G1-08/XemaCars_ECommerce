@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Lista de Productos{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+{% endblock %}
+
+{% block content %}
+<pre>
+    
+<h1>Nuestros coches</h1>
+
+</pre>
+{% for product in products %}
+<section class="card-container">
+    <div class="primary-button">
+        <a href="/products/details/{{ product.id }}">
+            <div class="card"> 
+                <img src= "{{ product.image_url }}">
+                <h2 class="card-title">{{ product.name }}</h2>
+                <h1 class="card-title">{{ product.price }}</h1>
+                <p class="card-text">{{ product.description }}</p>
+            </div>
+        </a>   
+    </div>
+    
+</section>
+{% endfor %}
+{% endblock %}

@@ -15,7 +15,10 @@
 </head>
 <body>
     <header class="header">
-        <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
+        <div class="header-left">
+            <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
+            <a class="header-auth" href="/products">Nuestros coches</a>
+        </div>
         <!-- show profile icon if user is logged in -->
         {% if user.is_authenticated %}
         <div>
