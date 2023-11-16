@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class LoginForm(forms.Form):
@@ -45,3 +47,40 @@ class RegisterForm(UserCreationForm):
         required=True,
         widget=forms.PasswordInput(attrs={"placeholder": "Confirmar contraseña"}),
     )
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data["phone_number"]
+        if len(str(phone_number)) != 9:
+            raise forms.ValidationError("El número de teléfono debe tener 9 dígitos")
+        return phone_number
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("El usuario ya existe")
+        return username
+
+
+class EditForm(forms.Form):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre"}),
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Apellido"}),
+    )
+    email = forms.EmailField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Correo electrónico"}),
+    )
+    phone_number = forms.IntegerField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Número de teléfono"}),
+    )
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        if phone_number and len(str(phone_number)) != 9:
+            raise ValidationError("Phone number must be exactly 9 digits long")
+        return phone_number

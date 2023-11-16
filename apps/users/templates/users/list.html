@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}List Users{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "user_table.css" %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Usuarios</h1>
+    <div class="card-container">
+        {% for customer in customers %}
+        <div class="card">
+            <div class="user-info">
+                <div>
+                    <div class="card-title">{{ customer.user.username }}</div>
+                    <p class="card-text">
+                        First Name: {{ customer.user.first_name }}<br>
+                        Last Name: {{ customer.user.last_name }}<br>
+                    </p>
+                </div>
+                <div class="card-buttons">
+                    <a href="/users/edit/{{ customer.user.id }}" class="material-icons header-profile">edit</a>
+                    <a href="/users/delete/{{ customer.user.id }}" class="material-icons header-profile">delete</a>
+                </div>
+            </div>
+            <div class="user-image">
+                <img class="card-img" src="{% static 'user-icon.png' %}" alt="User Icon">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

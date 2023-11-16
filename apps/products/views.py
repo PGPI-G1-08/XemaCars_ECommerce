@@ -1,8 +1,8 @@
-# import render
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .forms import ProductForm
 from .models import Product
+from django.shortcuts import get_object_or_404
 
 
 class ProductAddView(TemplateView):
@@ -44,3 +44,8 @@ class ProductListView(TemplateView):
     def get(self, request):
         products = Product.objects.all()
         return render(request, "product-list.html", {"products": products})
+
+class ProductDetailView(TemplateView):
+    def get(self, request, pk):
+        product =get_object_or_404(Product, pk=pk)
+        return render(request, "detail.html", {"product": product})
