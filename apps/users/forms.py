@@ -2,6 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from apps.products.models import DeliveryPoint
+
+from apps.payments.models import PaymentMethod
 
 
 class LoginForm(forms.Form):
@@ -84,3 +87,23 @@ class EditForm(forms.Form):
         if phone_number and len(str(phone_number)) != 9:
             raise ValidationError("Phone number must be exactly 9 digits long")
         return phone_number
+
+
+class EditDeliveryPointAndPaymentMethodForm(forms.Form):
+    delivery_points = [
+        (delivery_point.get("name"), delivery_point.get("name"))
+        for delivery_point in DeliveryPoint.objects.values()
+    ]
+    # payment_methods = [
+    #     (payment_method.get("name"), payment_method.get("name"))
+    #     for payment_method in PaymentMethod.objects.values()
+    # ]
+
+    preferred_delivery_point = forms.ChoiceField(
+        required=False,
+        choices=[("", "Seleccione un punto de recogida")] + delivery_points,
+    )
+    # payment_method = forms.ChoiceField(
+    #     required=False,
+    #     choices=[("", "Seleccione un método de pago")] + payment_methods,
+    # )

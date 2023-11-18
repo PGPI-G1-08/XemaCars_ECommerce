@@ -1,0 +1,43 @@
+.user-avatar {
+    width: 200px;
+    height: 200px;
+    color: var(--white);
+    margin: 2em;
+}
+
+.profile-container {
+    display: grid;
+    grid-template-columns: max-content 2fr;
+    grid-gap: 10px;
+    margin: 20px;
+}
+
+.user-profile p {
+    margin: 2px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ccc;
+}
+
+form label {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.select-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}

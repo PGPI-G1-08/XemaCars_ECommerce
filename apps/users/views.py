@@ -1,17 +1,51 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 import logging
-from apps.users.models import Customer
+from apps.products.models import DeliveryPoint
+
+from apps.payments.models import PaymentMethod
 from .forms import LoginForm
 from .models import Customer
 
 from django.shortcuts import get_object_or_404
 
 
-from apps.users.forms import LoginForm, RegisterForm, EditForm
+from apps.users.forms import (
+    LoginForm,
+    RegisterForm,
+    EditForm,
+    EditDeliveryPointAndPaymentMethodForm,
+)
+
+
+@login_required(login_url="/signin")
+def profile(request):
+    form = EditDeliveryPointAndPaymentMethodForm()
+
+    if request.method == "POST":
+        form = EditDeliveryPointAndPaymentMethodForm(request.POST)
+        if form.is_valid():
+            user = request.user
+
+            customer = Customer.objects.get(user=user)
+
+            delivery_point = form.cleaned_data.get("preferred_delivery_point")
+            if delivery_point:
+                delivery_point = DeliveryPoint.objects.get(name=delivery_point)
+                customer.preferred_delivery_point = delivery_point
+
+            payment_method = form.cleaned_data.get("payment_method")
+            if payment_method:
+                payment_method = PaymentMethod.objects.create(name=payment_method)
+                customer.payment_methods = payment_method
+            customer.save()
+
+            return redirect("/profile")
+    return render(request, "users/profile.html", {"form": form})
 
 
 class LoginView(TemplateView):

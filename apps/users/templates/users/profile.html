@@ -1,0 +1,47 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "profile.css" %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-container">
+    <img class="user-avatar" src="../../static/user-icon.png" alt="Imagen de perfil">
+    
+    <div class="user-profile">
+        <h2>Perfil de Usuario</h2>
+        <h5>Nombre: </h5>
+        <p>{{ user.first_name }}</p>
+        <h5>Apellido: </h5>
+        <p>{{ user.last_name }}</p>
+        <h5>Nombre de Usuario: </h5>
+        <p>{{ user.username }}</p>
+        <h5>Número de Teléfono: </h5>
+        <p>{{ user.customer.phone_number }}</p>
+        <h5>Email: </h5>
+        <p>{{ user.email }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="select-field">
+                <label for="id_payment_method">Método de Pago:</label>
+                {{ form.payment_method }}
+            </div>
+            <div class="select-field">
+                <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                {{ form.preferred_delivery_point }}
+            </div>
+            <div class="button-container">
+                <button class="primary-button" type="submit">Añadir método de Pago</button>      
+                <button class="primary-button" type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}
