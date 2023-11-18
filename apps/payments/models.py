@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 PAYMENT_FORMS = (
     ("A contrareembolso", "A contrareembolso"),
@@ -9,5 +8,7 @@ PAYMENT_FORMS = (
 
 
 class PaymentMethod(models.Model):
-    # TODO: Add secure payment storage
-    pass
+    payment_type = models.CharField(max_length=255, choices=PAYMENT_FORMS)
+
+    def __str__(self):
+        return self.payment_type
