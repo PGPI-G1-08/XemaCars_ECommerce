@@ -60,22 +60,30 @@
         });
 
         async function updateButton() {
-            response = await fetch("/cart/has_product/{{ product.id }}")
-            data = await response.json()
-            const buyButton = document.querySelector('#buy-btn');
-            if (data.has_product) {
-                buyButton.innerHTML = 'Añadido al carrito';
-                buyButton.classList.add('disabled-btn');
-                buyButton.removeEventListener('click', () => {
-                    spawnBuyModal();
-                });
-            } else {
-                buyButton.innerHTML = 'Comprar';
-                buyButton.classList.remove('disabled-btn');
+            {% if user.is_authenticated %}
+                response = await fetch("/cart/has_product/{{ product.id }}")
+                data = await response.json()
+                const buyButton = document.querySelector('#buy-btn');
+                if (data.has_product) {
+                    buyButton.innerHTML = 'Añadido al carrito';
+                    buyButton.classList.add('disabled-btn');
+                    buyButton.removeEventListener('click', () => {
+                        spawnBuyModal();
+                    });
+                } else {
+                    buyButton.innerHTML = 'Comprar';
+                    buyButton.classList.remove('disabled-btn');
+                    buyButton.addEventListener('click', () => {
+                        spawnBuyModal();
+                    });
+                }
+            {% else %}
+                const buyButton = document.querySelector('#buy-btn');
                 buyButton.addEventListener('click', () => {
-                    spawnBuyModal();
+                    window.location.href = '/signin';
                 });
-            }
+            {% endif %}
+
         }
         
         function validateDate(date, disabled_dates) {
