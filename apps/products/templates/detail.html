@@ -54,10 +54,29 @@
     {% block extrajs %}
         document.addEventListener('DOMContentLoaded', () => {
             const buyButton = document.querySelector('#buy-btn');
-            buyButton.addEventListener('click', () => {
-                spawnBuyModal();
-            });
+
+            updateButton();
+
         });
+
+        async function updateButton() {
+            response = await fetch("/cart/has_product/{{ product.id }}")
+            data = await response.json()
+            const buyButton = document.querySelector('#buy-btn');
+            if (data.has_product) {
+                buyButton.innerHTML = 'Añadido al carrito';
+                buyButton.classList.add('disabled-btn');
+                buyButton.removeEventListener('click', () => {
+                    spawnBuyModal();
+                });
+            } else {
+                buyButton.innerHTML = 'Comprar';
+                buyButton.classList.remove('disabled-btn');
+                buyButton.addEventListener('click', () => {
+                    spawnBuyModal();
+                });
+            }
+        }
         
         function validateDate(date, disabled_dates) {
             const to_date_input = document.querySelector('#to-date');
@@ -83,28 +102,26 @@
             return true;
         }
 
-        function getDisabledDates() {
-            return fetch("/products/disabled_dates/{{ product.id }}")
-                .then(response => response.json())
-                .then(data => {
-                    const disabled_dates = [];
-                    dates = data.disabled_dates;
-                    dates.forEach(date => {
-                        start_date = new Date(date.start);
-                        end_date = new Date(date.end);
-                        tmp_date = new Date(start_date);
-                        while (tmp_date <= end_date) {
-                            disabled_dates.push(tmp_date.toISOString().slice(0, 10));
-                            tmp_date.setDate(tmp_date.getDate() + 1);
-                        }
-                    });
-                    return disabled_dates;
-                })
+        async function getDisabledDates() {
+            const response = await fetch("/products/disabled_dates/{{ product.id }}")
+            const data = await response.json()
+            const disabled_dates = [];
+            const dates = data.disabled_dates;
+            dates.forEach(date => {
+                start_date = new Date(date.start);
+                end_date = new Date(date.end);
+                tmp_date = new Date(start_date);
+                while (tmp_date <= end_date) {
+                    disabled_dates.push(tmp_date.toISOString().slice(0, 10));
+                    tmp_date.setDate(tmp_date.getDate() + 1);
+                }
+            });
+            return disabled_dates;
         }
 
-        function addProductToCart(from_date, to_date) {
+        async function addProductToCart(from_date, to_date) {
             const product_id = {{ product.id }};
-            fetch("/cart/add", {
+            const response = await fetch("/cart/add", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,17 +133,15 @@
                     'to_date': to_date
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    const error_msg = document.querySelector('#error-msg');
-                    error_msg.innerHTML = data.error;
-                } else {
-                    getCartCount();
-                    closeModal();
-                    showNotification('Producto añadido al carrito', 'success');
-                }
-            });
+            const data = await response.json()
+            if (data.error) {
+                const error_msg = document.querySelector('#error-msg');
+                error_msg.innerHTML = data.error;
+            } else {
+                getCartCount();
+                updateButton();
+                showNotification('Producto añadido al carrito', 'success');
+            }
         }
 
         function closeModal() {
@@ -134,34 +149,34 @@
             modal.style.display = 'none';
         }
 
-        function spawnBuyModal() {
-            getDisabledDates().then(disabled_dates => {
-                const modal = document.querySelector('.modal');
+        async function spawnBuyModal() {
+            const response = await getDisabledDates();
+            const disabled_dates = await response;
+            const modal = document.querySelector('.modal');
 
-                /* minDate is today */
-                const today = new Date();
-                const minDate = today.toISOString().slice(0, 10);
-                const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+            /* minDate is today */
+            const today = new Date();
+            const minDate = today.toISOString().slice(0, 10);
+            const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
 
-                modal.style.display = 'flex';
-                const close = modal.querySelector('.close');
-                close.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                });
+            modal.style.display = 'flex';
+            const close = modal.querySelector('.close');
+            close.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
 
-                document.querySelector('#from-date').onchange = evt => {
-                    if(!validateDate(evt.target.value, disabled_dates)) {
-                        evt.target.value = '';
-                    }
+            document.querySelector('#from-date').onchange = evt => {
+                if(!validateDate(evt.target.value, disabled_dates)) {
+                    evt.target.value = '';
                 }
+            }
 
-                document.querySelector('#confirm-btn').addEventListener('click', () => {
-                    const from_date = document.querySelector('#from-date').value;
-                    const to_date = document.querySelector('#to-date').value;
-                    if (from_date && to_date) {
-                        addProductToCart(from_date, to_date);
-                    }
-                });
+            document.querySelector('#confirm-btn').addEventListener('click', () => {
+                const from_date = document.querySelector('#from-date').value;
+                const to_date = document.querySelector('#to-date').value;
+                if (from_date && to_date) {
+                    addProductToCart(from_date, to_date);
+                }
             });
         }
     {% endblock %}

@@ -49,3 +49,18 @@ def get_cart_count(request):
     response_data = {}
     response_data["count"] = request.user.customer.cart.products.count()
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def has_product(request, product_id):
+    print("here")
+    if request.user == None or request.user.is_anonymous:
+        return HttpResponse(
+            json.dumps({"has_product": False}), content_type="application/json"
+        )
+
+    print("here")
+    response_data = {}
+    response_data["has_product"] = request.user.customer.cart.products.filter(
+        pk=product_id
+    ).exists()
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

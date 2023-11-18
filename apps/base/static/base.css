@@ -353,6 +353,21 @@ footer a {
   color: var(--white);
 }
 
+/* DISABLED BUTTON */
+
+.disabled-btn {
+  background-color: var(--grey);
+  color: var(--black);
+  border-radius: var(--border-radius);
+  transition: var(--transition-duration);
+  font-family: var(--fuente1);
+  cursor: not-allowed;
+}
+
+.disabled-btn:hover {
+  background-color: var(--grey);
+}
+
 /* CARD */
 
 .card-container {

@@ -70,13 +70,11 @@
             }, 5000);
 
             // get cart count on demand
-            function getCartCount() {
-                fetch("/cart/count")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.count > 0)
-                        document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
-                });
+            async function getCartCount() {
+                response = await fetch("/cart/count")
+                data = await response.json();
+                if (data.count > 0)
+                    document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
             }
         {% endif %}
 
