@@ -7,7 +7,10 @@ from apps.cart.models import Cart
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True, related_name="customer"
+    )
+    address = models.CharField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=255, blank=True)
     payment_methods = models.ManyToOneRel(
         "payments.PaymentMethod",

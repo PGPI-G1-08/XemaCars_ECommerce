@@ -16,6 +16,12 @@ class Cart(models.Model):
             total += product.price
         return total
 
+    def add(self, product, start_date, end_date):
+        cart_product = CartProduct.objects.create(
+            cart=self, product=product, start_date=start_date, end_date=end_date
+        )
+        return cart_product
+
 
 class CartProduct(models.Model):
     cart = models.ForeignKey("Cart", on_delete=models.CASCADE)

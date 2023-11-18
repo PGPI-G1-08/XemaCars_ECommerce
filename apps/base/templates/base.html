@@ -18,12 +18,16 @@
         <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
         <!-- show profile icon if user is logged in -->
         {% if user.is_authenticated %}
-        <div>
+        <div class="header-right">
             {% if user.is_superuser %}
-            <a href="/users/list" class="header-profile">Usuarios</a>
+            <a href="/users/list" class="header-auth">Usuarios</a>
             {% endif %}
+           <div class="shopping-cart">
+                <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
+                <span id="cart-count"><p></p></span>
+            </div>
             <div class="dropdown">
-                <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
+                <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
                     <a href="/profile">Perfil</a>
                     <a href="/logout">Cerrar Sesión</a>
@@ -50,5 +54,24 @@
         </div>
         <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        // get cart count
+        getCartCount();
+
+        // get cart count every 5 seconds
+        setInterval(function() {
+            getCartCount();
+        }, 5000);
+
+        // get cart count on demand
+        function getCartCount() {
+            fetch("/cart/count")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
+            });
+        }
+    {% block extrajs %}{% endblock %}
+    </script>
 </body>
 </html>
