@@ -1,10 +1,14 @@
+from collections.abc import Mapping
+from typing import Any
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.forms.utils import ErrorList
 from apps.products.models import DeliveryPoint
 
-from apps.payments.models import PaymentMethod
+from apps.payments.models import PAYMENT_FORMS, PaymentMethod
+from apps.users.models import Customer
 
 
 class LoginForm(forms.Form):
@@ -94,16 +98,11 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
         (delivery_point.get("name"), delivery_point.get("name"))
         for delivery_point in DeliveryPoint.objects.values()
     ]
-    # payment_methods = [
-    #     (payment_method.get("name"), payment_method.get("name"))
-    #     for payment_method in PaymentMethod.objects.values()
-    # ]
-
     preferred_delivery_point = forms.ChoiceField(
         required=False,
         choices=[("", "Seleccione un punto de recogida")] + delivery_points,
     )
-    # payment_method = forms.ChoiceField(
-    #     required=False,
-    #     choices=[("", "Seleccione un método de pago")] + payment_methods,
-    # )
+    payment_method = forms.ChoiceField(
+        required=False,
+        choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
+    )

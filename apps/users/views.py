@@ -40,11 +40,22 @@ def profile(request):
 
             payment_method = form.cleaned_data.get("payment_method")
             if payment_method:
-                payment_method = PaymentMethod.objects.create(name=payment_method)
-                customer.payment_methods = payment_method
+                payment_method = PaymentMethod.objects.create(
+                    payment_type=payment_method
+                )
+                customer.payment_methods.set([payment_method])
             customer.save()
 
             return redirect("/profile")
+    if request.method == "GET":
+        user = request.user
+        customer = Customer.objects.get(user=user)
+        form = EditDeliveryPointAndPaymentMethodForm(
+            initial={
+                "preferred_delivery_point": customer.preferred_delivery_point,
+                "payment_method": customer.payment_methods.first(),
+            }
+        )
     return render(request, "users/profile.html", {"form": form})
 
 
