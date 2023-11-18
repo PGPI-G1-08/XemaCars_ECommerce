@@ -55,23 +55,27 @@
         <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
     </footer>
     <script>
-        // get cart count
-        getCartCount();
-
-        // get cart count every 5 seconds
-        setInterval(function() {
+        /* only if authenticated */
+        {% if user.is_authenticated %}
+            // get cart count
             getCartCount();
-        }, 5000);
 
-        // get cart count on demand
-        function getCartCount() {
-            fetch("/cart/count")
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
-            });
-        }
-    {% block extrajs %}{% endblock %}
+            // get cart count every 5 seconds
+            setInterval(function() {
+                getCartCount();
+            }, 5000);
+
+            // get cart count on demand
+            function getCartCount() {
+                fetch("/cart/count")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > 0)
+                        document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
+                });
+            }
+        {% endif %}
+        {% block extrajs %}{% endblock %}
     </script>
 </body>
 </html>
