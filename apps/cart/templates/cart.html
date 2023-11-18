@@ -1,0 +1,91 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "carrito.css" %}">
+{% endblock %}
+{% block content %}
+    {% if cart_products|length == 0 %}
+        <h2>Carrito vacío</h2>
+    {% else %}
+        <h2 id="title">Carrito</h2>  
+        <h2 id="no-products" style="display:none">Carrito vacío</h2>
+        <section class="cart-contents">
+                {% for item in cart_products %}
+                <div id="product-{{item.product.id}}" class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="{{item.product.image_url}}" alt="{{item.product.name}}">
+                        </div>
+                        <div class="cart-item-info">
+                            <h3>{{item.product.name}}</h3>
+                            <description>{{item.product.description}}</description>
+                            <attribute>
+                                <label>Desde: </label>
+                                <p>{{item.start_date}}</p>
+                            </attribute>
+                            <attribute>
+                                <label>Hasta: </label>
+                                <p>{{item.end_date}}</p>
+                            </attribute>
+                            <attribute>
+                                <label>Precio: </label>
+                                <p>{{item.product.price}} € / día</p>
+                            </attribute>
+                        </div>
+                        <div class="cart-item-actions">
+                            <a class="primary-button" id="delete-{{item.product.id}}" ><span class="material-icons">delete</span></a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="cart-total">
+                    <h3>Total: </h3>
+                    <h4 id="price">{{total}} €</h4>
+                </div>
+        </section>
+    {% endif %}
+{% endblock %}
+
+<script>
+    {% block extrajs %}
+        const delete_buttons = document.querySelectorAll('.cart-item-actions a');
+        delete_buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const product_id = button.id.split('-')[1];
+                removeProductFromCart(product_id);
+            })
+        })
+
+        async function removeProductFromCart(product_id) {
+            const item = document.querySelector(`#product-${product_id}`);
+            const response = await fetch("/cart/remove", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    'product_id': product_id,
+                })
+            })
+            const data = await response.json()
+            if (data.error) {
+                const error_msg = document.querySelector('#error-msg');
+                error_msg.innerHTML = data.error;
+            } else {
+                item.remove();
+                showNotification('Producto eliminado del carrito', 'success');
+            }
+            if (document.querySelectorAll('.cart-item').length == 0) {
+                document.querySelector('.cart-contents').style.display = 'none';
+                document.querySelector('#title').style.display = 'none';
+                document.querySelector('#no-products').style.display = 'block';
+            } else {
+                const price = document.querySelector('#price');
+                price.innerHTML = data.new_price + ' €';
+            }
+        }
+    {% endblock %}
+</script>

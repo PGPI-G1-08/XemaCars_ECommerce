@@ -13,7 +13,12 @@ class Cart(models.Model):
     def total(self):
         total = 0
         for product in self.products.all():
-            total += product.price
+            product_price = product.price
+            start_date = CartProduct.objects.get(cart=self, product=product).start_date
+            end_date = CartProduct.objects.get(cart=self, product=product).end_date
+            print((end_date - start_date).days)
+            total += (end_date - start_date).days * product_price
+        print(total)
         return total
 
     def add(self, product, start_date, end_date):

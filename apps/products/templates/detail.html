@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
@@ -149,6 +149,7 @@
                 getCartCount();
                 updateButton();
                 showNotification('Producto añadido al carrito', 'success');
+                closeModal();
             }
         }
 

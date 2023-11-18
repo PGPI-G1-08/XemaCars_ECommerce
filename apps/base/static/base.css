@@ -330,6 +330,8 @@ footer a {
   transition: var(--transition-duration);
   font-family: var(--fuente1);
   cursor: pointer;
+  display: flex;
+  width: fit-content;
 }
 
 .primary-button:hover,
@@ -346,6 +348,8 @@ footer a {
   border-radius: var(--border-radius);
   font-family: var(--fuente1);
   cursor: pointer;
+  display: flex;
+  width: fit-content;
 }
 
 .secondary-button:hover {

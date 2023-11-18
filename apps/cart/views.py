@@ -6,12 +6,14 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from apps.products.models import Product
+from .models import CartProduct
 
 
 @login_required(login_url="/signin")
 def get_cart(request):
     customer = request.user.customer
-    cart_products = customer.cart.products.all()
+    # Get CartProducts
+    cart_products = CartProduct.objects.filter(cart=customer.cart)
 
     return render(
         request,
@@ -42,6 +44,31 @@ def add_to_cart(request):
         return HttpResponse(json.dumps({"error": str(e)}), status=400)
 
     return HttpResponse(json.dumps({}), status=200, content_type="application/json")
+
+
+@login_required(login_url="/signin")
+def remove_from_cart(request):
+    if request.method != "POST":
+        return
+
+    try:
+        data = json.loads(request.body)
+
+        product_id = data["product_id"]
+
+        product = Product.objects.get(pk=product_id)
+        request.user.customer.cart.products.remove(product)
+
+        new_price = request.user.customer.cart.total
+
+    except Exception as e:
+        return HttpResponse(json.dumps({"error": str(e)}), status=400)
+
+    return HttpResponse(
+        json.dumps({"new_price": new_price}),
+        status=200,
+        content_type="application/json",
+    )
 
 
 @login_required(login_url="/signin")

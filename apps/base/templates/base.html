@@ -62,12 +62,10 @@
         /* only if authenticated */
         {% if user.is_authenticated %}
             // get cart count
-            getCartCount();
 
-            // get cart count every 5 seconds
-            setInterval(function() {
+            document.addEventListener('DOMContentLoaded', () => {
                 getCartCount();
-            }, 5000);
+            });
 
             // get cart count on demand
             async function getCartCount() {
