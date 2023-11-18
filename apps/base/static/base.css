@@ -532,3 +532,40 @@ button[type='submit'] {
   cursor: pointer;
   gap: 100px;
 }
+
+/* NOTIFICATIONS */
+
+.notifications {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1;
+}
+
+.notification {
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.success {
+  background-color: var(--orange);
+  color: var(--white);
+}
+
+.sucess > p {
+  color: var(--white);
+  font-family: var(--fuente3);
+  font-weight: bold;
+}

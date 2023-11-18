@@ -44,6 +44,10 @@
         {% block content %}
         {% endblock %}
     </section>
+
+    <section class="notifications">
+    </section>
+
     <footer>
         <div class="footer-info">
             <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
@@ -75,6 +79,20 @@
                 });
             }
         {% endif %}
+
+        // notifications
+        function showNotification(message, type) {
+            const notifications = document.querySelector(".notifications");
+            const notification = document.createElement("article");
+            notification.classList.add("notification");
+            notification.classList.add(type);
+            notification.innerHTML = "<p>" + message + "</p>";
+            notifications.appendChild(notification);
+            setTimeout(function() {
+                notifications.removeChild(notification);
+            }, 5000);
+        }
+
         {% block extrajs %}{% endblock %}
     </script>
 </body>
