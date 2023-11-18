@@ -37,7 +37,7 @@
             <span class="close material-icons">close</span>
             <article "form-field">
                 <label>Desde:</label>
-                <input id="from-date" type="date" min="${minDate}" max="${maxDate}"/>
+                <input id="from-date" type="date"/>
             </article>
             <article "form-field">
                 <label>Hasta:</label>
@@ -97,15 +97,28 @@
             }
 
             const from_date = new Date(date);
+            minDate = new Date();
+            minDate.setDate(from_date.getDate() + 1);
+            to_date_input.min = minDate.toISOString().slice(0, 10);
+
             /* get closest date to from_date that is bigger than from_date */
             tmp_disabled_dates = disabled_dates.filter(d => new Date(d) > from_date);
             tmp_disabled_dates.sort((a, b) => new Date(a) - new Date(b));
-            let to_date = new Date(tmp_disabled_dates[0]);
-            to_date.setDate(to_date.getDate() - 1);
+
+            let to_date;
+            if (tmp_disabled_dates.length !== 0) {
+                to_date = new Date(tmp_disabled_dates[0]);
+                to_date.setDate(to_date.getDate() - 1);
+            } else {
+                const today = new Date();
+                const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+                to_date = new Date(maxDate);
+            }
             
             to_date_input.disabled = false;
-            to_date_input.min = date;
             to_date_input.max = to_date.toISOString().slice(0, 10);
+
+            to_date_input.value = '';
 
             return true;
         }
@@ -167,6 +180,10 @@
             const today = new Date();
             const minDate = today.toISOString().slice(0, 10);
             const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString().slice(0, 10);
+
+            const from_date_input = document.querySelector('#from-date');
+            from_date_input.min = minDate;
+            from_date_input.max = maxDate;
 
             modal.style.display = 'flex';
             const close = modal.querySelector('.close');

@@ -50,13 +50,16 @@
 
 <script>
     {% block extrajs %}
-        const delete_buttons = document.querySelectorAll('.cart-item-actions a');
-        delete_buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const product_id = button.id.split('-')[1];
-                removeProductFromCart(product_id);
+        document.addEventListener('DOMContentLoaded', () => {
+            const delete_buttons = document.querySelectorAll('.cart-item-actions a');
+
+            delete_buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const product_id = button.id.split('-')[1];
+                    removeProductFromCart(product_id);
+                })
             })
-        })
+        });
 
         async function removeProductFromCart(product_id) {
             const item = document.querySelector(`#product-${product_id}`);
@@ -76,6 +79,7 @@
                 error_msg.innerHTML = data.error;
             } else {
                 item.remove();
+                getCartCount();
                 showNotification('Producto eliminado del carrito', 'success');
             }
             if (document.querySelectorAll('.cart-item').length == 0) {
