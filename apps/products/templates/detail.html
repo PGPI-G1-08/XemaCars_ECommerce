@@ -60,17 +60,16 @@
         });
 
         async function updateButton() {
+            const buyButton = document.querySelector('#buy-btn');
+            const isAvailable = "{{ product.available }}".toLocaleLowerCase();
+            if (isAvailable === 'false' ) {
+                buyButton.innerHTML = 'Producto no disponible';
+                buyButton.classList.add('disabled-btn');
+                buyButton.removeEventListener('click', () => {
+                    spawnBuyModal();
+                });
+            }
             {% if user.is_authenticated %}
-                const buyButton = document.querySelector('#buy-btn');
-                const isAvailable = "{{ product.available }}".toLocaleLowerCase();
-                if (isAvailable === 'false' ) {
-                    buyButton.innerHTML = 'Producto no disponible';
-                    buyButton.classList.add('disabled-btn');
-                    buyButton.removeEventListener('click', () => {
-                        spawnBuyModal();
-                    });
-                }
-                
                 response = await fetch("/cart/has_product/{{ product.id }}")
                 data = await response.json()
                 if (data.has_product) {
