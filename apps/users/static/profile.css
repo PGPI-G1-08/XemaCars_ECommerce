@@ -13,11 +13,15 @@
 }
 
 .user-profile p {
-    margin: 2px 0;
+    margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     background-color: #ccc;
+}
+
+.user-profile h2 {
+    margin-bottom: 10px;
 }
 
 form label {
@@ -26,6 +30,7 @@ form label {
 }
 
 form select {
+    margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -34,6 +39,11 @@ form select {
 .select-field {
     display: flex;
     flex-direction: column;
+}
+
+.select-field a {
+    width: fit-content;
+    align-self: flex-end;
 }
 
 .button-container {
