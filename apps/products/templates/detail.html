@@ -74,7 +74,7 @@
                     buyButton.removeEventListener('click', () => {
                         spawnBuyModal();
                     });
-                } else if (isAvailable === 'true') {
+                } else {
                     buyButton.innerHTML = 'Comprar';
                     buyButton.classList.remove('disabled-btn');
                     buyButton.addEventListener('click', () => {
