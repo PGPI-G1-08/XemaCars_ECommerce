@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -40,8 +41,8 @@ def add_to_cart(request):
         product = Product.objects.get(pk=product_id)
         request.user.customer.cart.add(product, start_date, end_date)
 
-    except Exception as e:
-        return HttpResponse(json.dumps({"error": str(e)}), status=400)
+    except ValidationError as e:
+        return HttpResponse(json.dumps({"error": e.message}), status=400)
 
     return HttpResponse(json.dumps({}), status=200, content_type="application/json")
 
@@ -62,7 +63,7 @@ def remove_from_cart(request):
         new_price = request.user.customer.cart.total
 
     except Exception as e:
-        return HttpResponse(json.dumps({"error": str(e)}), status=400)
+        return HttpResponse(json.dumps({"error": e.message}), status=400)
 
     return HttpResponse(
         json.dumps({"new_price": new_price}),
@@ -79,13 +80,11 @@ def get_cart_count(request):
 
 
 def has_product(request, product_id):
-    print("here")
     if request.user == None or request.user.is_anonymous:
         return HttpResponse(
             json.dumps({"has_product": False}), content_type="application/json"
         )
 
-    print("here")
     response_data = {}
     response_data["has_product"] = request.user.customer.cart.products.filter(
         pk=product_id

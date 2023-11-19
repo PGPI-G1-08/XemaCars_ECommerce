@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from apps.orders.models import OrderProduct
+from datetime import datetime
 
 # Create your models here.
 
@@ -16,15 +17,15 @@ class Cart(models.Model):
             product_price = product.price
             start_date = CartProduct.objects.get(cart=self, product=product).start_date
             end_date = CartProduct.objects.get(cart=self, product=product).end_date
-            print((end_date - start_date).days)
             total += (end_date - start_date).days * product_price
-        print(total)
         return total
 
     def add(self, product, start_date, end_date):
-        cart_product = CartProduct.objects.create(
+        cart_product = CartProduct(
             cart=self, product=product, start_date=start_date, end_date=end_date
         )
+        cart_product.clean()
+        cart_product.save()
         return cart_product
 
 
@@ -38,6 +39,11 @@ class CartProduct(models.Model):
         unique_together = ("cart", "product")
 
     def clean(self):
+        if self.start_date < datetime.now().date():
+            raise ValidationError(
+                "La fecha de inicio ha de ser igual o posterior a hoy"
+            )
+
         if self.start_date >= self.end_date:
             raise ValidationError("La fecha de inicio debe ser anterior a la de fin")
 
