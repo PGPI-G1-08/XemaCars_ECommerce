@@ -17,7 +17,7 @@
                 {% for item in cart_products %}
                 <div id="product-{{item.product.id}}" class="cart-item">
                         <div class="cart-item-image">
-                            <img src="{{item.product.image_url}}" alt="{{item.product.name}}">
+                            <img class="car-img" src="{{item.product.image_url}}" alt="{{item.product.name}}">
                         </div>
                         <div class="cart-item-info">
                             <h3>{{item.product.name}}</h3>

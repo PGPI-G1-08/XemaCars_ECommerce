@@ -39,6 +39,9 @@ class CartProduct(models.Model):
         unique_together = ("cart", "product")
 
     def clean(self):
+        if not self.product.available:
+            raise ValidationError("Este producto no esta disponible en estos momentos")
+
         if self.start_date < datetime.now().date():
             raise ValidationError(
                 "La fecha de inicio ha de ser igual o posterior a hoy"
