@@ -61,16 +61,25 @@
 
         async function updateButton() {
             {% if user.is_authenticated %}
+                const buyButton = document.querySelector('#buy-btn');
+                const isAvailable = "{{ product.available }}".toLocaleLowerCase();
+                if (isAvailable === 'false' ) {
+                    buyButton.innerHTML = 'Producto no disponible';
+                    buyButton.classList.add('disabled-btn');
+                    buyButton.removeEventListener('click', () => {
+                        spawnBuyModal();
+                    });
+                }
+                
                 response = await fetch("/cart/has_product/{{ product.id }}")
                 data = await response.json()
-                const buyButton = document.querySelector('#buy-btn');
                 if (data.has_product) {
                     buyButton.innerHTML = 'Añadido al carrito';
                     buyButton.classList.add('disabled-btn');
                     buyButton.removeEventListener('click', () => {
                         spawnBuyModal();
                     });
-                } else {
+                } else if (isAvailable === 'true') {
                     buyButton.innerHTML = 'Comprar';
                     buyButton.classList.remove('disabled-btn');
                     buyButton.addEventListener('click', () => {
