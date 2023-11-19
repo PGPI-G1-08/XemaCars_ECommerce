@@ -27,7 +27,11 @@
                 </div>
                 <p>{{ product.description }}</p>
                 <h2 class="product-price">{{ product.price }} € / día</h2>
-                <a id="buy-btn" class="primary-button" >Comprar</a>
+                {% if product.available %}
+                    <a id="buy-btn" class="primary-button" >Comprar</a>
+                {% else %}
+                    <a class="primary-button disabled-btn" >Producto no disponible</a>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -61,14 +65,6 @@
 
         async function updateButton() {
             const buyButton = document.querySelector('#buy-btn');
-            const isAvailable = "{{ product.available }}".toLocaleLowerCase();
-            if (isAvailable === 'false' ) {
-                buyButton.innerHTML = 'Producto no disponible';
-                buyButton.classList.add('disabled-btn');
-                buyButton.removeEventListener('click', () => {
-                    spawnBuyModal();
-                });
-            }
             {% if user.is_authenticated %}
                 response = await fetch("/cart/has_product/{{ product.id }}")
                 data = await response.json()
