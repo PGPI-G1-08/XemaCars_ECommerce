@@ -5,11 +5,13 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
 <link rel="stylesheet" href="{% static "user_table.css" %}">
 
 {% endblock %}
 
 {% block content %}
+<img src="{% static 'hero.jpg' %}" alt="hero">
     <section class="form-card">
         <h2>Are you sure you want to delete this user?</h2>
         <div class="buttons-yes-no">

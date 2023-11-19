@@ -135,9 +135,9 @@ class RegisterView(APIView):
 
 class UserListView(TemplateView):
     def get(self, request):
-        Customers = Customer.objects.all()
+        customers = Customer.objects.all().exclude(user__is_superuser=True)
         if request.user.is_superuser:
-            return render(request, "users/list.html", {"customers": Customers})
+            return render(request, "users/list.html", {"customers": customers})
         else:
             return render(request, "forbidden.html")
 
@@ -145,7 +145,9 @@ class UserListView(TemplateView):
 class UserDeleteView(TemplateView):
     def get(self, request, pk):
         if request.user.is_superuser:
-            customer = get_object_or_404(Customer, pk=pk)
+            customer = get_object_or_404(Customer, pk=pk).exclude(
+                user__is_superuser=True
+            )
             return render(request, "users/delete.html", {"customer": customer})
         else:
             return render(request, "forbidden.html")
@@ -164,7 +166,9 @@ class UserEditView(TemplateView):
     def get(self, request, pk):
         if request.user.is_superuser:
             form = EditForm()
-            customer = Customer.objects.get(pk=pk)
+            customer = get_object_or_404(Customer, pk=pk).exclude(
+                user__is_superuser=True
+            )
             return render(
                 request, "users/edit.html", {"customer": customer, "form": form}
             )
@@ -173,7 +177,9 @@ class UserEditView(TemplateView):
 
     def post(self, request, pk):
         if request.user.is_superuser:
-            customer = get_object_or_404(Customer, pk=pk)
+            customer = get_object_or_404(Customer, pk=pk).exclude(
+                user__is_superuser=True
+            )
             form = EditForm(request.POST)
             if form.is_valid():
                 if form.cleaned_data.get("first_name"):

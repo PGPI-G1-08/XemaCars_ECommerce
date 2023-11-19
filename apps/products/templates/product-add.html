@@ -10,8 +10,6 @@
 
 {% block content %}
 <img src="{% static 'hero.jpg' %}" alt="hero">
-<section class="form-card">
-    <section class="card">
         {% if form.errors %}
         {% for field, errors in form.errors.items %}
         <section class="form-errors">
@@ -72,8 +70,6 @@
             <button type="submit">Añadir</button>
         </form>
 
-    </section>
-</section>
 
 
 {% endblock %}

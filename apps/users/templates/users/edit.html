@@ -10,9 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="form-card">
-        <section class="card">
-            <h3 class="card-title">Editar usuario {{ customer.user.username }}</h3>
+<img src="{% static 'hero.jpg' %}" alt="hero">
             {% if form.errors %}
             {% for field, errors in form.errors.items %}
             <section class="form-errors">
@@ -48,6 +46,4 @@
                 </div>
                 <button type="submit">Guardar</button>
             </form>
-        </section>
-    </section>
 {% endblock %}
