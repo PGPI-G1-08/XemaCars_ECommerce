@@ -4,7 +4,6 @@ from django.db import models
 
 
 class ProductForm(forms.Form):
-
     name = forms.CharField(
         required=True,
         widget=forms.TextInput(attrs={"placeholder": "Nombre del coche"}),
@@ -44,5 +43,5 @@ class ProductForm(forms.Form):
     available = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={"placeholder": "Disponible"}),
+        initial=True,
     )
-

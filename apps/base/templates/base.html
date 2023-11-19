@@ -21,13 +21,17 @@
         </div>
         <!-- show profile icon if user is logged in -->
         {% if user.is_authenticated %}
-        <div>
+        <div class="header-right">
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
                 <a href="/products/add" class="header-profile">Añadir Producto</a>
             {% endif %}
+           <div class="shopping-cart">
+                <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
+                <span id="cart-count"><p></p></span>
+            </div>
             <div class="dropdown">
-                <button class="drop-btn"><span class="material-icons header-profile">account_circle<span>{{user.username}}</span></span></button>
+                <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
                     <a href="/profile">Perfil</a>
                     <a href="/logout">Cerrar Sesión</a>
@@ -44,6 +48,10 @@
         {% block content %}
         {% endblock %}
     </section>
+
+    <section class="notifications">
+    </section>
+
     <footer>
         <div class="footer-info">
             <a id="github-link" href="https://github.com/PGPI-G1-08/XemaCars_ECommerce/" target="_blank">GitHub</a>| 
@@ -54,5 +62,38 @@
         </div>
         <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        /* only if authenticated */
+        {% if user.is_authenticated %}
+            // get cart count
+
+            document.addEventListener('DOMContentLoaded', () => {
+                getCartCount();
+            });
+
+            // get cart count on demand
+            async function getCartCount() {
+                response = await fetch("/cart/count")
+                data = await response.json();
+                if (data.count > 0)
+                    document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
+            }
+        {% endif %}
+
+        // notifications
+        function showNotification(message, type) {
+            const notifications = document.querySelector(".notifications");
+            const notification = document.createElement("article");
+            notification.classList.add("notification");
+            notification.classList.add(type);
+            notification.innerHTML = "<p>" + message + "</p>";
+            notifications.appendChild(notification);
+            setTimeout(function() {
+                notifications.removeChild(notification);
+            }, 5000);
+        }
+
+        {% block extrajs %}{% endblock %}
+    </script>
 </body>
 </html>
