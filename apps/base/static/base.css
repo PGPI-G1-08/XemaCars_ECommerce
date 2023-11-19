@@ -565,7 +565,6 @@ button[type='submit'] {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  z-index: 1;
 }
 
 .notification {
