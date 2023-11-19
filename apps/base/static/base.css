@@ -163,7 +163,7 @@ header {
     color: var(--orange);
 }
 
-.header-profile:hover:after {
+.header-profile:hover:after:not(.dropdown:hover) {
     transform: scaleX(1.1);
     transform-origin: bottom center;
 }
