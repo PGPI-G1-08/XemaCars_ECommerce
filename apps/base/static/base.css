@@ -381,6 +381,18 @@ footer a{
     font-size: var(--body-text);
 }
 
+.available-text {
+    font-family: var(--fuente3);
+    font-size: var(--body-text);
+    color: green;
+}
+
+.not-available-text {
+    font-family: var(--fuente3);
+    font-size: var(--body-text);
+    color: red;
+}
+
 .card-price {
     color: var(--black);
     font-family: var(--fuente3);
