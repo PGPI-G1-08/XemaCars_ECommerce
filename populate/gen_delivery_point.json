@@ -1,0 +1,112 @@
+[
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 1,
+        "fields": {
+            "delivery_type": "Recogida en Parking",
+            "name": "Parking A",
+            "address": "Calle A",
+            "city": "Ciudad A",
+            "postal_code": "12345"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 2,
+        "fields": {
+            "delivery_type": "Recogida en tienda",
+            "name": "Tienda B",
+            "address": "Calle B",
+            "city": "Ciudad B",
+            "postal_code": "23456"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 3,
+        "fields": {
+            "delivery_type": "Recogida en Parking",
+            "name": "Parking C",
+            "address": "Calle C",
+            "city": "Ciudad C",
+            "postal_code": "34567"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 4,
+        "fields": {
+            "delivery_type": "Recogida en tienda",
+            "name": "Tienda D",
+            "address": "Calle D",
+            "city": "Ciudad D",
+            "postal_code": "45678"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 5,
+        "fields": {
+            "delivery_type": "Recogida en Parking",
+            "name": "Parking E",
+            "address": "Calle E",
+            "city": "Ciudad E",
+            "postal_code": "56789"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 6,
+        "fields": {
+            "delivery_type": "Recogida en tienda",
+            "name": "Tienda F",
+            "address": "Calle F",
+            "city": "Ciudad F",
+            "postal_code": "67890"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 7,
+        "fields": {
+            "delivery_type": "Recogida en Parking",
+            "name": "Parking G",
+            "address": "Calle G",
+            "city": "Ciudad G",
+            "postal_code": "78901"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 8,
+        "fields": {
+            "delivery_type": "Recogida en tienda",
+            "name": "Tienda H",
+            "address": "Calle H",
+            "city": "Ciudad H",
+            "postal_code": "89012"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 9,
+        "fields": {
+            "delivery_type": "Recogida en Parking",
+            "name": "Parking I",
+            "address": "Calle I",
+            "city": "Ciudad I",
+            "postal_code": "90123"
+        }
+    },
+    {
+        "model": "products.DeliveryPoint",
+        "pk": 10,
+        "fields": {
+            "delivery_type": "Recogida en tienda",
+            "name": "Tienda J",
+            "address": "Calle J",
+            "city": "Ciudad J",
+            "postal_code": "01234"
+        }
+    }
+]
