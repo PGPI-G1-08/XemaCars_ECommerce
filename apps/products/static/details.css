@@ -11,13 +11,13 @@ h2 {
 
 .product-details {
   display: flex;
-  height: 380px;
+  max-height: 380px;
   gap: 20px;
   justify-content: space-around;
 }
 
 .detail-image {
-  width: 60%;
+  max-width: 60%;
   height: 100%;
   background-size: cover;
   background-position: center;
