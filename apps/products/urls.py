@@ -1,3 +1,6 @@
+from django.contrib import admin
+from django.urls import include, path
+from apps.products import views
 from django.urls import path
 from apps.products import views
 from .views import ProductDetailView
@@ -12,4 +15,6 @@ urlpatterns = [
         views.get_disabled_dates,
         name="product_disabled_dates",
     ),
+    path("add/", views.ProductAddView.as_view(), name="product-add"),
+    path("", views.ProductListView.as_view(), name="product-list"),
 ]

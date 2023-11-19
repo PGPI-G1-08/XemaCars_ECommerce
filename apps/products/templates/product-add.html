@@ -1,0 +1,79 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Añadir Producto{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
+{% endblock %}
+
+{% block content %}
+<img src="{% static 'hero.jpg' %}" alt="hero">
+<section class="form-card">
+    <section class="card">
+        {% if form.errors %}
+        {% for field, errors in form.errors.items %}
+        <section class="form-errors">
+            <p class="text-white">{{ errors|striptags }}</p>
+        </section>
+        {% endfor %}
+        {% endif %}
+        <form method=POST class="form">
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="id_name">
+                    Modelo
+                </label>
+                {{ form.name }}
+            </div>
+            <div class="form-field">
+                <label for="id_brand">
+                    Marca
+                </label>
+                {{ form.brand }}
+            </div>
+            <div class="form-field">
+                <label for="id_year">
+                    Año
+                </label>
+                {{ form.year }}
+            </div>
+            <div class="form-field">
+                <label for="id_combustion_type">
+                    Combustion
+                </label>
+                {{ form.combustion_type }}
+            </div>
+            <div class="form-field">
+                <label for="id_description">
+                    Descripción
+                </label>
+                {{ form.description }}
+            </div>
+            <div class="form-field">
+                <label for="id_price">
+                    Precio
+                </label>
+                {{ form.price }}
+            </div>
+            <div class="form-field">
+                <label for="id_image_url">
+                    Imagen
+                </label>
+                {{ form.image_url }}
+            </div>
+            <div class="form-field">
+                <label for="id_available">
+                    Stock
+                </label>
+                {{ form.available }}
+            </div>
+            <button type="submit">Añadir</button>
+        </form>
+
+    </section>
+</section>
+
+
+{% endblock %}

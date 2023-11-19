@@ -15,12 +15,16 @@
 </head>
 <body>
     <header class="header">
-        <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
+        <div class="header-left">
+            <h1><a id="homepage-link" href="{% url 'homepage' %}">XemaCars</a></h1>
+            <a class="header-auth" href="/products">Nuestros coches</a>
+        </div>
         <!-- show profile icon if user is logged in -->
         {% if user.is_authenticated %}
         <div class="header-right">
             {% if user.is_superuser %}
-            <a href="/users/list" class="header-auth">Usuarios</a>
+                <a href="/users/list" class="header-profile">Usuarios</a>
+                <a href="/products/add" class="header-profile">Añadir Producto</a>
             {% endif %}
            <div class="shopping-cart">
                 <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
