@@ -101,38 +101,39 @@ def has_product(request, product_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-class DeliveryPaymentView(TemplateView):
-    def get(self, request):
-        if request.user.is_authenticated:
-            form = EditDeliveryPointAndPaymentMethodForm()
+@login_required(login_url="/signin")
+def order_summary(request):
+    form = EditDeliveryPointAndPaymentMethodForm()
+
+    if request.method == "POST":
+        form = EditDeliveryPointAndPaymentMethodForm(request.POST)
+        if form.is_valid():
             user = request.user
+
             customer = Customer.objects.get(user=user)
-            return render(
-                request, "delivery-payment.html", {"customer": customer, "form": form}
-            )
-        else:
-            return render(request, "forbidden.html")
 
-    def post(self, request):
-        if request.user.is_authenticated:
-            form = EditDeliveryPointAndPaymentMethodForm(request.POST)
-            if form.is_valid():
-                user = request.user
-                customer = Customer.objects.get(user=user)
+            delivery_point = form.cleaned_data.get("preferred_delivery_point")
+            if delivery_point:
+                delivery_point = DeliveryPoint.objects.get(name=delivery_point)
+                customer.preferred_delivery_point = delivery_point
 
-                delivery_point = form.cleaned_data.get("preferred_delivery_point")
-                if delivery_point:
-                    delivery_point = DeliveryPoint.objects.get(name=delivery_point)
-                    customer.preferred_delivery_point = delivery_point
-
-                payment_method = form.cleaned_data.get("payment_method")
-                if payment_method:
-                    payment_method = PaymentMethod.objects.create(
-                        payment_type=payment_method
-                    )
+            payment_method = form.cleaned_data.get("payment_method")
+            if payment_method:
+                payment_method = PaymentMethod.objects.create(
+                    payment_type=payment_method
+                )
                 customer.payment_methods.set([payment_method])
-                customer.save()
+            customer.save()
 
-            return redirect("/cart/order-confirmation")
-        else:
-            return render(request, "forbidden.html")
+            return redirect("/")
+    if request.method == "GET":
+        user = request.user
+        customer = Customer.objects.get(user=user)
+        form = EditDeliveryPointAndPaymentMethodForm(
+            initial={
+                "preferred_delivery_point": customer.preferred_delivery_point,
+                "payment_method": customer.payment_methods.first(),
+            }
+        )
+    return render(request, "order-summary.html", {"form": form, "customer": customer})
+

@@ -112,3 +112,15 @@ form select {
   justify-content: space-around;
   margin: 20px;
 }
+
+.order-summary{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.order-summary > a{
+  text-decoration: none;
+}
