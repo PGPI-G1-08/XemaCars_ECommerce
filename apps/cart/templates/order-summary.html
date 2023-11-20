@@ -1,0 +1,51 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}ResumenCompra{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "carrito.css" %}">
+<link rel="stylesheet" href="{% static "order-summary.css" %}">
+{% endblock %}
+
+{% block content %}
+    <h2 id="title">Resumen de la compra</h2>  
+    <section class="summary-contents">
+        {% for item in cart_products %}
+            <div id="product-{{item.product.id}}" class="summary-item">
+                <div class="summary-item-info">
+                    <h3>{{item.product.name}}</h3>
+                    <attribute>
+                        <label>Desde: </label>
+                        <p>{{item.start_date}}</p>
+                    </attribute>
+                    <attribute>
+                        <label>Hasta: </label>
+                        <p>{{item.end_date}}</p>
+                    </attribute>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="delivery-payment">
+            <form method="post">
+                {% csrf_token %}
+                <div class="select-field">      
+                    <label for="id_payment_method">Método de Pago:</label>
+                    {{ form.payment_method }}
+                </div>
+                <div class="select-field">
+                    <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                    {{ form.preferred_delivery_point }}
+                </div>
+            </form> 
+        </div>
+        <div class="cart-total">
+            <h3>Total: </h3>
+            <h4 id="price">{{total}} €</h4>
+        </div>
+        <div class="button-buy">
+            <button class="primary-button" type="submit">Confirmar compra</button>
+        </div>
+    </section>  
+{% endblock %}

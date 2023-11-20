@@ -9,6 +9,15 @@ from django.shortcuts import render
 from apps.products.models import Product
 from .models import CartProduct
 
+from apps.users.models import Customer
+from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
+from apps.cart.forms import EditDeliveryPointAndPaymentMethodForm
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from apps.products.models import DeliveryPoint
+from apps.payments.models import PaymentMethod
+
 
 @login_required(login_url="/signin")
 def get_cart(request):
@@ -90,3 +99,41 @@ def has_product(request, product_id):
         pk=product_id
     ).exists()
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url="/signin")
+def order_summary(request):
+    form = EditDeliveryPointAndPaymentMethodForm()
+    if request.method == "POST":
+        form = EditDeliveryPointAndPaymentMethodForm(request.POST)
+        if form.is_valid():
+            user = request.user
+
+            customer = Customer.objects.get(user=user)
+
+            delivery_point = form.cleaned_data.get("preferred_delivery_point")
+            if delivery_point:
+                delivery_point = DeliveryPoint.objects.get(name=delivery_point)
+                customer.preferred_delivery_point = delivery_point
+
+            payment_method = form.cleaned_data.get("payment_method")
+            if payment_method:
+                payment_method = PaymentMethod.objects.create(
+                    payment_type=payment_method
+                )
+                customer.payment_methods.set([payment_method])
+            customer.save()
+
+            return redirect("/")
+    if request.method == "GET":
+        user = request.user
+        customer = Customer.objects.get(user=user)
+        cart_products = CartProduct.objects.filter(cart=customer.cart)
+        form = EditDeliveryPointAndPaymentMethodForm(
+            initial={
+                "preferred_delivery_point": customer.preferred_delivery_point,
+                "payment_method": customer.payment_methods.first(),
+            }
+        )
+    return render(request, "order-summary.html", {"form": form, "customer": customer, "cart_products": cart_products, "total": customer.cart.total})
+
