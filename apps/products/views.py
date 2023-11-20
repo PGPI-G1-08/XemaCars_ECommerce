@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
-from .forms import ProductForm
+from .forms import ProductForm, FilterForm
 from .models import Product
 
 
@@ -45,8 +45,39 @@ class ProductAddView(TemplateView):
 
 class ProductListView(TemplateView):
     def get(self, request):
+        form = FilterForm()
         products = Product.objects.all()
-        return render(request, "product-list.html", {"products": products})
+        return render(
+            request, "product-list.html", {"products": products, "form": form}
+        )
+
+    def post(self, request):
+        form = FilterForm(request.POST)
+        if form.is_valid():
+            available = form.cleaned_data["solo_disponibles"]
+            if available is True:
+                products = Product.objects.filter(available=available)
+            else:
+                products = Product.objects.all()
+            if form.cleaned_data["año_mínimo"]:
+                year = form.cleaned_data["año_mínimo"]
+                products = products.filter(year__gte=year)
+            if form.cleaned_data["marca"]:
+                brand = form.cleaned_data["marca"]
+                products = products.filter(brand__icontains=brand)
+            if form.cleaned_data["tipo_de_combustión"]:
+                combustion_type = form.cleaned_data["tipo_de_combustión"]
+                if combustion_type != "No_Filtrar":
+                    products = products.filter(combustion_type=combustion_type)
+            if form.cleaned_data["precio_máximo"]:
+                price = form.cleaned_data["precio_máximo"]
+                products = products.filter(price__lte=price)
+        else:
+            products = Product.objects.all()
+
+        return render(
+            request, "product-list.html", {"products": products, "form": form}
+        )
 
 
 class ProductDetailView(TemplateView):
