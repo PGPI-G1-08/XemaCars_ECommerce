@@ -1,0 +1,79 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 0 auto;
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.links {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 20px
+}
+
+.links a {
+    color: var(--orange);
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.field-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+form input {
+    padding: 10px;
+    font-family: var(--fuente2);
+    font-size: var(--body-text);
+    border: 1px solid var(--grey);
+    border-radius: var(--border-radius);
+}
+
+form label {
+    margin: 5px 0
+}
+form input[type='checkbox'] {
+    width: 10%;
+}
+
+form input[type='submit'], button[type='submit'] {
+    padding: 10px 20px;
+    font-family: var(--fuente1);
+    color: var(--white);
+    background-color: var(--orange);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type='submit']:hover {
+    background-color: var(--dark-orange);
+}
+
+form select {
+    padding: 10px;
+    font-family: var(--fuente2);
+    font-size: var(--body-text);
+    border: 1px solid var(--grey);
+    border-radius: var(--border-radius);
+    appearance: none;
+    background-color: #fff;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black"><path d="M7 7l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+#no-products {
+    text-align: center;
+}

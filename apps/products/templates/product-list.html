@@ -5,28 +5,55 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "product-list.css" %}">
 {% endblock %}
 
 {% block content %}
-<pre>
-    
+<pre> 
     <h1>Nuestros coches</h1>
-
 </pre>
-<section class="card-container">
-    {% for product in products %}
-        <a class="card" href="/products/details/{{ product.id }}">
-            <img src= "{{ product.image_url }}">
-            <h2 class="card-title">{{ product.name }}</h2>
-            <div id="price-available">
-                <p class="card-price">{{ product.price }} € / día</p>
-                {% if product.available %}
-                    <p class="available-text">Disponible</p>
-                {% else %}
-                    <p class="not-available-text">No Disponible</p>
-                {% endif %}
-            </div> 
-        </a>   
-    {% endfor %}  
-</section>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.año_mínimo.label_tag }}
+        {{ form.año_mínimo }}
+        {{ form.marca.label_tag }}
+        {{ form.marca }}
+        {{ form.tipo_de_combustión.label_tag }}
+        {{ form.tipo_de_combustión }}
+        {{ form.precio_máximo.label_tag }}
+        {{ form.precio_máximo }}
+        {{ form.non_field_errors }}
+        <div class="field-wrapper">
+            {{ form.solo_disponibles.label_tag }}
+            {{ form.solo_disponibles }}
+        </div>
+        <div class="links">
+            <input type="submit" value="Submit">
+            <a href="/products">Reset Filters</a>
+        </div>
+    </form>
+<br>
+<br>
+{% if products %}
+    <section class="card-container">
+        {% for product in products %}
+            <a class="card" href="/products/details/{{ product.id }}">
+                <img src= "{{ product.image_url }}">
+                <h2 class="card-title">{{ product.name }}</h2>
+                <div id="price-available">
+                    <p class="card-price">{{ product.price }} € / día</p>
+                    {% if product.available %}
+                        <p class="available-text">Disponible</p>
+                    {% else %}
+                        <p class="not-available-text">No Disponible</p>
+                    {% endif %}
+                </div> 
+            </a>   
+        {% endfor %}  
+    </section>
+{% else %}
+    <h1 id="no-products">No hay productos con los filtros aplicados</h1>
+{% endif %}
+<br>
+<br>
 {% endblock %}
