@@ -6,16 +6,16 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
 <link rel="stylesheet" href="{% static "carrito.css" %}">
+<link rel="stylesheet" href="{% static "order-summary.css" %}">
 {% endblock %}
 
 {% block content %}
     <h2 id="title">Resumen de la compra</h2>  
-    <section class="cart-contents">
+    <section class="summary-contents">
         {% for item in cart_products %}
-            <div id="product-{{item.product.id}}" class="cart-item">
-                <div class="cart-item-info">
+            <div id="product-{{item.product.id}}" class="summary-item">
+                <div class="summary-item-info">
                     <h3>{{item.product.name}}</h3>
-                    <description>{{item.product.description}}</description>
                     <attribute>
                         <label>Desde: </label>
                         <p>{{item.start_date}}</p>
@@ -44,7 +44,7 @@
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
         </div>
-        <div class="button-container">
+        <div class="button-buy">
             <button class="primary-button" type="submit">Confirmar compra</button>
         </div>
     </section>  

@@ -106,10 +106,6 @@ form select {
   margin: 20px;
 }
 
-.delivery-payment{
-  margin-bottom: 40px;
-}
-
 .order-summary{
   display: flex;
   flex-direction: row;
@@ -121,3 +117,5 @@ form select {
 .order-summary > a{
   text-decoration: none;
 }
+
+
