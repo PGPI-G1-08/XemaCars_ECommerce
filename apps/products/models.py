@@ -24,6 +24,14 @@ class Product(models.Model):
     # To prevent products from being deleted if they are in an order
     available = models.BooleanField(default=True)
 
+    @property
+    def average_rating(self):
+        opinions = self.opinion_set.all()
+        if len(opinions) > 0:
+            return opinions.aggregate(models.Avg("rating"))["rating__avg"]
+        else:
+            return 0
+
     def __str__(self):
         return self.name
 
