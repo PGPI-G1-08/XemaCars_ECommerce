@@ -104,7 +104,6 @@ def has_product(request, product_id):
 @login_required(login_url="/signin")
 def order_summary(request):
     form = EditDeliveryPointAndPaymentMethodForm()
-
     if request.method == "POST":
         form = EditDeliveryPointAndPaymentMethodForm(request.POST)
         if form.is_valid():
@@ -129,11 +128,12 @@ def order_summary(request):
     if request.method == "GET":
         user = request.user
         customer = Customer.objects.get(user=user)
+        cart_products = CartProduct.objects.filter(cart=customer.cart)
         form = EditDeliveryPointAndPaymentMethodForm(
             initial={
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.payment_methods.first(),
             }
         )
-    return render(request, "order-summary.html", {"form": form, "customer": customer})
+    return render(request, "order-summary.html", {"form": form, "customer": customer, "cart_products": cart_products, "total": customer.cart.total})
 

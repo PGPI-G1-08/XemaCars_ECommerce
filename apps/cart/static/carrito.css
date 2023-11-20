@@ -78,13 +78,6 @@
   font-weight: bold;
 }
 
-.deliveryPayment-container {
-  display: grid;
-  grid-template-columns: max-content 2fr;
-  grid-gap: 10px;
-  margin: 20px;
-}
-
 form label {
   font-weight: bold;
   font-size: 18px;
@@ -111,6 +104,10 @@ form select {
   display: flex;
   justify-content: space-around;
   margin: 20px;
+}
+
+.delivery-payment{
+  margin-bottom: 40px;
 }
 
 .order-summary{
