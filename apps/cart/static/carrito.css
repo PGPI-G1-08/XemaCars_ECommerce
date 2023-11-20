@@ -77,3 +77,45 @@
 .cart-total > h4 {
   font-weight: bold;
 }
+
+form label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+form select {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.select-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-field a {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.order-summary{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.order-summary > a{
+  text-decoration: none;
+}
+
+
