@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Delivery-Payment{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "carrito.css" %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="deliveryPayment-container">    
+        <form method="post">
+            {% csrf_token %}
+            <div class="select-field">      
+                <label for="id_payment_method">Método de Pago:</label>
+                {{ form.payment_method }}
+            </div>
+            <div class="select-field">
+                <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                {{ form.preferred_delivery_point }}
+            </div>
+            <div class="button-container">
+                <button class="primary-button" type="submit">Finalizar la compra</button>
+            </div>
+        </form>    
+</div>
+{% endblock %}
