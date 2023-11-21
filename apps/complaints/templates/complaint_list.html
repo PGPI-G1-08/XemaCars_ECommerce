@@ -10,13 +10,20 @@
 
 {% block content %}
     {% if complaints %}
+        <div class="hero-add">
+            <h1>Mis Reclamaciones</h1>
+            <a href="/complaints/add" class="primary-button">Añadir</a>
+        </div>
         {% for complaint in complaints %}
-            {{ complaint.id }}
-            {{ complaint.title }}
-            {{ complaint.description }}
-            {{ complaint.date }}
+            <div class="card">
+                <div class="title-date">
+                    <h3>{{ complaint.title }}</h3>
+                    <h3>{{ complaint.date|date:"d/m/Y H:i" }}</h3>
+                </div>
+                <p>{{ complaint.description }}</p>
+            </div>
         {% endfor %}
     {% else %}
-        <h1>No hay reclamaciones</h1>
+        <h1 style="margin: 40px 0">No hay reclamaciones</h1>
     {% endif %}
 {% endblock %}
