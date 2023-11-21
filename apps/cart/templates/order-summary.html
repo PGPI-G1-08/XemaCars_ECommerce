@@ -43,6 +43,7 @@
         <div class="cart-total">
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
+            <p id="error-msg"></p>
         </div>
         <div class="button-buy">
             <a id="buy-btn" class="primary-button">Confirmar compra</a>
@@ -51,7 +52,6 @@
     <div class="modal">
         <div class="modal-content form card-container">
             <h2>¿Quiere confirmar la compra?</h2>
-            <p id="error-msg"></p>
             <a id="cancel-btn" class="primary-button">Cancelar</a>
             <a id="confirm-btn" class="primary-button">Confirmar</a>
         </div>
@@ -64,9 +64,23 @@
     document.addEventListener('DOMContentLoaded', () => {
         const buyButton = document.querySelector('.button-buy');
         buyButton.addEventListener('click', () => {
-            spawnModal()
+            if (validateData()){
+                spawnModal();
+            }
+            else{
+                showNotification('Debe seleccionar un método de pago y un punto de recogida', 'success');
+            }
         });
     });
+
+    function validateData() {
+        const paymentMethod = document.querySelector('#id_payment_method').value;
+        const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        if (paymentMethod == '' || deliveryPoint == '') {
+            return false;
+        }
+        return true;
+    }
 
     async function addOrder(){
         const paymentMethod = document.querySelector('#id_payment_method').value;

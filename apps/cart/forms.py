@@ -9,10 +9,10 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
         for delivery_point in DeliveryPoint.objects.values()
     ]
     preferred_delivery_point = forms.ChoiceField(
-        required=False,
+        required=True,
         choices=[("", "Seleccione un punto de recogida")] + delivery_points,
     )
     payment_method = forms.ChoiceField(
-        required=False,
+        required=True,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
