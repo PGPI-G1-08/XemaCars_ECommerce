@@ -9,4 +9,5 @@ urlpatterns = [
     path("count", views.get_cart_count, name="get_cart_count"),
     path("has_product/<int:product_id>", views.has_product, name="has_product"),
     path("order-summary", order_summary, name="order_summary"),
+
 ]

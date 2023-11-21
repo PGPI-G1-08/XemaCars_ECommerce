@@ -18,28 +18,19 @@ def add_order(request):
     try:
         data = json.loads(request.body)
 
-        user = request.user
-        delivery_point_id = data["delivery_point_id"]
-        payment_method_id = data["payment_method_id"]
-        products = data["products"]
-        list_products = []
-        for p in products:
-            product_id = p["product_id"]
-            product = Product.objects.get(pk=product_id)
-            list_products.append(product)
-        
+        user = request.user.customer
+        delivery_point_id = data["delivery_point"]
+        payment_method_id = data["payment_method"]
 
-        customer = Customer.objects.get(user=user)
         delivery_point = DeliveryPoint.objects.get(pk=delivery_point_id)
         payment_method = PaymentMethod.objects.get(pk=payment_method_id)
-
 
         order = Order.objects.create(
             customer=customer,
             delivery_point=delivery_point,
             payment_method=payment_method,
-            products=list_products,
         )
+
     except ValidationError as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
 

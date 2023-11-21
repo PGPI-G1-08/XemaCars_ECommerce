@@ -45,13 +45,12 @@
             <h4 id="price">{{total}} €</h4>
         </div>
         <div class="button-buy">
-            <button id="buy-btn" class="primary-button" type="submit">Confirmar compra</button>
+            <a id="buy-btn" class="primary-button">Confirmar compra</a>
         </div>
     </section> 
     <div class="modal">
         <div class="modal-content form card-container">
             <h2>¿Quiere confirmar la compra?</h2>
-            <span class="close material-icons">close</span>
             <p id="error-msg"></p>
             <a id="cancel-btn" class="primary-button">Cancelar</a>
             <a id="confirm-btn" class="primary-button">Confirmar</a>
@@ -62,58 +61,66 @@
 
 <script>
     {% block extrajs %}
-        document.addEventListener('DOMContentLoaded', () => {
-            const buyButton = document.querySelector('#buy-btn');
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyButton = document.querySelector('.button-buy');
+        buyButton.addEventListener('click', () => {
+            spawnModal()
+        });
+    });
 
-            updateButton();
-
+    async function addOrder(){
+        const paymentMethod = document.querySelector('#id_payment_method').value;
+        const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        let cartProducts = JSON.parse('{{ cart_products_json|escapejs|safe }}');
+        let orderProducts = [];
+        for (let i = 0; i < cartProducts.length; i++) {
+            let product = cartProducts[i]; 
+            orderProducts.push(product);
+        }
+        const response = await fetch("/orders/add",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'payment_method': paymentMethod,
+                'delivery_point': deliveryPoint,
+                'products': orderProducts
+            }) 
         });
 
-        async function updateButton(){
-            const buyButton = document.querySelector('#buy-btn');
-            buyButton.addEventListener('click', () => {
-                spawnBuyModal();
-            });
-        }
-
-        async function addOrder(){
-            const customer_id = {{ customer.user.id }};
-            const products = {{ cart_products }};
-            const response = await fetch("orders/add",{
-                method : 'POST',
-                headers:{
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    'customer_id': customer_id,
-                    'payment_method': document.querySelector('#id_payment_method').value,
-                    'preferred_delivery_point': document.querySelector('#id_preferred_delivery_point').value,
-                    'products': products
-                })
-            })
-
-            const data = await response.json();
-            if (data.success){
-                window.location.href = '/';
-            }
-            else{
-                const error_msg = document.querySelector('#error-msg');
-                error_msg.innerHTML = data.error;
-            }
+        const data = await response.json();
+        if (data.error) {
+            const error_msg = document.querySelector('#error-msg');
+            error_msg.innerHTML = data.error;
+        } else {
+            showNotification('Su pedido se ha realizado correctamente', 'success');
+            closeModal();
         }
         
-        async function spawnBuyModal(){
-            const modal = document.querySelector('.modal');
-            modal.style.display = 'flex';
-            const close = document.querySelector('#cancel-btn');
-            close.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-            document.querySelector('#confirm-btn').addEventListener('click', () => {
-                addOrder();
-            });
-        }
+    }
+
+    function closeModal() {
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'none';
+    }
+
+    
+    async function spawnModal() {
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'flex';
+        const close = document.querySelector('#cancel-btn');
+        close.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        const confirm = document.querySelector('#confirm-btn');
+        confirm.addEventListener('click', () => {
+            addOrder();
+        });
+        
+    }
+
     {% endblock %}
 </script>
 
