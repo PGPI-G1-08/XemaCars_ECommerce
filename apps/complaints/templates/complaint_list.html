@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Reclamaciones{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "complain_list.css" %}">
+{% endblock %}
+
+{% block content %}
+    {% if complaints %}
+        {% for complaint in complaints %}
+            {{ complaint.id }}
+            {{ complaint.title }}
+            {{ complaint.description }}
+            {{ complaint.date }}
+        {% endfor %}
+    {% else %}
+        <h1>No hay reclamaciones</h1>
+    {% endif %}
+{% endblock %}
