@@ -1,6 +1,8 @@
 from django import forms
-from .models import Product
+
+from apps.opinions.models import Opinion
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class ProductForm(forms.Form):
@@ -81,6 +83,10 @@ class FilterForm(forms.Form):
 
 
 class OpinionForm(forms.Form):
+    customer = forms.CharField(
+        widget=forms.HiddenInput(),
+    )
+
     rating = forms.IntegerField(
         min_value=1,
         max_value=5,

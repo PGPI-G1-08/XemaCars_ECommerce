@@ -87,20 +87,19 @@ class ProductDetailView(TemplateView):
     def get(self, request, pk):
         opinions = Product.objects.get(pk=pk).opinion_set.all()
         product = get_object_or_404(Product, pk=pk)
-        form = OpinionForm()
+        form = OpinionForm(initial={"customer": request.user})
         return render(
             request,
             "detail.html",
             {"product": product, "opinions": opinions, "form": form},
         )
 
-    @login_required(login_url="/signin")
     def post(self, request, pk):
         form = OpinionForm(request.POST)
         if form.is_valid():
             opinion = Opinion(
                 product=Product.objects.get(pk=pk),
-                customer=request.customer,
+                customer=request.user.customer,
                 rating=form.cleaned_data["rating"],
                 title=form.cleaned_data["title"],
                 description=form.cleaned_data["description"],
@@ -108,7 +107,7 @@ class ProductDetailView(TemplateView):
             opinion.save()
         else:
             print(form.errors)
-        return redirect("/products/details" + str(pk))
+        return redirect("/products/details/" + str(pk))
 
 
 def get_disabled_dates(_, pk):
