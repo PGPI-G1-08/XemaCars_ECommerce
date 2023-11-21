@@ -40,4 +40,11 @@
     width: 100%;
     justify-content: center;
 }
-  
+
+.cancel-accept {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%
+}

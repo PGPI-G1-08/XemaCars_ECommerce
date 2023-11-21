@@ -52,8 +52,10 @@
     <div class="modal">
         <div class="modal-content form card-container">
             <h2>¿Quiere confirmar la compra?</h2>
-            <a id="cancel-btn" class="primary-button">Cancelar</a>
-            <a id="confirm-btn" class="primary-button">Confirmar</a>
+            <div class="cancel-accept">
+                <a id="cancel-btn" class="secondary-button">Cancelar</a>
+                <a id="confirm-btn" class="primary-button">Confirmar</a>
+            </div>
         </div>
     </div> 
 {% endblock %}
@@ -110,8 +112,8 @@
             const error_msg = document.querySelector('#error-msg');
             error_msg.innerHTML = data.error;
         } else {
-            showNotification('Su pedido se ha realizado correctamente', 'success');
             closeModal();
+            window.location.href = '/';
         }
         
     }
