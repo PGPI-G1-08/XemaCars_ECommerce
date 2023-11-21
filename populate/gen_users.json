@@ -17,6 +17,20 @@
         "model": "auth.user",
         "pk": 2,
         "fields": {
+            "username": "user1",
+            "first_name": "Nombre_1",
+            "last_name": "Apellido_1",
+            "email": "correo_1@example.com",
+            "password": "password1",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
             "username": "user2",
             "first_name": "Nombre_2",
             "last_name": "Apellido_2",
@@ -29,7 +43,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "username": "user3",
             "first_name": "Nombre_3",
@@ -43,7 +57,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 4,
+        "pk": 5,
         "fields": {
             "username": "user4",
             "first_name": "Nombre_4",
@@ -57,7 +71,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 5,
+        "pk": 6,
         "fields": {
             "username": "user5",
             "first_name": "Nombre_5",
@@ -71,7 +85,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 6,
+        "pk": 7,
         "fields": {
             "username": "user6",
             "first_name": "Nombre_6",
@@ -85,7 +99,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 7,
+        "pk": 8,
         "fields": {
             "username": "user7",
             "first_name": "Nombre_7",
@@ -99,7 +113,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 8,
+        "pk": 9,
         "fields": {
             "username": "user8",
             "first_name": "Nombre_8",
@@ -113,7 +127,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 9,
+        "pk": 10,
         "fields": {
             "username": "user9",
             "first_name": "Nombre_9",
@@ -127,7 +141,7 @@
     },
     {
         "model": "auth.user",
-        "pk": 10,
+        "pk": 11,
         "fields": {
             "username": "user10",
             "first_name": "Nombre_10",

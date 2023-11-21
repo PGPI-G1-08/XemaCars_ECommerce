@@ -78,3 +78,19 @@ class FilterForm(forms.Form):
         initial=False,
         required=False,
     )
+
+
+class OpinionForm(forms.Form):
+    rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        widget=forms.NumberInput(attrs={"placeholder": "Valoración (1-5)"}),
+    )
+
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Título"}),
+    )
+
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={"placeholder": "Describe tu experiencia"}),
+    )

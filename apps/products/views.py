@@ -1,11 +1,14 @@
 import json
 
 from apps.orders.models import OrderProduct
+from apps.opinions.models import Opinion
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm
+from .forms import ProductForm, FilterForm, OpinionForm
 from .models import Product
 
 
@@ -82,8 +85,30 @@ class ProductListView(TemplateView):
 
 class ProductDetailView(TemplateView):
     def get(self, request, pk):
+        opinions = Product.objects.get(pk=pk).opinion_set.all()
         product = get_object_or_404(Product, pk=pk)
-        return render(request, "detail.html", {"product": product})
+        form = OpinionForm()
+        return render(
+            request,
+            "detail.html",
+            {"product": product, "opinions": opinions, "form": form},
+        )
+
+    @login_required(login_url="/signin")
+    def post(self, request, pk):
+        form = OpinionForm(request.POST)
+        if form.is_valid():
+            opinion = Opinion(
+                product=Product.objects.get(pk=pk),
+                customer=request.customer,
+                rating=form.cleaned_data["rating"],
+                title=form.cleaned_data["title"],
+                description=form.cleaned_data["description"],
+            )
+            opinion.save()
+        else:
+            print(form.errors)
+        return redirect("/products/details" + str(pk))
 
 
 def get_disabled_dates(_, pk):
