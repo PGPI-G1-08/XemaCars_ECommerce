@@ -1,14 +1,10 @@
-from collections.abc import Mapping
-from typing import Any
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.forms.utils import ErrorList
 from apps.products.models import DeliveryPoint
 
-from apps.payments.models import PAYMENT_FORMS, PaymentMethod
-from apps.users.models import Customer
+from apps.payments.models import PAYMENT_FORMS
 
 
 class LoginForm(forms.Form):
