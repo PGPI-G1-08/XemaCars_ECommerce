@@ -3,7 +3,7 @@
         "model": "opinions.opinion",
         "pk": 1,
         "fields": {
-            "customer": 1,
+            "customer": 4,
             "product": 1,
             "title": "Increíble rendimiento",
             "description": "Este coche tiene un rendimiento excepcional. Su motor es potente y eficiente. ¡Me encanta!",
@@ -123,7 +123,7 @@
         "model": "opinions.opinion",
         "pk": 11,
         "fields": {
-            "customer": 1,
+            "customer": 2,
             "product": 4,
             "title": "Agradable sorpresa",
             "description": "Inicialmente tenía dudas, pero este coche ha demostrado ser una agradable sorpresa. Confiabilidad y rendimiento sólidos.",

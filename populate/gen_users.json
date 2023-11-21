@@ -9,7 +9,7 @@
             "email": "correo_1@example.com",
             "password": "adminadmin",
             "is_superuser": true,
-            "is_staff": false,
+            "is_staff": true,
             "is_active": true
         }
     },

@@ -3,7 +3,7 @@
         "model": "orders.order",
         "pk": 1,
         "fields": {
-            "customer": 1,
+            "customer": 2,
             "date": "2023-11-20",
             "payment_form": "Tarjeta de crédito",
             "delivery_point": 1
@@ -13,7 +13,7 @@
         "model": "orders.order",
         "pk": 2,
         "fields": {
-            "customer": 1,
+            "customer": 2,
             "date": "2023-11-21",
             "payment_form": "A contrareembolso",
             "delivery_point": 2
