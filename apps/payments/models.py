@@ -16,5 +16,8 @@ class PaymentMethod(models.Model):
     )
     payment_type = models.CharField(max_length=255, choices=PAYMENT_FORMS, blank=True)
 
+    class Meta:
+        unique_together = ("customer", "payment_type")
+
     def __str__(self):
         return self.payment_type

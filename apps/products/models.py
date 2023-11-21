@@ -35,7 +35,7 @@ class DeliveryPoint(models.Model):
     )
 
     delivery_type = models.CharField(max_length=255, choices=DELIVERY_TYPES)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)

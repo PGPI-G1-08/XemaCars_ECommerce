@@ -76,6 +76,7 @@
         for (let i = 0; i < cartProducts.length; i++) {
             let product = cartProducts[i]; 
             orderProducts.push(product);
+            console.log(product);
         }
         const response = await fetch("/orders/add",{
             method: 'POST',

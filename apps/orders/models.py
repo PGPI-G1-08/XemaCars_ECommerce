@@ -12,7 +12,9 @@ class Order(models.Model):
     customer = models.ForeignKey("users.Customer", on_delete=models.CASCADE)
     products = models.ManyToManyField("products.Product", through="OrderProduct")
     date = models.DateField(auto_now_add=True)
-    payment_form = models.CharField(max_length=255, choices=PAYMENT_FORMS)
+    payment_form = models.ForeignKey(
+        "payments.PaymentMethod", on_delete=models.SET_NULL, null=True
+    )
     delivery_point = models.ForeignKey(
         "products.DeliveryPoint", on_delete=models.SET_NULL, null=True
     )
