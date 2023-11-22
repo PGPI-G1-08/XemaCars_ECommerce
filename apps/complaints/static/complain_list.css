@@ -24,3 +24,7 @@ h3 {
 .content a{
     text-decoration: none;
 }
+
+.title {
+    width: 70%
+}

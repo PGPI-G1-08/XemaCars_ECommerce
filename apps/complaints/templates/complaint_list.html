@@ -17,7 +17,7 @@
         {% for complaint in complaints %}
             <div class="card">
                 <div class="title-date">
-                    <h3>{{ complaint.title }}</h3>
+                    <h3 class="title">{{ complaint.title }}</h3>
                     <h3>{{ complaint.date|date:"d/m/Y H:i" }}</h3>
                 </div>
                 <p>{{ complaint.description }}</p>
