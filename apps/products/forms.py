@@ -4,6 +4,8 @@ from apps.opinions.models import Opinion
 from django.db import models
 from django.core.exceptions import ValidationError
 
+from apps.orders.models import Order
+
 
 class ProductForm(forms.Form):
     name = forms.CharField(
@@ -87,6 +89,10 @@ class OpinionForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
+    product = forms.CharField(
+        widget=forms.HiddenInput(),
+    )
+
     rating = forms.IntegerField(
         min_value=1,
         max_value=5,
@@ -100,3 +106,15 @@ class OpinionForm(forms.Form):
     description = forms.CharField(
         widget=forms.Textarea(attrs={"placeholder": "Describe tu experiencia"}),
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        customer = cleaned_data.get("customer")
+        product = cleaned_data.get("product")
+        if Opinion.objects.filter(product=product, customer=customer).exists():
+            raise ValidationError("No puedes opinar 2 veces sobre el mismo producto")
+
+        if not Order.objects.filter(products=product, customer=customer).exists():
+            raise ValidationError(
+                "No puedes opinar sobre un producto que no has comprado"
+            )

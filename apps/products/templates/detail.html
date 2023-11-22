@@ -67,6 +67,7 @@
         <form class="form" method="post">
             {% csrf_token %}
             {{ form.customer }}
+            {{ form.product }}
             <div class="form-field">
                 <label for="id_rating"><span class="material-icons">star</span>Valoración: </label>
                 {{ form.rating}}
