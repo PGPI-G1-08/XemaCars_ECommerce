@@ -54,7 +54,7 @@ class CartProduct(models.Model):
             product=self.product,
             start_date__lte=self.end_date,
             end_date__gte=self.start_date,
-        )
+        ).exclude(cancelled=True)
 
         if product_orders_in_range.exists():
             raise ValidationError(

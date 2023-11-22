@@ -88,7 +88,7 @@ class ProductDetailView(TemplateView):
 
 def get_disabled_dates(_, pk):
     product = get_object_or_404(Product, pk=pk)
-    orders = OrderProduct.objects.filter(product=product)
+    orders = OrderProduct.objects.filter(product=product).exclude(cancelled=True)
 
     data = {}
     disabled_dates = []
