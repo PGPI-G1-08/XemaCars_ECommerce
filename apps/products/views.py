@@ -111,8 +111,6 @@ class ProductDetailView(TemplateView):
                 description=form.cleaned_data["description"],
             )
             opinion.save()
-        else:
-            print(form.errors)
 
         return render(
             request,
