@@ -8,7 +8,7 @@
         "year": 2023,
         "combustion_type": "Gasolina",
         "description": "The Rolls-Royce Phantom is a luxury sedan with exquisite craftsmanship and cutting-edge technology.",
-        "price": 450000.0,
+        "price": 4500.0,
         "image_url": "https://example.com/rollsroyce_phantom.jpg",
         "available": true
       }
@@ -22,7 +22,7 @@
         "year": 2023,
         "combustion_type": "Gasolina",
         "description": "The Mercedes-Benz S-Class is a symbol of luxury and innovation, offering unparalleled comfort and performance.",
-        "price": 120000.0,
+        "price": 1200.0,
         "image_url": "https://example.com/mercedes_sclass.jpg",
         "available": true
       }
@@ -36,7 +36,7 @@
         "year": 2017,
         "combustion_type": "Gasolina",
         "description": "The Bentley Continental GT is a grand tourer that combines elegance with powerful performance.",
-        "price": 250000.0,
+        "price": 2500.0,
         "image_url": "https://example.com/bentley_continental.jpg",
         "available": true
       }
@@ -50,7 +50,7 @@
         "year": 2023,
         "combustion_type": "Gasolina",
         "description": "The Lamborghini Aventador is a stunning supercar known for its aggressive design and high-speed performance.",
-        "price": 500000.0,
+        "price": 5000.0,
         "image_url": "https://example.com/lamborghini_aventador.jpg",
         "available": true
       }
@@ -64,7 +64,7 @@
         "year": 2023,
         "combustion_type": "Gasolina",
         "description": "The Porsche 911 Turbo S is a high-performance sports car that delivers a thrilling driving experience.",
-        "price": 180000.0,
+        "price": 1800.0,
         "image_url": "https://example.com/porsche_911_turbo_s.jpg",
         "available": true
       }
@@ -78,7 +78,7 @@
         "year": 2020,
         "combustion_type": "Gasolina",
         "description": "The Ferrari 488 Spider is a convertible supercar that combines style and performance.",
-        "price": 350000.0,
+        "price": 3000.0,
         "image_url": "https://example.com/ferrari_488_spider.jpg",
         "available": true
       }
@@ -92,7 +92,7 @@
         "year": 2021,
         "combustion_type": "Gasolina",
         "description": "The Aston Martin DB11 is a luxury grand tourer with a perfect blend of performance and elegance.",
-        "price": 220000.0,
+        "price": 2200.0,
         "image_url": "https://example.com/aston_martin_db11.jpg",
         "available": true
       }
@@ -106,7 +106,7 @@
         "year": 2020,
         "combustion_type": "Gasolina",
         "description": "The Maserati Quattroporte is a luxury sedan with Italian flair and a powerful engine.",
-        "price": 160000.0,
+        "price": 1600.0,
         "image_url": "https://example.com/maserati_quattroporte.jpg",
         "available": true
       }
@@ -120,7 +120,7 @@
         "year": 2021,
         "combustion_type": "Gasolina",
         "description": "The Jaguar F-Type is a sports car with a distinctive design and agile handling.",
-        "price": 120000.0,
+        "price": 1200.0,
         "image_url": "https://example.com/jaguar_f_type.jpg",
         "available": true
       }
@@ -134,7 +134,7 @@
         "year": 2023,
         "combustion_type": "Eléctrico",
         "description": "The Tesla Model S is an electric luxury sedan with cutting-edge technology and impressive range.",
-        "price": 80000.0,
+        "price": 800.0,
         "image_url": "https://example.com/tesla_model_s.jpg",
         "available": true
       }
@@ -148,7 +148,7 @@
           "year": 2023,
           "combustion_type": "Gasolina",
           "description": "The Audi R8 is a high-performance sports car known for its dynamic design and powerful engine.",
-          "price": 200000.0,
+          "price": 2000.0,
           "image_url": "https://example.com/audi_r8.jpg",
           "available": true
         }
@@ -162,7 +162,7 @@
           "year": 2015,
           "combustion_type": "Gasolina",
           "description": "The BMW 7 Series is a luxury sedan that offers advanced technology and a comfortable ride.",
-          "price": 130000.0,
+          "price": 1300.0,
           "image_url": "https://example.com/bmw_7_series.jpg",
           "available": true
         }
@@ -176,7 +176,7 @@
               "year": 2018,
               "combustion_type": "Gasolina",
               "description": "The Lexus LC 500 is a luxury coupe that combines performance with a striking design.",
-              "price": 100000.0,
+              "price": 1000.0,
               "image_url": "https://example.com/lexus_lc_500.jpg",
               "available": true
             }
@@ -190,7 +190,7 @@
               "year": 2023,
               "combustion_type": "Gasolina",
               "description": "The Infiniti Q60 is a stylish coupe that offers a balance of performance and luxury.",
-              "price": 85000.0,
+              "price": 500.0,
               "image_url": "https://example.com/infiniti_q60.jpg",
               "available": true
             }
@@ -204,7 +204,7 @@
               "year": 2011,
               "combustion_type": "Gasolina",
               "description": "The Cadillac CT6 is a premium sedan with a spacious and comfortable interior.",
-              "price": 110000.0,
+              "price": 1100.0,
               "image_url": "https://example.com/cadillac_ct6.jpg",
               "available": true
             }
@@ -218,7 +218,7 @@
               "year": 2023,
               "combustion_type": "Gasolina",
               "description": "The Acura NSX is a hybrid supercar that delivers impressive performance and efficiency.",
-              "price": 160000.0,
+              "price": 1600.0,
               "image_url": "https://example.com/acura_nsx.jpg",
               "available": true
             }
@@ -232,7 +232,7 @@
               "year": 2020,
               "combustion_type": "Gasolina",
               "description": "The Genesis G80 is a luxury sedan known for its refined interior and smooth ride.",
-              "price": 90000.0,
+              "price": 900.0,
               "image_url": "https://example.com/genesis_g80.jpg",
               "available": true
             }
@@ -246,7 +246,7 @@
               "year": 2022,
               "combustion_type": "Gasolina",
               "description": "The Porsche Panamera is a luxury sport sedan with a powerful engine and exceptional handling.",
-              "price": 130000.0,
+              "price": 1300.0,
               "image_url": "https://example.com/porsche_panamera.jpg",
               "available": true
             }
@@ -260,7 +260,7 @@
               "year": 2020,
               "combustion_type": "Gasolina",
               "description": "The Audi A8 is a flagship luxury sedan that offers advanced technology and a spacious interior.",
-              "price": 140000.0,
+              "price": 1400.0,
               "image_url": "https://example.com/audi_a8.jpg",
               "available": true
             }
@@ -274,7 +274,7 @@
               "year": 2021,
               "combustion_type": "Gasolina",
               "description": "The Jaguar XJ is a luxury sedan with a perfect blend of performance and elegance.",
-              "price": 120000.0,
+              "price": 1200.0,
               "image_url": "https://example.com/jaguar_xj.jpg",
               "available": true
             }
