@@ -38,9 +38,21 @@
 </section>
 <section class="products-opinion">
     <h3>Opiniones de nuestros clientes</h3>
-    <div class="opinions">
+    <div class="filter {% if opinions|length == 0 %}no-opinions{% endif %}">
+        {% if opinions|length == 0 %}
+        <p>No hay opiniones para este producto</p>
+        {% endif %}
+        <label for="filter">Filtrar por: 
+            <select id="filter">
+                <option value="">Selecione un filtro</option>
+                <option value="rating">Valoración</option>
+                <option value="date">Fecha</option>
+            </select>
+        </label>
+    </div>
+    <div id="opinion-container" class="opinions">
         {% for opinion in opinions %}
-        <div class="opinion card">
+        <div id="opinion-card" class="opinion card">
             <div class="opinion-header">
                 <h4><span class="material-icons">account_circle</span>{{ opinion.customer }}</h4>
                 <p class="card-rating"><span class="material-icons">star</span>{{ opinion.rating }}</p>
@@ -260,5 +272,49 @@
             }
         });
     }
+    
+    function sortedOpinions() {
+        const filterTerm = document.getElementById('filter').value.toLowerCase();
+        const listProducts = document.querySelectorAll('#opinion-card');
+        
+        const sortedList = Array.from(listProducts).sort(function (a, b) {
+            let valueA, valueB;
+            
+            if (filterTerm === 'rating') {
+                valueA = parseFloat(a.querySelector('.card-rating').textContent.toLowerCase().replace("star", ""));
+                valueB = parseFloat(b.querySelector('.card-rating').textContent.toLowerCase().replace("star", ""));
+            } else if (filterTerm === 'date') {
+                valueA = parseCustomDate(a.querySelector('.date').textContent.toLowerCase().trim());
+                valueB = parseCustomDate(b.querySelector('.date').textContent.toLowerCase().trim());
+            }
+            return valueB - valueA;
+        });
+        
+        const container = document.getElementById('opinion-container');
+        sortedList.forEach(function (item) {
+            container.appendChild(item);
+        });
+    };
+    
+    function parseCustomDate(dateString) {
+        const parts = dateString.split(' ');
+        
+        const day = parseInt(parts[0], 10);
+        const monthStr = parts[2];
+        const year = parseInt(parts[4], 10);
+        
+        const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const month = months.indexOf(monthStr.toLowerCase());
+        
+        const hoursMinutes = parts[7].split(':');
+        const hour = parseInt(hoursMinutes[0], 10);
+        const minutes = parseInt(hoursMinutes[1], 10);
+        
+        const dateParse = new Date(year, month, day, hour, minutes);
+        
+        return dateParse;
+    }
+    
+    document.getElementById('filter').addEventListener('change', sortedOpinions);
     {% endblock %}
 </script>
