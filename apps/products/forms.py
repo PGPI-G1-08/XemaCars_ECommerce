@@ -78,3 +78,7 @@ class FilterForm(forms.Form):
         initial=False,
         required=False,
     )
+
+
+class CarSearchForm(forms.Form):
+    search = forms.CharField(max_length=255)

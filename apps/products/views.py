@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm
+from .forms import ProductForm, FilterForm, CarSearchForm
 from .models import Product
 
 
@@ -102,3 +102,26 @@ def get_disabled_dates(_, pk):
 
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+class CarSearchView(TemplateView):
+    def get(self, request):
+        formCarSearch = CarSearchForm(request.GET)
+        filtered_products = []
+        if formCarSearch.is_valid() and formCarSearch.cleaned_data["search"] != "":
+            search_query = formCarSearch.cleaned_data["search"]
+            products = Product.objects.all()
+            for product in products:
+                product.complete_name = product.name + " " + product.brand
+                print(product.complete_name)
+
+            filtered_products = [
+                product
+                for product in products
+                if search_query.lower() in product.complete_name.lower()
+            ]
+        else:
+            return redirect("/products")
+
+        products = Product.objects.all()
+        return render(request, "product-list.html", {"products": filtered_products})
