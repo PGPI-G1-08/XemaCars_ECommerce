@@ -40,4 +40,16 @@
     width: 100%;
     justify-content: center;
 }
-  
+
+.confirm{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.cancel-accept {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%
+}
