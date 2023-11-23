@@ -23,8 +23,18 @@ class Order(models.Model):
     def total(self):
         total = 0
         for product in self.products.all():
-            total += product.price
+            product_price = product.price
+            start_date = OrderProduct.objects.get(
+                order=self, product=product
+            ).start_date
+            end_date = OrderProduct.objects.get(order=self, product=product).end_date
+            total += (end_date - start_date).days * product_price
         return total
+
+    @property
+    def completely_cancelled(self):
+        cancelled = self.orderproduct_set.filter(cancelled=False).count() == 0
+        return cancelled
 
 
 class OrderProduct(models.Model):
@@ -32,6 +42,7 @@ class OrderProduct(models.Model):
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    cancelled = models.BooleanField(default=False)
 
     @property
     def order_product_status(self):

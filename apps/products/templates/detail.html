@@ -100,7 +100,7 @@
             }
 
             const from_date = new Date(date);
-            minDate = new Date();
+            const minDate = new Date(from_date);
             minDate.setDate(from_date.getDate() + 1);
             to_date_input.min = minDate.toISOString().slice(0, 10);
 
@@ -123,6 +123,7 @@
 
             to_date_input.value = '';
 
+            error_msg.innerHTML = '';
             return true;
         }
 
