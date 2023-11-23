@@ -113,7 +113,6 @@ class CarSearchView(TemplateView):
             products = Product.objects.all()
             for product in products:
                 product.complete_name = product.name + " " + product.brand
-                print(product.complete_name)
 
             filtered_products = [
                 product
