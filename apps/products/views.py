@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm
+from .forms import ProductForm, FilterForm, EditProductForm
 from .models import Product
 
 
@@ -102,3 +102,60 @@ def get_disabled_dates(_, pk):
 
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+#ADMIN
+class ProductDeleteView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            return render(request, "delete.html", {"product": product})
+        else:
+            return render(request, "forbidden.html")
+        
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            product.delete()
+            return redirect("http://127.0.0.1:8000/products")
+        else:
+            return render(request, "forbidden.html")
+
+        
+class ProductUpdateView(TemplateView):
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = EditProductForm()
+        if request.user.is_superuser:
+            return render(request, "edit.html", { "product": product, "form": form})
+        else:
+            return render(request, "forbidden.html")
+            
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            form = EditProductForm(request.POST)
+            if request.method == "POST":
+                if form.is_valid():
+                    if form.cleaned_data.get("name"):
+                        product.name = form.cleaned_data.get("name")
+                    if form.cleaned_data.get("brand"):
+                        product.brand = form.cleaned_data.get("brand")
+                    if form.cleaned_data.get("year"):
+                        product.year = form.cleaned_data.get("year")
+                    if form.cleaned_data.get("combustion_type"):
+                        product.combustion_type = form.cleaned_data.get("combustion_type")
+                    if form.cleaned_data.get("description"):
+                        product.description = form.cleaned_data.get("description")
+                    if form.cleaned_data.get("price"):
+                        product.price = form.cleaned_data.get("price")
+                    if form.cleaned_data.get("image_url"):
+                        product.image_url = form.cleaned_data.get("image_url")
+                    if form.cleaned_data.get("available"):
+                        product.available = form.cleaned_data.get("available")
+                    product.save()
+                    return redirect("/products")
+                else:
+                    return render(request, "edit.html", {"product": product, "form": form})
+            else:
+                return render(request, "forbidden.html")   
+        

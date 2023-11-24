@@ -27,11 +27,18 @@
                 </div>
                 <p>{{ product.description }}</p>
                 <h2 class="product-price">{{ product.price }} € / día</h2>
-                {% if product.available %}
-                    <a id="buy-btn" class="primary-button" >Comprar</a>
+                {% if user.is_superuser %}
+                    <div id="price-available">
+                        <a href="/products/details/{{ product.id }}/edit"><span class="material-icons">edit</span></a>
+                        <a href="/products/details/{{ product.id }}/delete"><span class="material-icons">delete</span></a>
+                    </div>
                 {% else %}
-                    <a class="primary-button disabled-btn" >Producto no disponible</a>
-                {% endif %}
+                    {% if product.available %}
+                        <a id="buy-btn" class="primary-button" >Comprar</a>
+                    {% else %}
+                        <a class="primary-button disabled-btn" >Producto no disponible</a>
+                    {% endif %}
+                {% endif %} 
             </div>
         </div>
     </section>

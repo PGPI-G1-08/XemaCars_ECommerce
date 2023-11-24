@@ -78,3 +78,46 @@ class FilterForm(forms.Form):
         initial=False,
         required=False,
     )
+
+class EditProductForm(forms.Form):
+    name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Nombre del coche"}),
+    )
+    brand = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Marca"}),
+    )
+    year = forms.IntegerField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Año"}),
+    )
+
+    class combustion_type(models.TextChoices):
+        GASOLINE = "Gasolina"
+        DIESEL = "Diesel"
+        HYBRID = "Híbrido"
+        ELECTRIC = "Eléctrico"
+
+    combustion_type = forms.ChoiceField(
+        choices=combustion_type.choices,
+        widget=forms.Select(attrs={"placeholder": "Tipo de combustible"}),
+    )
+
+    description = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Descripción"}),
+    )
+    price = forms.FloatField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Precio"}),
+    )
+    image_url = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "URL de la imagen"}),
+    )
+    available = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={"placeholder": "Disponible"}),
+    )
+
