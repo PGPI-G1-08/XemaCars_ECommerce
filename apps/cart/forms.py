@@ -3,6 +3,7 @@ from apps.products.models import DeliveryPoint
 from apps.payments.models import PAYMENT_FORMS, PaymentMethod
 from django import forms
 
+
 class EditDeliveryPointAndPaymentMethodForm(forms.Form):
     delivery_points = [
         (delivery_point.get("name"), delivery_point.get("name"))

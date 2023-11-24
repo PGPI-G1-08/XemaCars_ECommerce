@@ -65,27 +65,21 @@
 
         async function updateButton() {
             const buyButton = document.querySelector('#buy-btn');
-            {% if user.is_authenticated %}
-                response = await fetch("/cart/has_product/{{ product.id }}")
-                data = await response.json()
-                if (data.has_product) {
-                    buyButton.innerHTML = 'Añadido al carrito';
-                    buyButton.classList.add('disabled-btn');
-                    buyButton.removeEventListener('click', () => {
-                        spawnBuyModal();
-                    });
-                } else {
-                    buyButton.innerHTML = 'Comprar';
-                    buyButton.classList.remove('disabled-btn');
-                    buyButton.addEventListener('click', () => {
-                        spawnBuyModal();
-                    });
-                }
-            {% else %}
-                buyButton.addEventListener('click', () => {
-                    window.location.href = '/signin';
+            response = await fetch("/cart/has_product/{{ product.id }}")
+            data = await response.json()
+            if (data.has_product) {
+                buyButton.innerHTML = 'Añadido al carrito';
+                buyButton.classList.add('disabled-btn');
+                buyButton.removeEventListener('click', () => {
+                    spawnBuyModal();
                 });
-            {% endif %}
+            } else {
+                buyButton.innerHTML = 'Comprar';
+                buyButton.classList.remove('disabled-btn');
+                buyButton.addEventListener('click', () => {
+                    spawnBuyModal();
+                });
+            }
 
         }
         

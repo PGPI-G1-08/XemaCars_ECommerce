@@ -2,39 +2,37 @@ from datetime import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from apps.cart.forms import EditDeliveryPointAndPaymentMethodForm
+from apps.cart.anon_cart import AnonCart
 from apps.products.models import Product
+from apps.users.models import Customer
+
 from .models import CartProduct
 
-from django.core import serializers
 
-from apps.users.models import Customer
-from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
-from apps.cart.forms import EditDeliveryPointAndPaymentMethodForm
-from django.contrib.auth.models import User
-from django.shortcuts import redirect
-from apps.products.models import DeliveryPoint
-from apps.payments.models import PaymentMethod
-
-
-@login_required(login_url="/signin")
 def get_cart(request):
-    customer = request.user.customer
-    # Get CartProducts
-    cart_products = CartProduct.objects.filter(cart=customer.cart)
+    if request.user == None or request.user.is_anonymous:
+        cart = AnonCart(request)
+        cart_products = cart.get_products()
+        total = cart.total()
+    else:
+        customer = request.user.customer
+        # Get CartProducts
+        cart_products = CartProduct.objects.filter(cart=customer.cart)
+        total = customer.cart.total
 
     return render(
         request,
         "cart.html",
-        {"cart_products": cart_products, "total": customer.cart.total},
+        {"cart_products": cart_products, "total": total},
     )
 
 
-@login_required(login_url="/signin")
 def add_to_cart(request):
     if request.method != "POST":
         return
@@ -50,7 +48,13 @@ def add_to_cart(request):
         end_date = datetime.strptime(to_date, "%Y-%m-%d").date()
 
         product = Product.objects.get(pk=product_id)
-        request.user.customer.cart.add(product, start_date, end_date)
+
+        if request.user == None or request.user.is_anonymous:
+            cart = AnonCart(request)
+            cart.add(product, start_date, end_date)
+
+        else:
+            request.user.customer.cart.add(product, start_date, end_date)
 
     except ValidationError as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
@@ -58,7 +62,6 @@ def add_to_cart(request):
     return HttpResponse(json.dumps({}), status=200, content_type="application/json")
 
 
-@login_required(login_url="/signin")
 def remove_from_cart(request):
     if request.method != "POST":
         return
@@ -69,7 +72,12 @@ def remove_from_cart(request):
         product_id = data["product_id"]
 
         product = Product.objects.get(pk=product_id)
-        request.user.customer.cart.products.remove(product)
+
+        if request.user == None or request.user.is_anonymous:
+            cart = AnonCart(request)
+            cart.remove(product)
+        else:
+            request.user.customer.cart.products.remove(product)
 
         new_price = request.user.customer.cart.total
 
@@ -83,18 +91,22 @@ def remove_from_cart(request):
     )
 
 
-@login_required(login_url="/signin")
 def get_cart_count(request):
     response_data = {}
-    response_data["count"] = request.user.customer.cart.products.count()
+    if request.user == None or request.user.is_anonymous:
+        cart = AnonCart(request)
+        response_data["count"] = cart.count()
+    else:
+        response_data["count"] = request.user.customer.cart.products.count()
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 def has_product(request, product_id):
     if request.user == None or request.user.is_anonymous:
-        return HttpResponse(
-            json.dumps({"has_product": False}), content_type="application/json"
-        )
+        cart = AnonCart(request)
+        response_data = {}
+        response_data["has_product"] = cart.has_product(product_id)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     response_data = {}
     response_data["has_product"] = request.user.customer.cart.products.filter(
@@ -103,20 +115,28 @@ def has_product(request, product_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-@login_required(login_url="/signin")
 def order_summary(request):
     form = EditDeliveryPointAndPaymentMethodForm()
     if request.method == "GET":
         user = request.user
         customer = Customer.objects.get(user=user)
         cart_products = CartProduct.objects.filter(cart=customer.cart)
-        cart_products_json = serializers.serialize('json', cart_products)
+        cart_products_json = serializers.serialize("json", cart_products)
         form = EditDeliveryPointAndPaymentMethodForm(
             initial={
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.payment_methods.first(),
             }
-        )            
+        )
 
-    return render(request, "order-summary.html", {"form": form, "customer": customer, "cart_products": cart_products, "total": customer.cart.total, "cart_products_json": cart_products_json})
-
+    return render(
+        request,
+        "order-summary.html",
+        {
+            "form": form,
+            "customer": customer,
+            "cart_products": cart_products,
+            "total": customer.cart.total,
+            "cart_products_json": cart_products_json,
+        },
+    )
