@@ -79,6 +79,8 @@
             data = await response.json();
             if (data.count > 0)
                 document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
+            else
+                document.getElementById("cart-count").innerHTML = "";
         }
 
         // notifications

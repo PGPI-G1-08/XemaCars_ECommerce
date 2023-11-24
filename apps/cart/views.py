@@ -75,11 +75,11 @@ def remove_from_cart(request):
 
         if request.user == None or request.user.is_anonymous:
             cart = AnonCart(request)
-            cart.remove(product)
+            cart.remove(product.id)
+            new_price = cart.total()
         else:
             request.user.customer.cart.products.remove(product)
-
-        new_price = request.user.customer.cart.total
+            new_price = request.user.customer.cart.total
 
     except Exception as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
