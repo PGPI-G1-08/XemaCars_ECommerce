@@ -24,7 +24,7 @@
                     <label for="id_name">
                         Modelo
                     </label>
-                    <input type="text" name="modelo" id="id_name" value="{{ product.name }}">
+                    <input type="text" name="name" id="id_name" value="{{ product.name }}">
                 </div>
                 <div class="form-field">
                     <label for="id_brand">
@@ -66,7 +66,7 @@
                     <label for="id_available">
                         Stock
                     </label>
-                    <input type="text" name="available" id="id_available" value="{{ product.available }}">
+                    <input type="checkbox" name="available" id="id_available" value="{{ product.available }}">
                 </div>
                 <button type="submit">Guardar</button>
             </form>

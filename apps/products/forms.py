@@ -81,15 +81,15 @@ class FilterForm(forms.Form):
 
 class EditProductForm(forms.Form):
     name = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Nombre del coche"}),
     )
     brand = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Marca"}),
     )
     year = forms.IntegerField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Año"}),
     )
 
@@ -109,7 +109,7 @@ class EditProductForm(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "Descripción"}),
     )
     price = forms.FloatField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={"placeholder": "Precio"}),
     )
     image_url = forms.CharField(

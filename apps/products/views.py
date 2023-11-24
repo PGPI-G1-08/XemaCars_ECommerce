@@ -133,6 +133,9 @@ class ProductUpdateView(TemplateView):
     def post(self, request, pk):
         if request.user.is_superuser:
             product = get_object_or_404(Product, pk=pk)
+            post = request.POST.copy()
+            post["price"] = post["price"].replace(",",".")
+            request.POST = post
             form = EditProductForm(request.POST)
             if request.method == "POST":
                 if form.is_valid():
