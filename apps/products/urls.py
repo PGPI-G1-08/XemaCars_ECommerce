@@ -3,7 +3,7 @@ from django.urls import include, path
 from apps.products import views
 from django.urls import path
 from apps.products import views
-from .views import ProductDetailView, CarSearchView
+from .views import ProductDetailView
 
 
 urlpatterns = [
@@ -16,6 +16,5 @@ urlpatterns = [
         name="product_disabled_dates",
     ),
     path("add/", views.ProductAddView.as_view(), name="product-add"),
-    path("car_search/", CarSearchView.as_view(), name="car_search"),
     path("", views.ProductListView.as_view(), name="product-list"),
 ]

@@ -21,10 +21,6 @@
             <a class="header-auth" href="/products">Nuestros coches</a>
         </div>
         <!-- show profile icon if user is logged in -->
-        <form id="form-header" method="GET" action="{% url 'car_search' %}">
-            <input type="text" placeholder="¿Qué coche deseas?" name="search">
-            <button type="submit">Buscar <span class="material-icons">search</span></button>
-        </form>
         {% if user.is_authenticated %}
         <div class="header-right">
             {% if user.is_superuser %}
