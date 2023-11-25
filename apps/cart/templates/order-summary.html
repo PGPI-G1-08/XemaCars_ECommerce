@@ -13,8 +13,11 @@
     <h2 id="title">Resumen de la compra</h2>  
     <section class="summary-contents">
         {% for item in cart_products %}
-            <div id="product-{{item.product.id}}" class="summary-item">
-                <div class="summary-item-info">
+            <div id="product-{{item.product.id}}" class="cart-item">
+                <div class="cart-item-image">
+                    <img class="car-img" src="{{item.product.image_url}}" alt="Imagen del producto">
+                </div>
+                <div class="cart-item-info">
                     <h3>{{item.product.name}}</h3>
                     <attribute>
                         <label>Desde: </label>
@@ -30,6 +33,13 @@
         <div class="delivery-payment">
             <form method="post">
                 {% csrf_token %}
+                {% if user.is_authenticated %}
+                {% else %}
+                <div class="select-field">
+                    <label for="id_email">Email:</label>
+                    {{ form.email }}
+                </div>
+                {% endif %}
                 <div class="select-field">      
                     <label for="id_payment_method">Método de Pago:</label>
                     {{ form.payment_method }}
@@ -43,8 +53,8 @@
         <div class="cart-total">
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
-            <p id="error-msg"></p>
         </div>
+        <p id="error-msg"></p>
         <div class="button-buy">
             <a id="buy-btn" class="primary-button">Confirmar compra</a>
         </div>
@@ -71,9 +81,6 @@
             if (validateData()){
                 spawnModal();
             }
-            else{
-                showNotification('Debe seleccionar un método de pago y un punto de recogida', 'success');
-            }
         });
     });
 
@@ -81,21 +88,22 @@
         const paymentMethod = document.querySelector('#id_payment_method').value;
         const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
         if (paymentMethod == '' || deliveryPoint == '') {
+            showNotification('Debe seleccionar un método de pago y un punto de recogida', 'success');
             return false;
         }
+        {% if not user.is_authenticated %}
+            const email = document.querySelector('#id_email').value;
+            if (email == '') {
+                showNotification('Debe introducir un email', 'success');
+                return false;
+            }
+        {% endif %}
         return true;
     }
 
     async function addOrder(){
         const paymentMethod = document.querySelector('#id_payment_method').value;
         const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
-        let cartProducts = JSON.parse('{{ cart_products_json|escapejs|safe }}');
-        let orderProducts = [];
-        for (let i = 0; i < cartProducts.length; i++) {
-            let product = cartProducts[i]; 
-            orderProducts.push(product);
-            console.log(product);
-        }
         const response = await fetch("/orders/add",{
             method: 'POST',
             headers: {
@@ -105,7 +113,9 @@
             body: JSON.stringify({
                 'payment_method': paymentMethod,
                 'delivery_point': deliveryPoint,
-                'products': orderProducts
+                {% if not user.is_authenticated %}
+                    'email': document.querySelector('#id_email').value,
+                {% endif %}
             }) 
         });
 
@@ -115,7 +125,7 @@
             error_msg.innerHTML = data.error;
         } else {
             closeModal();
-            window.location.href = '/';
+            window.location.href = '/products';
         }
         
     }

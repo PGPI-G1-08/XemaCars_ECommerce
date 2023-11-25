@@ -118,25 +118,38 @@ def has_product(request, product_id):
 def order_summary(request):
     form = EditDeliveryPointAndPaymentMethodForm()
     if request.method == "GET":
-        user = request.user
-        customer = Customer.objects.get(user=user)
-        cart_products = CartProduct.objects.filter(cart=customer.cart)
-        cart_products_json = serializers.serialize("json", cart_products)
-        form = EditDeliveryPointAndPaymentMethodForm(
-            initial={
-                "preferred_delivery_point": customer.preferred_delivery_point,
-                "payment_method": customer.payment_methods.first(),
-            }
-        )
+        if request.user == None or request.user.is_anonymous:
+            cart = AnonCart(request)
+            cart_products = cart.get_products()
+            cart_products_json = None
+            total = cart.total()
+
+            form = EditDeliveryPointAndPaymentMethodForm()
+
+        else:
+            user = request.user
+            customer = Customer.objects.get(user=user)
+            cart_products = CartProduct.objects.filter(cart=customer.cart)
+            total = customer.cart.total
+
+            if customer.payment_methods.count() == 0:
+                pm = customer.payment_methods.create(payment_type="A contrareembolso")
+                pm.save()
+            payment_method = customer.payment_methods.first()
+
+            form = EditDeliveryPointAndPaymentMethodForm(
+                initial={
+                    "preferred_delivery_point": customer.preferred_delivery_point,
+                    "payment_method": payment_method,
+                }
+            )
 
     return render(
         request,
         "order-summary.html",
         {
             "form": form,
-            "customer": customer,
             "cart_products": cart_products,
-            "total": customer.cart.total,
-            "cart_products_json": cart_products_json,
+            "total": total,
         },
     )

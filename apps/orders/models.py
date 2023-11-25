@@ -9,7 +9,10 @@ from apps.payments.models import PAYMENT_FORMS
 
 
 class Order(models.Model):
-    customer = models.ForeignKey("users.Customer", on_delete=models.CASCADE)
+    customer = models.ForeignKey(
+        "users.Customer", on_delete=models.CASCADE, null=True, blank=True
+    )
+    email = models.EmailField(null=True, blank=True)
     products = models.ManyToManyField("products.Product", through="OrderProduct")
     date = models.DateField(auto_now_add=True)
     payment_form = models.ForeignKey(
@@ -35,6 +38,14 @@ class Order(models.Model):
     def completely_cancelled(self):
         cancelled = self.orderproduct_set.filter(cancelled=False).count() == 0
         return cancelled
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(customer__isnull=False) | models.Q(email__isnull=False),
+                name="customer_or_email",
+            )
+        ]
 
 
 class OrderProduct(models.Model):

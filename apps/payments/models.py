@@ -13,6 +13,7 @@ class PaymentMethod(models.Model):
         on_delete=models.CASCADE,
         related_name="payment_methods",
         null=True,
+        blank=True,
     )
     payment_type = models.CharField(max_length=255, choices=PAYMENT_FORMS, blank=True)
 
