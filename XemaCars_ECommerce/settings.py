@@ -97,7 +97,7 @@ WSGI_APPLICATION = "XemaCars_ECommerce.wsgi.application"
 if "RENDER" in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
-            default="postgresql://postgres:postgres@localhost:5432/mysite",
+            default=os.environ.get("DATABASE_URL"),
             conn_max_age=600,
         )
     }
