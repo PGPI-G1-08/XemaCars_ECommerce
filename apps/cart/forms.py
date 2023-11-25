@@ -6,8 +6,9 @@ from django import forms
 
 class EditDeliveryPointAndPaymentMethodForm(forms.Form):
     preferred_delivery_point = forms.ChoiceField(required=False)
+
     payment_method = forms.ChoiceField(
-        required=False,
+        required=True,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
 

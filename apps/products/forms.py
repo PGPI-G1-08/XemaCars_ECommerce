@@ -118,3 +118,7 @@ class OpinionForm(forms.Form):
             raise ValidationError(
                 "No puedes opinar sobre un producto que no has comprado"
             )
+
+
+class CarSearchForm(forms.Form):
+    search = forms.CharField(max_length=255)

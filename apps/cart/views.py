@@ -9,6 +9,8 @@ from django.shortcuts import render
 from apps.products.models import Product
 from .models import CartProduct
 
+from django.core import serializers
+
 from apps.users.models import Customer
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
@@ -137,6 +139,7 @@ def order_summary(request):
         user = request.user
         customer = Customer.objects.get(user=user)
         cart_products = CartProduct.objects.filter(cart=customer.cart)
+        cart_products_json = serializers.serialize("json", cart_products)
         form = EditDeliveryPointAndPaymentMethodForm(
             data={"delivery_points": delivery_point},
             initial={
@@ -144,6 +147,7 @@ def order_summary(request):
                 "payment_method": customer.payment_methods.first(),
             },
         )
+
     return render(
         request,
         "order-summary.html",
@@ -152,5 +156,6 @@ def order_summary(request):
             "customer": customer,
             "cart_products": cart_products,
             "total": customer.cart.total,
+            "cart_products_json": cart_products_json,
         },
     )
