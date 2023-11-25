@@ -26,6 +26,15 @@
             <div class="combustion">
                 <h4 class="product-combustion">{{ product.combustion_type }}</h4>
             </div>
+            
+            <p class="card-rating">
+                <span class="material-icons">star</span>
+                {% if product.average_rating %}
+                {{ product.average_rating|floatformat:1 }}
+                {% else %}
+                -
+                {% endif %}
+            </p>
             <p>{{ product.description }}</p>
             <h2 class="product-price">{{ product.price }} € / día</h2>
             {% if product.available %}
