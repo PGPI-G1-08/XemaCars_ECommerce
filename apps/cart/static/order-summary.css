@@ -31,10 +31,20 @@
   width: 100%;
   justify-content: center;
 }
+
 .cancel-accept {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+input {
+  margin: 10px 0;
+  padding: 10px;
+  font-family: var(--fuente2);
+  font-size: var(--body-text);
+  border: 1px solid var(--grey);
+  border-radius: var(--border-radius);
 }
