@@ -103,9 +103,17 @@ def has_product(request, product_id):
 
 @login_required(login_url="/signin")
 def order_summary(request):
-    form = EditDeliveryPointAndPaymentMethodForm()
+    delivery_point = [("", "Seleccione un punto de recogida")] + [
+        (delivery_point.get("name"), delivery_point.get("name"))
+        for delivery_point in DeliveryPoint.objects.values()
+    ]
+    form = EditDeliveryPointAndPaymentMethodForm(
+        data={"delivery_points": delivery_point}
+    )
     if request.method == "POST":
-        form = EditDeliveryPointAndPaymentMethodForm(request.POST)
+        form = EditDeliveryPointAndPaymentMethodForm(
+            request.POST, data={"delivery_points": delivery_point}
+        )
         if form.is_valid():
             user = request.user
 
@@ -130,10 +138,19 @@ def order_summary(request):
         customer = Customer.objects.get(user=user)
         cart_products = CartProduct.objects.filter(cart=customer.cart)
         form = EditDeliveryPointAndPaymentMethodForm(
+            data={"delivery_points": delivery_point},
             initial={
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.payment_methods.first(),
-            }
+            },
         )
-    return render(request, "order-summary.html", {"form": form, "customer": customer, "cart_products": cart_products, "total": customer.cart.total})
-
+    return render(
+        request,
+        "order-summary.html",
+        {
+            "form": form,
+            "customer": customer,
+            "cart_products": cart_products,
+            "total": customer.cart.total,
+        },
+    )
