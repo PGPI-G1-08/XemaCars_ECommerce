@@ -24,10 +24,15 @@ from apps.users.forms import (
 
 @login_required(login_url="/signin")
 def profile(request):
-    form = EditDeliveryPointAndPaymentMethodForm()
+    delivery_point = [("", "Seleccione un punto de recogida")] + [
+        (delivery_point.get("name"), delivery_point.get("name"))
+        for delivery_point in DeliveryPoint.objects.values()
+    ]
 
     if request.method == "POST":
-        form = EditDeliveryPointAndPaymentMethodForm(request.POST)
+        data = request.POST.copy()
+        data["delivery_points"] = delivery_point
+        form = EditDeliveryPointAndPaymentMethodForm(data)
         if form.is_valid():
             user = request.user
 
@@ -40,21 +45,23 @@ def profile(request):
 
             payment_method = form.cleaned_data.get("payment_method")
             if payment_method:
-                payment_method = PaymentMethod.objects.create(
+                payment_method = PaymentMethod.objects.get_or_create(
                     payment_type=payment_method
-                )
+                )[0]
                 customer.payment_methods.set([payment_method])
             customer.save()
 
             return redirect("/profile")
+
     if request.method == "GET":
         user = request.user
         customer = Customer.objects.get(user=user)
         form = EditDeliveryPointAndPaymentMethodForm(
+            data={"delivery_points": delivery_point},
             initial={
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.payment_methods.first(),
-            }
+            },
         )
     return render(request, "users/profile.html", {"form": form})
 

@@ -1,11 +1,14 @@
 import json
 
 from apps.orders.models import OrderProduct
+from apps.opinions.models import Opinion
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm, CarSearchForm
+from .forms import ProductForm, FilterForm, CarSearchForm, OpinionForm
 from .models import Product
 
 
@@ -82,8 +85,38 @@ class ProductListView(TemplateView):
 
 class ProductDetailView(TemplateView):
     def get(self, request, pk):
+        opinions = Product.objects.get(pk=pk).opinion_set.all()
         product = get_object_or_404(Product, pk=pk)
-        return render(request, "detail.html", {"product": product})
+        form = OpinionForm(initial={"customer": request.user.id, "product": product.id})
+        return render(
+            request,
+            "detail.html",
+            {"product": product, "opinions": opinions, "form": form},
+        )
+
+    def post(self, request, pk):
+        if request.user.is_anonymous:
+            return redirect("/signin")
+
+        form = OpinionForm(request.POST)
+        opinions = Product.objects.get(pk=pk).opinion_set.all()
+        product = get_object_or_404(Product, pk=pk)
+
+        if form.is_valid():
+            opinion = Opinion(
+                product=Product.objects.get(pk=pk),
+                customer=request.user.customer,
+                rating=form.cleaned_data["rating"],
+                title=form.cleaned_data["title"],
+                description=form.cleaned_data["description"],
+            )
+            opinion.save()
+
+        return render(
+            request,
+            "detail.html",
+            {"product": product, "opinions": opinions, "form": form},
+        )
 
 
 def get_disabled_dates(_, pk):

@@ -48,8 +48,16 @@
             <a class="card" href="/products/details/{{ product.id }}">
                 <img src= "{{ product.image_url }}">
                 <h2 class="card-title">{{ product.name }}</h2>
+                <p class="card-rating">
+                    <span class="material-icons">star</span>
+                    {% if product.average_rating %}
+                    {{ product.average_rating|floatformat:1 }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </p>
                 <div id="price-available">
-                    <p class="card-price">{{ product.price }} € / día</p>
+                    <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
                     {% if product.available %}
                         <p class="available-text">Disponible</p>
                     {% else %}

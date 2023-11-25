@@ -1,6 +1,10 @@
 from django import forms
-from .models import Product
+
+from apps.opinions.models import Opinion
 from django.db import models
+from django.core.exceptions import ValidationError
+
+from apps.orders.models import Order
 
 
 class ProductForm(forms.Form):
@@ -78,6 +82,42 @@ class FilterForm(forms.Form):
         initial=False,
         required=False,
     )
+
+
+class OpinionForm(forms.Form):
+    customer = forms.CharField(
+        widget=forms.HiddenInput(),
+    )
+
+    product = forms.CharField(
+        widget=forms.HiddenInput(),
+    )
+
+    rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        widget=forms.NumberInput(attrs={"placeholder": "Valoración (1-5)"}),
+    )
+
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Título"}),
+    )
+
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={"placeholder": "Describe tu experiencia"}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        customer = cleaned_data.get("customer")
+        product = cleaned_data.get("product")
+        if Opinion.objects.filter(product=product, customer=customer).exists():
+            raise ValidationError("No puedes opinar 2 veces sobre el mismo producto")
+
+        if not Order.objects.filter(products=product, customer=customer).exists():
+            raise ValidationError(
+                "No puedes opinar sobre un producto que no has comprado"
+            )
 
 
 class CarSearchForm(forms.Form):

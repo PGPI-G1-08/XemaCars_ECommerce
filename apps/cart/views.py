@@ -14,6 +14,8 @@ from apps.users.models import Customer
 
 from .models import CartProduct
 
+from apps.products.models import DeliveryPoint
+
 
 def get_cart(request):
     if request.user == None or request.user.is_anonymous:
@@ -116,17 +118,22 @@ def has_product(request, product_id):
 
 
 def order_summary(request):
-    form = EditDeliveryPointAndPaymentMethodForm()
+    delivery_point = [("", "Seleccione un punto de recogida")] + [
+        (delivery_point.get("name"), delivery_point.get("name"))
+        for delivery_point in DeliveryPoint.objects.values()
+    ]
     if request.method == "GET":
         if request.user == None or request.user.is_anonymous:
             cart = AnonCart(request)
             cart_products = cart.get_products()
-            cart_products_json = None
             total = cart.total()
 
-            form = EditDeliveryPointAndPaymentMethodForm()
+            form = EditDeliveryPointAndPaymentMethodForm(
+                data={"delivery_points": delivery_point}
+            )
 
         else:
+            print("here")
             user = request.user
             customer = Customer.objects.get(user=user)
             cart_products = CartProduct.objects.filter(cart=customer.cart)
@@ -138,10 +145,11 @@ def order_summary(request):
             payment_method = customer.payment_methods.first()
 
             form = EditDeliveryPointAndPaymentMethodForm(
+                data={"delivery_points": delivery_point},
                 initial={
                     "preferred_delivery_point": customer.preferred_delivery_point,
                     "payment_method": payment_method,
-                }
+                },
             )
 
     return render(
