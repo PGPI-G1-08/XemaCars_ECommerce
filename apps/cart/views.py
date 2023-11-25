@@ -15,6 +15,7 @@ from apps.users.models import Customer
 from .models import CartProduct
 
 from apps.products.models import DeliveryPoint
+from apps.payments.models import PaymentMethod
 
 
 def get_cart(request):
@@ -133,16 +134,16 @@ def order_summary(request):
             )
 
         else:
-            print("here")
             user = request.user
             customer = Customer.objects.get(user=user)
             cart_products = CartProduct.objects.filter(cart=customer.cart)
             total = customer.cart.total
 
-            if customer.payment_methods.count() == 0:
-                pm = customer.payment_methods.create(payment_type="A contrareembolso")
-                pm.save()
-            payment_method = customer.payment_methods.first()
+            if customer.preferred_payment_method == None:
+                customer.preferred_payment_method = PaymentMethod.objects.get_or_create(
+                    payment_type="A contrareembolso"
+                )[0]
+            payment_method = customer.preferred_payment_method
 
             form = EditDeliveryPointAndPaymentMethodForm(
                 data={"delivery_points": delivery_point},

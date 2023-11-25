@@ -48,7 +48,7 @@ def profile(request):
                 payment_method = PaymentMethod.objects.get_or_create(
                     payment_type=payment_method
                 )[0]
-                customer.payment_methods.set([payment_method])
+                customer.preferred_payment_method = payment_method
             customer.save()
 
             return redirect("/profile")
@@ -60,7 +60,7 @@ def profile(request):
             data={"delivery_points": delivery_point},
             initial={
                 "preferred_delivery_point": customer.preferred_delivery_point,
-                "payment_method": customer.payment_methods.first(),
+                "payment_method": customer.preferred_payment_method,
             },
         )
     return render(request, "users/profile.html", {"form": form})
