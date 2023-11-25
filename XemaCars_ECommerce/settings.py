@@ -40,11 +40,6 @@ if RENDER_EXTERNAL_HOSTNAME:
 env = environ.Env()
 environ.Env.read_env()
 
-DB_NAME = env("DB_NAME")
-DB_USER = env("DB_USER")
-DB_PASSWORD = env("DB_PASSWORD")
-DB_HOST = env("DB_HOST")
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -107,6 +102,10 @@ if "RENDER" in os.environ:
         )
     }
 else:
+    DB_NAME = env("DB_NAME")
+    DB_USER = env("DB_USER")
+    DB_PASSWORD = env("DB_PASSWORD")
+    DB_HOST = env("DB_HOST")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
