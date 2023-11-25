@@ -11,9 +11,9 @@ from apps.payments.models import PAYMENT_FORMS
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
+    email = forms.EmailField(
         required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Usuario"}),
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"}),
     )
     password = forms.CharField(
         required=True,
