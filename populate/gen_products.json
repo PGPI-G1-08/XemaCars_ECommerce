@@ -1,282 +1,282 @@
 [
-    {
-      "model": "products.Product",
-      "pk": 1,
-      "fields": {
-        "name": "Rolls-Royce Phantom",
-        "brand": "Rolls-Royce",
-        "year": 2023,
-        "combustion_type": "Gasolina",
-        "description": "The Rolls-Royce Phantom is a luxury sedan with exquisite craftsmanship and cutting-edge technology.",
-        "price": 4500.0,
-        "image_url": "https://example.com/rollsroyce_phantom.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 2,
-      "fields": {
-        "name": "Mercedes-Benz S-Class",
-        "brand": "Mercedes-Benz",
-        "year": 2023,
-        "combustion_type": "Gasolina",
-        "description": "The Mercedes-Benz S-Class is a symbol of luxury and innovation, offering unparalleled comfort and performance.",
-        "price": 1200.0,
-        "image_url": "https://example.com/mercedes_sclass.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 3,
-      "fields": {
-        "name": "Bentley Continental GT",
-        "brand": "Bentley",
-        "year": 2017,
-        "combustion_type": "Gasolina",
-        "description": "The Bentley Continental GT is a grand tourer that combines elegance with powerful performance.",
-        "price": 2500.0,
-        "image_url": "https://example.com/bentley_continental.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 4,
-      "fields": {
-        "name": "Lamborghini Aventador",
-        "brand": "Lamborghini",
-        "year": 2023,
-        "combustion_type": "Gasolina",
-        "description": "The Lamborghini Aventador is a stunning supercar known for its aggressive design and high-speed performance.",
-        "price": 5000.0,
-        "image_url": "https://example.com/lamborghini_aventador.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 5,
-      "fields": {
-        "name": "Porsche 911 Turbo S",
-        "brand": "Porsche",
-        "year": 2023,
-        "combustion_type": "Gasolina",
-        "description": "The Porsche 911 Turbo S is a high-performance sports car that delivers a thrilling driving experience.",
-        "price": 1800.0,
-        "image_url": "https://example.com/porsche_911_turbo_s.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 6,
-      "fields": {
-        "name": "Ferrari 488 Spider",
-        "brand": "Ferrari",
-        "year": 2020,
-        "combustion_type": "Gasolina",
-        "description": "The Ferrari 488 Spider is a convertible supercar that combines style and performance.",
-        "price": 3000.0,
-        "image_url": "https://example.com/ferrari_488_spider.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 7,
-      "fields": {
-        "name": "Aston Martin DB11",
-        "brand": "Aston Martin",
-        "year": 2021,
-        "combustion_type": "Gasolina",
-        "description": "The Aston Martin DB11 is a luxury grand tourer with a perfect blend of performance and elegance.",
-        "price": 2200.0,
-        "image_url": "https://example.com/aston_martin_db11.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 8,
-      "fields": {
-        "name": "Maserati Quattroporte",
-        "brand": "Maserati",
-        "year": 2020,
-        "combustion_type": "Gasolina",
-        "description": "The Maserati Quattroporte is a luxury sedan with Italian flair and a powerful engine.",
-        "price": 1600.0,
-        "image_url": "https://example.com/maserati_quattroporte.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 9,
-      "fields": {
-        "name": "Jaguar F-Type",
-        "brand": "Jaguar",
-        "year": 2021,
-        "combustion_type": "Gasolina",
-        "description": "The Jaguar F-Type is a sports car with a distinctive design and agile handling.",
-        "price": 1200.0,
-        "image_url": "https://example.com/jaguar_f_type.jpg",
-        "available": true
-      }
-    },
-    {
-      "model": "products.Product",
-      "pk": 10,
-      "fields": {
-        "name": "Tesla Model S",
-        "brand": "Tesla",
-        "year": 2023,
-        "combustion_type": "Eléctrico",
-        "description": "The Tesla Model S is an electric luxury sedan with cutting-edge technology and impressive range.",
-        "price": 800.0,
-        "image_url": "https://example.com/tesla_model_s.jpg",
-        "available": true
-      }
-    },
-    {
-        "model": "products.Product",
-        "pk": 11,
-        "fields": {
-          "name": "Audi R8",
-          "brand": "Audi",
-          "year": 2023,
-          "combustion_type": "Gasolina",
-          "description": "The Audi R8 is a high-performance sports car known for its dynamic design and powerful engine.",
-          "price": 2000.0,
-          "image_url": "https://example.com/audi_r8.jpg",
-          "available": true
-        }
-      },
-      {
-        "model": "products.Product",
-        "pk": 12,
-        "fields": {
-          "name": "BMW 7 Series",
-          "brand": "BMW",
-          "year": 2015,
-          "combustion_type": "Gasolina",
-          "description": "The BMW 7 Series is a luxury sedan that offers advanced technology and a comfortable ride.",
-          "price": 1300.0,
-          "image_url": "https://example.com/bmw_7_series.jpg",
-          "available": true
-        }
-        },
-        {
-            "model": "products.Product",
-            "pk": 13,
-            "fields": {
-              "name": "Lexus LC 500",
-              "brand": "Lexus",
-              "year": 2018,
-              "combustion_type": "Gasolina",
-              "description": "The Lexus LC 500 is a luxury coupe that combines performance with a striking design.",
-              "price": 1000.0,
-              "image_url": "https://example.com/lexus_lc_500.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 14,
-            "fields": {
-              "name": "Infiniti Q60",
-              "brand": "Infiniti",
-              "year": 2023,
-              "combustion_type": "Gasolina",
-              "description": "The Infiniti Q60 is a stylish coupe that offers a balance of performance and luxury.",
-              "price": 500.0,
-              "image_url": "https://example.com/infiniti_q60.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 15,
-            "fields": {
-              "name": "Cadillac CT6",
-              "brand": "Cadillac",
-              "year": 2011,
-              "combustion_type": "Gasolina",
-              "description": "The Cadillac CT6 is a premium sedan with a spacious and comfortable interior.",
-              "price": 1100.0,
-              "image_url": "https://example.com/cadillac_ct6.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 16,
-            "fields": {
-              "name": "Acura NSX",
-              "brand": "Acura",
-              "year": 2023,
-              "combustion_type": "Gasolina",
-              "description": "The Acura NSX is a hybrid supercar that delivers impressive performance and efficiency.",
-              "price": 1600.0,
-              "image_url": "https://example.com/acura_nsx.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 17,
-            "fields": {
-              "name": "Genesis G80",
-              "brand": "Genesis",
-              "year": 2020,
-              "combustion_type": "Gasolina",
-              "description": "The Genesis G80 is a luxury sedan known for its refined interior and smooth ride.",
-              "price": 900.0,
-              "image_url": "https://example.com/genesis_g80.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 18,
-            "fields": {
-              "name": "Porsche Panamera",
-              "brand": "Porsche",
-              "year": 2022,
-              "combustion_type": "Gasolina",
-              "description": "The Porsche Panamera is a luxury sport sedan with a powerful engine and exceptional handling.",
-              "price": 1300.0,
-              "image_url": "https://example.com/porsche_panamera.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 19,
-            "fields": {
-              "name": "Audi A8",
-              "brand": "Audi",
-              "year": 2020,
-              "combustion_type": "Gasolina",
-              "description": "The Audi A8 is a flagship luxury sedan that offers advanced technology and a spacious interior.",
-              "price": 1400.0,
-              "image_url": "https://example.com/audi_a8.jpg",
-              "available": true
-            }
-          },
-          {
-            "model": "products.Product",
-            "pk": 20,
-            "fields": {
-              "name": "Jaguar XJ",
-              "brand": "Jaguar",
-              "year": 2021,
-              "combustion_type": "Gasolina",
-              "description": "The Jaguar XJ is a luxury sedan with a perfect blend of performance and elegance.",
-              "price": 1200.0,
-              "image_url": "https://example.com/jaguar_xj.jpg",
-              "available": true
-            }
-          }
-  ]
+  {
+    "model": "products.Product",
+    "pk": 1,
+    "fields": {
+      "name": "Rolls-Royce Phantom",
+      "brand": "Rolls-Royce",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Rolls-Royce Phantom is a luxury sedan with exquisite craftsmanship and cutting-edge technology.",
+      "price": 4500.0,
+      "image_url": "https://hips.hearstapps.com/hmg-prod/images/p90462877-highres-rolls-royce-phantom-1652363819.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 2,
+    "fields": {
+      "name": "Mercedes-Benz S-Class",
+      "brand": "Mercedes-Benz",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Mercedes-Benz S-Class is a symbol of luxury and innovation, offering unparalleled comfort and performance.",
+      "price": 1200.0,
+      "image_url": "https://www.mercedes-benz.es/content/spain/es/passengercars/models/saloon/wv223-23-1/overview/_jcr_content/root/responsivegrid/tabs/tabitem/hotspot_module/hotspot_simple_image.component.damq6.3344198992964.jpg/mercedes-benz-s-class-wv223-exterior-hotspot-3302x1858-09-2022.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 3,
+    "fields": {
+      "name": "Bentley Continental GT",
+      "brand": "Bentley",
+      "year": 2017,
+      "combustion_type": "Gasolina",
+      "description": "The Bentley Continental GT is a grand tourer that combines elegance with powerful performance.",
+      "price": 2500.0,
+      "image_url": "https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/wp-content/uploads/2016/11/2017-Bentley-Continental-GT-V8-S-convertible-104.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 4,
+    "fields": {
+      "name": "Lamborghini Aventador",
+      "brand": "Lamborghini",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Lamborghini Aventador is a stunning supercar known for its aggressive design and high-speed performance.",
+      "price": 5000.0,
+      "image_url": "https://www.autobild.es/sites/autobild.es/public/styles/480/public/dc/fotos/Lamborghini_Aventador_Coupe_08.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 5,
+    "fields": {
+      "name": "Porsche 911 Turbo S",
+      "brand": "Porsche",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Porsche 911 Turbo S is a high-performance sports car that delivers a thrilling driving experience.",
+      "price": 1800.0,
+      "image_url": "https://files.porsche.com/filestore/image/multimedia/none/911-tus-modelimage-sideshot/model/930894f1-6214-11ea-80c8-005056bbdc38/porsche-model.png",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 6,
+    "fields": {
+      "name": "Ferrari 488 Spider",
+      "brand": "Ferrari",
+      "year": 2020,
+      "combustion_type": "Gasolina",
+      "description": "The Ferrari 488 Spider is a convertible supercar that combines style and performance.",
+      "price": 3500.0,
+      "image_url": "https://ag-spots-2020.o.auroraobjects.eu/2020/06/27/other/2880-1800-crop-ferrari-488-pista-spider-c539427062020210558_1.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 7,
+    "fields": {
+      "name": "Aston Martin DB11",
+      "brand": "Aston Martin",
+      "year": 2021,
+      "combustion_type": "Gasolina",
+      "description": "The Aston Martin DB11 is a luxury grand tourer with a perfect blend of performance and elegance.",
+      "price": 2200.0,
+      "image_url": "https://di-uploads-pod21.dealerinspire.com/astonmartinminneapolis/uploads/2021/03/2021-aston-martin-db11-zaffre-blue-768x370.png",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 8,
+    "fields": {
+      "name": "Maserati Quattroporte",
+      "brand": "Maserati",
+      "year": 2020,
+      "combustion_type": "Gasolina",
+      "description": "The Maserati Quattroporte is a luxury sedan with Italian flair and a powerful engine.",
+      "price": 1600.0,
+      "image_url": "https://www.motortrend.com/uploads/2023/04/2023-Maserati-Quattroporte-exterior-5.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 9,
+    "fields": {
+      "name": "Jaguar F-Type",
+      "brand": "Jaguar",
+      "year": 2021,
+      "combustion_type": "Gasolina",
+      "description": "The Jaguar F-Type is a sports car with a distinctive design and agile handling.",
+      "price": 1200.0,
+      "image_url": "https://cdn.motor1.com/images/mgl/3M2w6/s1/2021-jaguar-f-type.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 10,
+    "fields": {
+      "name": "Tesla Model S",
+      "brand": "Tesla",
+      "year": 2023,
+      "combustion_type": "Eléctrico",
+      "description": "The Tesla Model S is an electric luxury sedan with cutting-edge technology and impressive range.",
+      "price": 800.0,
+      "image_url": "https://cdn.carbuzz.com/gallery-images/1600/870000/400/870418.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 11,
+    "fields": {
+      "name": "Audi R8",
+      "brand": "Audi",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Audi R8 is a high-performance sports car known for its dynamic design and powerful engine.",
+      "price": 2000.0,
+      "image_url": "https://i0.wp.com/audicarusa.com/wp-content/uploads/2021/07/2023-Audi-R8.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 12,
+    "fields": {
+      "name": "BMW 7 Series",
+      "brand": "BMW",
+      "year": 2015,
+      "combustion_type": "Gasolina",
+      "description": "The BMW 7 Series is a luxury sedan that offers advanced technology and a comfortable ride.",
+      "price": 1300.0,
+      "image_url": "https://www.carpixel.net/w/abe3d7d0be2bad5c2604a8bb946dd53d/bmw-7-series-m-sport-wallpaper-hd-58285.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 13,
+    "fields": {
+      "name": "Lexus LC 500",
+      "brand": "Lexus",
+      "year": 2018,
+      "combustion_type": "Gasolina",
+      "description": "The Lexus LC 500 is a luxury coupe that combines performance with a striking design.",
+      "price": 1000.0,
+      "image_url": "https://www.hdcarwallpapers.com/walls/2018_lexus_lc_500-HD.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 14,
+    "fields": {
+      "name": "Infiniti Q60",
+      "brand": "Infiniti",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Infiniti Q60 is a stylish coupe that offers a balance of performance and luxury.",
+      "price": 500.0,
+      "image_url": "https://i0.wp.com/nissan-infiniti.com/wp-content/uploads/2021/12/2023-Infiniti-Q60-Coupe-Red-Sport.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 15,
+    "fields": {
+      "name": "Cadillac CT6",
+      "brand": "Cadillac",
+      "year": 2011,
+      "combustion_type": "Gasolina",
+      "description": "The Cadillac CT6 is a premium sedan with a spacious and comfortable interior.",
+      "price": 1100.0,
+      "image_url": "https://autokiwi.ch/images/galleries/thumbs/1580628918-m.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 16,
+    "fields": {
+      "name": "Acura NSX",
+      "brand": "Acura",
+      "year": 2023,
+      "combustion_type": "Gasolina",
+      "description": "The Acura NSX is a hybrid supercar that delivers impressive performance and efficiency.",
+      "price": 1600.0,
+      "image_url": "https://www.gtopcars.com/wp-content/uploads/2021/12/2023-Acura-NSX-Type-S.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 17,
+    "fields": {
+      "name": "Genesis G80",
+      "brand": "Genesis",
+      "year": 2020,
+      "combustion_type": "Gasolina",
+      "description": "The Genesis G80 is a luxury sedan known for its refined interior and smooth ride.",
+      "price": 900.0,
+      "image_url": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2020-genesis-g80-mmp-1-1572624152.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 18,
+    "fields": {
+      "name": "Porsche Panamera",
+      "brand": "Porsche",
+      "year": 2022,
+      "combustion_type": "Gasolina",
+      "description": "The Porsche Panamera is a luxury sport sedan with a powerful engine and exceptional handling.",
+      "price": 1300.0,
+      "image_url": "https://cdn.carbuzz.com/gallery-images/2023-porsche-panamera-carbuzz-1056493.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 19,
+    "fields": {
+      "name": "Audi A8",
+      "brand": "Audi",
+      "year": 2020,
+      "combustion_type": "Gasolina",
+      "description": "The Audi A8 is a flagship luxury sedan that offers advanced technology and a spacious interior.",
+      "price": 1400.0,
+      "image_url": "https://www.motortrend.com/uploads/2023/07/2-2024-Audi-A8-front-view.jpg",
+      "available": true
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": 20,
+    "fields": {
+      "name": "Jaguar XJ",
+      "brand": "Jaguar",
+      "year": 2021,
+      "combustion_type": "Gasolina",
+      "description": "The Jaguar XJ is a luxury sedan with a perfect blend of performance and elegance.",
+      "price": 1200.0,
+      "image_url": "https://images.wapcar.my/file1/37ca6bd369c54e50bbabb8a5ca256712_912x516.jpg",
+      "available": true
+    }
+  }
+]
