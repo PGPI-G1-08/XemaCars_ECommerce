@@ -6,7 +6,8 @@
             "order": 1,
             "product": 2,
             "start_date": "2023-11-20",
-            "end_date": "2023-11-22"
+            "end_date": "2023-11-22",
+            "cancelled": false
         }
     },
     {
@@ -16,7 +17,8 @@
             "order": 2,
             "product": 4,
             "start_date": "2023-11-21",
-            "end_date": "2023-11-23"
+            "end_date": "2023-11-23",
+            "cancelled": false
         }
     },
     {
@@ -26,7 +28,8 @@
             "order": 3,
             "product": 6,
             "start_date": "2023-11-22",
-            "end_date": "2023-11-24"
+            "end_date": "2023-11-24",
+            "cancelled": false
         }
     },
     {
@@ -36,7 +39,8 @@
             "order": 4,
             "product": 8,
             "start_date": "2023-11-23",
-            "end_date": "2023-11-25"
+            "end_date": "2023-11-25",
+            "cancelled": false
         }
     },
     {
@@ -46,7 +50,8 @@
             "order": 5,
             "product": 10,
             "start_date": "2023-11-24",
-            "end_date": "2023-11-26"
+            "end_date": "2023-11-26",
+            "cancelled": false
         }
     },
     {
@@ -56,7 +61,8 @@
             "order": 6,
             "product": 12,
             "start_date": "2023-11-25",
-            "end_date": "2023-11-27"
+            "end_date": "2023-11-27",
+            "cancelled": false
         }
     },
     {
@@ -66,7 +72,8 @@
             "order": 7,
             "product": 14,
             "start_date": "2023-11-26",
-            "end_date": "2023-11-28"
+            "end_date": "2023-11-28",
+            "cancelled": false
         }
     },
     {
@@ -76,7 +83,8 @@
             "order": 8,
             "product": 16,
             "start_date": "2023-11-27",
-            "end_date": "2023-11-29"
+            "end_date": "2023-11-29",
+            "cancelled": false
         }
     },
     {
@@ -86,7 +94,8 @@
             "order": 9,
             "product": 18,
             "start_date": "2023-11-28",
-            "end_date": "2023-11-30"
+            "end_date": "2023-11-30",
+            "cancelled": false
         }
     },
     {
@@ -96,7 +105,8 @@
             "order": 10,
             "product": 20,
             "start_date": "2023-11-29",
-            "end_date": "2023-12-01"
+            "end_date": "2023-12-01",
+            "cancelled": false
         }
     },
     {
@@ -106,7 +116,8 @@
             "order": 11,
             "product": 1,
             "start_date": "2023-11-30",
-            "end_date": "2023-12-02"
+            "end_date": "2023-12-02",
+            "cancelled": false
         }
     },
     {
@@ -116,7 +127,8 @@
             "order": 12,
             "product": 3,
             "start_date": "2023-12-01",
-            "end_date": "2023-12-03"
+            "end_date": "2023-12-03",
+            "cancelled": false
         }
     },
     {
@@ -126,7 +138,8 @@
             "order": 13,
             "product": 5,
             "start_date": "2023-12-02",
-            "end_date": "2023-12-04"
+            "end_date": "2023-12-04",
+            "cancelled": false
         }
     },
     {
@@ -136,7 +149,8 @@
             "order": 14,
             "product": 7,
             "start_date": "2023-12-03",
-            "end_date": "2023-12-05"
+            "end_date": "2023-12-05",
+            "cancelled": false
         }
     },
     {
@@ -146,7 +160,8 @@
             "order": 15,
             "product": 9,
             "start_date": "2023-12-04",
-            "end_date": "2023-12-06"
+            "end_date": "2023-12-06",
+            "cancelled": false
         }
     },
     {
@@ -156,7 +171,8 @@
             "order": 16,
             "product": 11,
             "start_date": "2023-12-05",
-            "end_date": "2023-12-07"
+            "end_date": "2023-12-07",
+            "cancelled": false
         }
     },
     {
@@ -166,7 +182,8 @@
             "order": 17,
             "product": 13,
             "start_date": "2023-12-06",
-            "end_date": "2023-12-08"
+            "end_date": "2023-12-08",
+            "cancelled": false
         }
     },
     {
@@ -176,7 +193,8 @@
             "order": 1,
             "product": 15,
             "start_date": "2023-11-20",
-            "end_date": "2023-11-22"
+            "end_date": "2023-11-22",
+            "cancelled": false
         }
     },
     {
@@ -186,7 +204,8 @@
             "order": 2,
             "product": 17,
             "start_date": "2023-11-21",
-            "end_date": "2023-11-23"
+            "end_date": "2023-11-23",
+            "cancelled": false
         }
     },
     {
@@ -196,7 +215,8 @@
             "order": 3,
             "product": 19,
             "start_date": "2023-11-22",
-            "end_date": "2023-11-24"
+            "end_date": "2023-11-24",
+            "cancelled": false
         }
     }
 ]
