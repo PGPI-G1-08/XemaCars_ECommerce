@@ -22,6 +22,8 @@ class Customer(models.Model):
         "cart.Cart", on_delete=models.SET_NULL, null=True, blank=True
     )
 
+    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
+
     # Create cart on user creation
     def save(self, *args, **kwargs):
         cart = Cart()

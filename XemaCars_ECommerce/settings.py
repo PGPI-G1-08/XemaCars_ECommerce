@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 from pathlib import Path
 
-import environ
-import os
-
 import dj_database_url
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,3 +160,11 @@ if not DEBUG:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+if DEBUG:
+    STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+
+else:
+    STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
+    STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")

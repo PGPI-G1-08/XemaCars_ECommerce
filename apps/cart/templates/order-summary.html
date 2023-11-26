@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{% static "base.css" %}">
 <link rel="stylesheet" href="{% static "carrito.css" %}">
 <link rel="stylesheet" href="{% static "order-summary.css" %}">
+<script src="https://js.stripe.com/v3/"></script>
 {% endblock %}
 
 {% block content %}
@@ -30,26 +31,39 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="delivery-payment">
-            <form method="post">
-                {% csrf_token %}
-                {% if not user.is_authenticated %}
-                <div class="select-field">
-                    <label for="id_email">Email:</label>
-                    {{ form.email }}
-                </div>
-                {% endif %}
-                <div class="select-field">      
-                    <label for="id_payment_method">Método de Pago:</label>
-                    {{ form.payment_method }}
-                </div>
-                <div class="select-field">
-                    <label for="id_preferred_delivery_point">Punto de Recogida:</label>
-                    {{ form.preferred_delivery_method }}
-                    {{ form.preferred_delivery_point }}
-                </div>
-            </form> 
+        <div class="row">
+            <div class="delivery-payment">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if not user.is_authenticated %}
+                    <div class="select-field">
+                        <label for="id_email">Email:</label>
+                        {{ form.email }}
+                    </div>
+                    {% endif %}
+                    <div class="select-field">      
+                        <label for="id_payment_method">Método de Pago:</label>
+                        {{ form.payment_method }}
+                    </div>
+                    <div class="select-field">
+                        <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                        {{ form.preferred_delivery_method }}
+                        {{ form.preferred_delivery_point }}
+                    </div>
+                </form> 
+            </div>
+
+            <form id="payment-form">
+              <div id="payment-element">
+                <!--Stripe.js injects the Payment Element-->
+              </div>
+              <button id="submit">
+                <div class="spinner hidden" id="spinner"></div>
+              </button>
+              <div id="payment-message" class="hidden"></div>
+            </form>
         </div>
+
         <div class="cart-total">
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
@@ -77,6 +91,7 @@
     {% block extrajs %}
     /* event listener for when the page is loaded */
     window.addEventListener('load', function() {
+        paymentMethod = document.getElementById('id_preferred_payment_method');
         deliveryPoints = document.getElementById('id_preferred_delivery_point');
         original_options = Array.from(deliveryPoints.options);
 
@@ -96,11 +111,17 @@
             updateDeliveryPoints();
         });
 
+        updatePaymentForm();
+        paymentMethod.addEventListener('change', function(){
+            updatePaymentForm();
+        });
+
     });
 
     function updateDeliveryPoints() {
         deliveryPoints = document.getElementById('id_preferred_delivery_point');
         deliveryMethod = document.getElementById('id_preferred_delivery_method');
+        paymentForm = document.getElementById('payment-form');
 
         original_value = deliveryPoints.value.toString();
 
@@ -146,6 +167,17 @@
 
     }
 
+    function updatePaymentForm() {
+        paymentMethod = document.getElementById('id_payment_method');
+        paymentForm = document.getElementById('payment-form');
+
+        if (paymentMethod.value == 'Tarjeta de crédito') {
+            paymentForm.hidden = false;
+        } else {
+            paymentForm.hidden = true;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const buyButton = document.querySelector('.button-buy');
         buyButton.addEventListener('click', () => {
@@ -184,8 +216,9 @@
             body: JSON.stringify({
                 'payment_method': paymentMethod,
                 'delivery_point': deliveryPoint,
+                'client_secret': '{{client_secret}}',
                 {% if not user.is_authenticated %}
-                    'email': document.querySelector('#id_email').value,
+                'email': document.querySelector('#id_email').value,
                 {% endif %}
             }) 
         });
@@ -215,12 +248,87 @@
             modal.style.display = 'none';
         });
         const confirm = document.querySelector('#confirm-btn');
-        confirm.addEventListener('click', () => {
-            addOrder();
+        confirm.addEventListener('click', async () => {
+            const success = await handleSubmit();
+            if (success){
+                addOrder();
+            } else {
+                closeModal();
+            }
         });
         
     }
 
+    /* STRIPE */
+
+    const stripe = Stripe("pk_test_51OGlWZAFXp3GBC3KvH4MnUio1STFLt5EfUgDPS61cQiQIGjLOzxbLS8f8OU5gzz2GqNAeenPwnYhfMEhAAugrxAk00sZJUIPUO");
+
+    const clientSecret = "{{client_secret}}";
+
+    const appearance = {
+        theme: 'stripe',
+    };
+    elements = stripe.elements({ appearance, clientSecret });
+
+    const paymentElementOptions = {
+        layout: "tabs",
+    };
+
+    const paymentElement = elements.create("payment", paymentElementOptions);
+    paymentElement.mount("#payment-element");
+
+    async function handleSubmit() {
+        paymentMethod = document.querySelector('#id_payment_method').value;
+        if (paymentMethod == 'A contrareembolso') {
+            return true;
+        }
+        setLoading(true);
+
+        const response = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required'
+        });
+
+        // This point will only be reached if there is an immediate error when
+        // confirming the payment. Otherwise, your customer will be redirected to
+        // your `return_url`. For some payment methods like iDEAL, your customer will
+        // be redirected to an intermediate site first to authorize the payment, then
+        // redirected to the `return_url`.
+        setLoading(false);
+        if (response.error && (response.error.type === "card_error" || response.error.type === "validation_error")) {
+            showMessage(response.message);
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function showMessage(messageText) {
+        const messageContainer = document.querySelector("#payment-message");
+
+        messageContainer.classList.remove("hidden");
+        messageContainer.textContent = messageText;
+
+        setTimeout(function () {
+            messageContainer.classList.add("hidden");
+            messageContainer.textContent = "";
+        }, 4000);
+    }
+
+    // Show a spinner on payment submission
+    function setLoading(isLoading) {
+        const buyButton = document.querySelector("#buy-btn");
+        if (isLoading) {
+            // Disable the button and show a spinner
+            buyButton.classList.add('disabled-btn');
+            document.querySelector("#spinner").classList.remove("hidden");
+        } else {
+            buyButton.classList.remove('disabled-btn');
+            document.querySelector("#spinner").classList.add("hidden");
+        }
+    }
+
+
     {% endblock %}
 </script>
-

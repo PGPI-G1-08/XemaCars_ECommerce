@@ -14,6 +14,8 @@ from apps.products.models import DeliveryPoint, Product
 from apps.cart.anon_cart import AnonCart
 from apps.cart.models import CartProduct
 
+import stripe
+
 
 def add_order(request):
     if request.method != "POST":
@@ -36,8 +38,10 @@ def add_order(request):
                     payment_type=payment_method
                 )[0]
             else:
-                # TODO
-                pass
+                payment_method = PaymentMethod.objects.get_or_create(
+                    payment_type=payment_method
+                )[0]
+                handle_payment(request)
 
             order = Order.objects.create(
                 email=email,
@@ -75,9 +79,10 @@ def add_order(request):
                     payment_type=payment_method
                 )[0]
             else:
-                payment_method = PaymentMethod.objects.get(
-                    payment_type=payment_method, customer=customer
-                )
+                payment_method = PaymentMethod.objects.get_or_create(
+                    payment_type=payment_method
+                )[0]
+                handle_payment(request)
 
             order = Order.objects.create(
                 customer=customer,
@@ -141,3 +146,18 @@ def cancel_order(request, order_id):
         return redirect("all-orders")
     else:
         return render(request, "forbidden.html")
+
+
+def handle_payment(request):
+    data = json.loads(request.body)
+    client_secret = data["client_secret"]
+    intent_id = client_secret.split("_secret")[0]
+    intent = stripe.PaymentIntent.retrieve(intent_id)
+
+    status = intent["status"]
+    if status == "succeeded":
+        return
+    elif status == "requires_payment_method":
+        raise ValidationError("El pago no ha sido completado")
+    else:
+        raise ValidationError("El pago no ha sido completado")

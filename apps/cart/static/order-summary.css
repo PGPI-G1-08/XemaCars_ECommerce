@@ -21,7 +21,7 @@
 }
 
 .button-buy {
-  width: 100%;
+  width: fit-content;
   justify-content: center;
 }
 
@@ -46,4 +46,12 @@ input {
   font-size: var(--body-text);
   border: 1px solid var(--grey);
   border-radius: var(--border-radius);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

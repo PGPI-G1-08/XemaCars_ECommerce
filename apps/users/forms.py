@@ -108,6 +108,11 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
 
+    email = forms.EmailField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Correo electrónico"}),
+    )
+
     def __init__(self, *args, **kwargs):
         super(EditDeliveryPointAndPaymentMethodForm, self).__init__(*args, **kwargs)
         if self.data.get("delivery_points"):
