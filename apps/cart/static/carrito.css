@@ -43,6 +43,7 @@
   flex-direction: column;
   align-items: start;
   gap: 10px;
+  min-width: 40%;
 }
 
 .cart-item-info > description {
@@ -106,7 +107,7 @@ form select {
   margin: 20px;
 }
 
-.order-summary{
+.order-summary {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -114,8 +115,6 @@ form select {
   width: 100%;
 }
 
-.order-summary > a{
+.order-summary > a {
   text-decoration: none;
 }
-
-

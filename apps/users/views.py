@@ -59,6 +59,9 @@ def profile(request):
         form = EditDeliveryPointAndPaymentMethodForm(
             data={
                 "delivery_points": delivery_point,
+                "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
+                if customer.preferred_delivery_point
+                else None,
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.preferred_payment_method,
             },

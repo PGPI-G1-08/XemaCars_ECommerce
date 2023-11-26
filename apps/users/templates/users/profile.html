@@ -33,10 +33,11 @@
                 {{ form.payment_method }}
                 <a class="secondary-button">Gestionar métodos de pago</a>
             </div>
-            <div class="select-field">
-                <label for="id_preferred_delivery_point">Punto de Recogida por Defecto:</label>
-                {{ form.preferred_delivery_point }}
-            </div>
+                <div class="select-field">
+                    <label for="id_preferred_delivery_point">Punto de Recogida por Defecto:</label>
+                    {{ form.preferred_delivery_method }}
+                    {{ form.preferred_delivery_point }}
+                </div>
             <div class="button-container">
                 <button class="primary-button" type="submit">Guardar</button>
             </div>
@@ -45,3 +46,68 @@
     
 </div>
 {% endblock %}
+
+<script>
+    {% block extrajs %}
+    /* event listener for when the page is loaded */
+        window.addEventListener('load', function() {
+            deliveryPoints = document.getElementById('id_preferred_delivery_point');
+            original_options = Array.from(deliveryPoints.options);
+
+            if (deliveryPoints.value == 'Seleccione un punto de recogida') {
+                deliveryPoints.options.length = 0;
+                deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+                deliveryPoints.disabled = true;
+            }
+
+            deliveryMethod = document.getElementById('id_preferred_delivery_method');
+
+            updateDeliveryPoints();
+            deliveryMethod.addEventListener('change', function(){
+                updateDeliveryPoints();
+            });
+
+        });
+
+        function updateDeliveryPoints() {
+            deliveryPoints = document.getElementById('id_preferred_delivery_point');
+            deliveryMethod = document.getElementById('id_preferred_delivery_method');
+
+            original_value = deliveryPoints.value.toString();
+
+            if (deliveryMethod.value == 'Recogida en Tienda') {
+                /* Get those options that have "Tienda" in their name*/
+                deliveryPoints.options.length = 0;
+                deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+                deliveryPoints.disabled = false;
+                for (i = 0; i < original_options.length; i++) {
+                    if (original_options[i].text.includes('Tienda')) {
+                        deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
+                    }
+                }
+            } else if (deliveryMethod.value == 'Recogida en Parking') {
+                /* Get those original_options that have "Parking" in their name*/
+                deliveryPoints.options.length = 0;
+                deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+                deliveryPoints.disabled = false;
+                for (i = 0; i < original_options.length; i++) {
+                    if (original_options[i].text.includes('Parking')) {
+                        deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
+                    }
+                }
+            } else {
+                deliveryPoints.options.length = 0;
+                deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+                deliveryPoints.disabled = true;
+            }
+
+            /* Set the value to the original one if its within the available options*/
+            if (deliveryPoints.options.some(option => option.value.toString() === original_value)) {
+                deliveryPoints.value = original_value;
+            } else {
+                deliveryPoints.value = deliveryPoints.options[0].toString();
+            }
+
+        }
+    {% endblock %}
+</script>

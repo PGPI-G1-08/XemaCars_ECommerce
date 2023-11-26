@@ -93,6 +93,15 @@ class EditForm(forms.Form):
 
 
 class EditDeliveryPointAndPaymentMethodForm(forms.Form):
+    DELIVERY_TYPES = (
+        ("Recogida en Parking", "Recogida en Parking"),
+        ("Recogida en Tienda", "Recogida en Tienda"),
+    )
+
+    preferred_delivery_method = forms.ChoiceField(
+        required=False,
+        choices=[("", "Seleccione un método de entrega")] + list(DELIVERY_TYPES),
+    )
     preferred_delivery_point = forms.ChoiceField()
     payment_method = forms.ChoiceField(
         required=False,

@@ -39,7 +39,7 @@ class Product(models.Model):
 class DeliveryPoint(models.Model):
     DELIVERY_TYPES = (
         ("Recogida en Parking", "Recogida en Parking"),
-        ("Recogida en tienda", "Recogida en tienda"),
+        ("Recogida en Tienda", "Recogida en Tienda"),
     )
 
     delivery_type = models.CharField(max_length=255, choices=DELIVERY_TYPES)

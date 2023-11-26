@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from apps.cart.forms import EditDeliveryPointAndPaymentMethodForm
+from apps.users.forms import EditDeliveryPointAndPaymentMethodForm
 from apps.cart.anon_cart import AnonCart
 from apps.products.models import Product
 from apps.users.models import Customer
@@ -143,13 +143,15 @@ def order_summary(request):
                 customer.preferred_payment_method = PaymentMethod.objects.get_or_create(
                     payment_type="A contrareembolso"
                 )[0]
-            payment_method = customer.preferred_payment_method
 
             form = EditDeliveryPointAndPaymentMethodForm(
                 data={
                     "delivery_points": delivery_point,
+                    "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
+                    if customer.preferred_delivery_point
+                    else None,
                     "preferred_delivery_point": customer.preferred_delivery_point,
-                    "payment_method": payment_method,
+                    "payment_method": customer.preferred_payment_method,
                 },
             )
 
