@@ -11,7 +11,6 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
         required=True,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
-    email = forms.EmailField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

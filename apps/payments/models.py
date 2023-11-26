@@ -8,7 +8,16 @@ PAYMENT_FORMS = (
 
 
 class PaymentMethod(models.Model):
+    customer = models.ForeignKey(
+        "users.Customer",
+        on_delete=models.CASCADE,
+        related_name="payment_methods",
+        null=True,
+    )
     payment_type = models.CharField(max_length=255, choices=PAYMENT_FORMS, blank=True)
+
+    class Meta:
+        unique_together = ("customer", "payment_type")
 
     def __str__(self):
         return self.payment_type

@@ -37,7 +37,7 @@
             <p>{{ product.description }}</p>
             <h2 class="product-price">{{ product.price }} € / día</h2>
             {% if product.available %}
-                <a id="buy-btn" class="primary-button" >Reservar</a>
+                <a id="buy-btn" class="primary-button" >Comprar</a>
             {% else %}
                 <a class="primary-button disabled-btn" >Producto no disponible</a>
             {% endif %}
@@ -136,12 +136,14 @@
     {% block extrajs %}
     document.addEventListener('DOMContentLoaded', () => {
         const buyButton = document.querySelector('#buy-btn');
+        
         updateButton();
         
     });
     
     async function updateButton() {
         const buyButton = document.querySelector('#buy-btn');
+        {% if user.is_authenticated %}
         response = await fetch("/cart/has_product/{{ product.id }}")
         data = await response.json()
         if (data.has_product) {
@@ -151,12 +153,18 @@
                 spawnBuyModal();
             });
         } else {
-            buyButton.innerHTML = 'Reservar';
+            buyButton.innerHTML = 'Comprar';
             buyButton.classList.remove('disabled-btn');
             buyButton.addEventListener('click', () => {
                 spawnBuyModal();
             });
         }
+        {% else %}
+        buyButton.addEventListener('click', () => {
+            window.location.href = '/signin';
+        });
+        {% endif %}
+        
     }
     
     function validateDate(date, disabled_dates) {

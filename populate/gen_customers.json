@@ -1,23 +1,12 @@
 [
     {
-        "model": "cart.cart",
-        "pk": 1,
-        "fields": {}
-    },
-    {
         "model": "users.customer",
         "pk": 1,
         "fields": {
             "user": 2,
             "phone_number": "1234567890",
-            "preferred_delivery_point": 1,
-            "cart": 1
+            "preferred_delivery_point": 1
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 2,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -25,14 +14,8 @@
         "fields": {
             "user": 3,
             "phone_number": "0987654321",
-            "preferred_delivery_point": 2,
-            "cart": 2
+            "preferred_delivery_point": 2
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 3,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -40,14 +23,8 @@
         "fields": {
             "user": 4,
             "phone_number": "1111111111",
-            "preferred_delivery_point": 3,
-            "cart": 3
+            "preferred_delivery_point": 3
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 4,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -55,14 +32,8 @@
         "fields": {
             "user": 5,
             "phone_number": "2222222222",
-            "preferred_delivery_point": 4,
-            "cart": 4
+            "preferred_delivery_point": 4
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 5,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -70,14 +41,8 @@
         "fields": {
             "user": 6,
             "phone_number": "3333333333",
-            "preferred_delivery_point": 5,
-            "cart": 5
+            "preferred_delivery_point": 5
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 6,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -85,14 +50,8 @@
         "fields": {
             "user": 7,
             "phone_number": "4444444444",
-            "preferred_delivery_point": 6,
-            "cart": 6
+            "preferred_delivery_point": 6
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 7,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -100,14 +59,8 @@
         "fields": {
             "user": 8,
             "phone_number": "5555555555",
-            "preferred_delivery_point": 7,
-            "cart": 7
+            "preferred_delivery_point": 7
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 8,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -115,14 +68,8 @@
         "fields": {
             "user": 9,
             "phone_number": "6666666666",
-            "preferred_delivery_point": 8,
-            "cart": 8
+            "preferred_delivery_point": 8
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 9,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -130,14 +77,8 @@
         "fields": {
             "user": 10,
             "phone_number": "7777777777",
-            "preferred_delivery_point": 9,
-            "cart": 9
+            "preferred_delivery_point": 9
         }
-    },
-    {
-        "model": "cart.cart",
-        "pk": 10,
-        "fields": {}
     },
     {
         "model": "users.customer",
@@ -145,8 +86,7 @@
         "fields": {
             "user": 11,
             "phone_number": "8888888888",
-            "preferred_delivery_point": 10,
-            "cart": 10
+            "preferred_delivery_point": 10
         }
     }
 ]

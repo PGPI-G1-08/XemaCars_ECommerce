@@ -25,17 +25,17 @@
             <input type="text" placeholder="¿Qué coche deseas?" name="search">
             <button type="submit">Buscar <span class="material-icons">search</span></button>
         </form>
-        <div class="header-right">
-           <div class="shopping-cart">
-                <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
-                <span id="cart-count"><p></p></span>
-            </div>
         {% if user.is_authenticated %}
+        <div class="header-right">
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
                 <a href="/products/add" class="header-profile">Añadir Producto</a>
                 <a href={% url 'all-orders' %} class="header-profile">Todos los Pedidos</a>
             {% endif %}
+           <div class="shopping-cart">
+                <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
+                <span id="cart-count"><p></p></span>
+            </div>
             <div class="dropdown">
                 <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
@@ -43,10 +43,12 @@
                     <a href="/logout">Cerrar Sesión</a>
                 </div>
             </div>
-        {% else %}
-            <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
-        {% endif %}
         </div>
+        {% else %}
+        <div>
+            <a class="header-auth" href="/signup">Registrarse</a><a class="header-auth" href="/signin">Iniciar Sesión</a>
+        </div>
+        {% endif %}
     </header>
     <section class="content">
         {% block content %}
@@ -67,21 +69,22 @@
         <p>&copy; 2023 XemaCars.Ltd. Todos los derechos reservados.</p>
     </footer>
     <script>
-        // get cart count
+        /* only if authenticated */
+        {% if user.is_authenticated %}
+            // get cart count
 
-        document.addEventListener('DOMContentLoaded', () => {
-            getCartCount();
-        });
+            document.addEventListener('DOMContentLoaded', () => {
+                getCartCount();
+            });
 
-        // get cart count on demand
-        async function getCartCount() {
-            response = await fetch("/cart/count")
-            data = await response.json();
-            if (data.count > 0)
-                document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
-            else
-                document.getElementById("cart-count").innerHTML = "";
-        }
+            // get cart count on demand
+            async function getCartCount() {
+                response = await fetch("/cart/count")
+                data = await response.json();
+                if (data.count > 0)
+                    document.getElementById("cart-count").innerHTML = "<p>" + data.count + "</p>";
+            }
+        {% endif %}
 
         // notifications
         function showNotification(message, type) {
