@@ -100,7 +100,7 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(EditDeliveryPointAndPaymentMethodForm, self).__init__(*args, **kwargs)
         if self.data.get("delivery_points"):
             self.fields.get("preferred_delivery_point").choices = self.data.get(
                 "delivery_points"
