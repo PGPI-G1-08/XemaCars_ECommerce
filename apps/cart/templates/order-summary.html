@@ -34,7 +34,7 @@
             <form method="post">
                 {% csrf_token %}
                 {% if not user.is_authenticated %}
-                <div class="">
+                <div class="select-field">
                     <label for="id_email">Email:</label>
                     {{ form.email }}
                 </div>
