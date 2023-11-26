@@ -5,13 +5,16 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm, EditProductForm
+from .forms import ProductForm, FilterForm
 from .models import Product
 
 
 class ProductAddView(TemplateView):
     def post(self, request):
         if request.method == "POST":
+            post = request.POST.copy()
+            post["price"] = post["price"].replace(",", ".")
+            request.POST = post
             form = ProductForm(request.POST)
             if form.is_valid():
                 product = Product(
@@ -125,7 +128,7 @@ class ProductDeleteView(TemplateView):
 class ProductUpdateView(TemplateView):
     def get(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
-        form = EditProductForm(instance=product)
+        form = ProductForm(instance=product)
         if request.user.is_superuser:
             return render(request, "edit.html", {"product": product, "form": form})
         else:
@@ -137,7 +140,7 @@ class ProductUpdateView(TemplateView):
             post = request.POST.copy()
             post["price"] = post["price"].replace(",", ".")
             request.POST = post
-            form = EditProductForm(request.POST)
+            form = ProductForm(request.POST)
             if request.method == "POST":
                 if form.is_valid():
                     if form.cleaned_data.get("name"):
@@ -156,8 +159,7 @@ class ProductUpdateView(TemplateView):
                         product.price = form.cleaned_data.get("price")
                     if form.cleaned_data.get("image_url"):
                         product.image_url = form.cleaned_data.get("image_url")
-                    if form.cleaned_data.get("available"):
-                        product.available = form.cleaned_data.get("available")
+                    product.available = form.cleaned_data.get("available")
                     product.save()
                     return redirect("/products")
                 else:
