@@ -7,4 +7,5 @@ urlpatterns = [
     path("about-us", views.about_us, name="about-us"),
     path("design-kit/", views.design_kit, name="design-kit"),
     path("cart/", include("apps.cart.urls")),
+    path("orders/", include("apps.orders.urls")),
 ]

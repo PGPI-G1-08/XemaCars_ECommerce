@@ -56,3 +56,61 @@ a {
   flex-direction: row;
   justify-content: center;
 }
+
+.products-opinion {
+  margin-top: 20px;
+}
+
+.products-opinion .filter {
+  margin: 10px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter.no-opinions {
+  justify-content: space-between;
+}
+
+.filter select {
+  padding: 10px;
+  font-family: var(--fuente2);
+  font-size: var(--body-text);
+  border: 1px solid var(--grey);
+  border-radius: var(--border-radius);
+}
+
+.opinions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.opinion {
+  box-shadow: var(--box-shadow);
+}
+
+.opinion-header h4 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.opinion-header .date {
+  font-family: var(--fuente3);
+}
+
+.value-us {
+  margin: 20px 0 20px 0;
+}
+
+.value-us .form-field label {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+form textarea {
+  padding: 10px;
+}

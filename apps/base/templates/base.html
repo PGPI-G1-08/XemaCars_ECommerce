@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans&family=Poppins:wght@500&display=swap" rel="stylesheet">        
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="{% static "base.css" %}">
     {% block extrahead %}{% endblock %}
 </head>
@@ -20,11 +21,16 @@
             <a class="header-auth" href="/products">Nuestros coches</a>
         </div>
         <!-- show profile icon if user is logged in -->
+        <form id="form-header" method="GET" action="{% url 'car_search' %}">
+            <input type="text" placeholder="¿Qué coche deseas?" name="search">
+            <button type="submit">Buscar <span class="material-icons">search</span></button>
+        </form>
         {% if user.is_authenticated %}
         <div class="header-right">
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
                 <a href="/products/add" class="header-profile">Añadir Producto</a>
+                <a href={% url 'all-orders' %} class="header-profile">Todos los Pedidos</a>
             {% endif %}
            <div class="shopping-cart">
                 <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>

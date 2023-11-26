@@ -9,29 +9,37 @@
 {% endblock %}
 
 {% block content %}
-<pre> 
-    <h1>Nuestros coches</h1>
-</pre>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.año_mínimo.label_tag }}
-        {{ form.año_mínimo }}
-        {{ form.marca.label_tag }}
-        {{ form.marca }}
-        {{ form.tipo_de_combustión.label_tag }}
-        {{ form.tipo_de_combustión }}
-        {{ form.precio_máximo.label_tag }}
-        {{ form.precio_máximo }}
-        {{ form.non_field_errors }}
-        <div class="field-wrapper">
-            {{ form.solo_disponibles.label_tag }}
-            {{ form.solo_disponibles }}
-        </div>
-        <div class="links">
-            <input type="submit" value="Filtrar">
-            <a href="/products">Resetear Filtros</a>
-        </div>
-    </form>
+    {% if form %}
+        <pre> 
+            <h1>Nuestros coches</h1>
+        </pre>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.año_mínimo.label_tag }}
+            {{ form.año_mínimo }}
+            {{ form.marca.label_tag }}
+            {{ form.marca }}
+            {{ form.tipo_de_combustión.label_tag }}
+            {{ form.tipo_de_combustión }}
+            {{ form.precio_máximo.label_tag }}
+            {{ form.precio_máximo }}
+            {{ form.non_field_errors }}
+            <div class="field-wrapper">
+                {{ form.solo_disponibles.label_tag }}
+                {{ form.solo_disponibles }}
+            </div>
+            <div class="links">
+                <input type="submit" value="Filtrar">
+                <a href="/products">Resetear Filtros</a>
+            </div>
+        </form>
+    {% else %}
+        <pre>
+            {% if products %}
+                <h1>Hoy es su día de suerte:</h1>
+            {% endif %}
+        </pre>
+    {% endif %}
 <br>
 <br>
 {% if products %}
@@ -40,8 +48,16 @@
             <a class="card" href="/products/details/{{ product.id }}">
                 <img src= "{{ product.image_url }}">
                 <h2 class="card-title">{{ product.name }}</h2>
+                <p class="card-rating">
+                    <span class="material-icons">star</span>
+                    {% if product.average_rating %}
+                    {{ product.average_rating|floatformat:1 }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </p>
                 <div id="price-available">
-                    <p class="card-price">{{ product.price }} € / día</p>
+                    <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
                     {% if product.available %}
                         <p class="available-text">Disponible</p>
                     {% else %}
