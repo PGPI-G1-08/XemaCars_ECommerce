@@ -1,8 +1,6 @@
 from datetime import datetime
 import json
 
-from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -17,6 +15,8 @@ from .models import CartProduct
 from apps.products.models import DeliveryPoint
 from apps.payments.models import PaymentMethod
 import stripe
+
+from django.shortcuts import redirect
 
 
 def get_cart(request):
@@ -128,6 +128,9 @@ def order_summary(request):
         if request.user == None or request.user.is_anonymous:
             cart = AnonCart(request)
             cart_products = cart.get_products()
+            if len(cart_products) == 0:
+                return redirect("/")
+
             total = cart.total()
 
             form = EditDeliveryPointAndPaymentMethodForm(
@@ -138,6 +141,8 @@ def order_summary(request):
             user = request.user
             customer = Customer.objects.get(user=user)
             cart_products = CartProduct.objects.filter(cart=customer.cart)
+            if len(cart_products) == 0:
+                return redirect("/")
             total = customer.cart.total
 
             if customer.preferred_payment_method == None:

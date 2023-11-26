@@ -170,8 +170,8 @@
         }
         
         const from_date = new Date(date);
-        minDate = new Date();
-        minDate.setDate(from_date.getDate() + 1);
+        minDate = new Date(from_date);
+        minDate.setDate(minDate.getDate() + 1);
         to_date_input.min = minDate.toISOString().slice(0, 10);
         
         /* get closest date to from_date that is bigger than from_date */
