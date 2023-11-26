@@ -80,6 +80,9 @@
         deliveryPoints = document.getElementById('id_preferred_delivery_point');
         original_options = Array.from(deliveryPoints.options);
 
+        price = document.querySelector('#price');
+        total = parseFloat(price.innerHTML);
+
         if (deliveryPoints.value == 'Seleccione un punto de recogida') {
             deliveryPoints.options.length = 0;
             deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
@@ -111,6 +114,7 @@
                     deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
                 }
             }
+            price.innerHTML = total.toFixed(1).replace(".",",") + ' €';
         } else if (deliveryMethod.value == 'Recogida en Parking') {
             /* Get those original_options that have "Parking" in their name*/
             deliveryPoints.options.length = 0;
@@ -121,14 +125,20 @@
                     deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
                 }
             }
+
+            /* Increase total if necessary */
+            if (total < 5000) {
+                price.innerHTML = (total + 100).toFixed(1).replace(".",",") + ' €';
+            }
         } else {
             deliveryPoints.options.length = 0;
             deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
             deliveryPoints.disabled = true;
+            price.innerHTML = total.toFixed(1).replace(".",",") + ' €';
         }
 
         /* Set the value to the original one if its within the available options*/
-        if (deliveryPoints.options.some(option => option.value.toString() === original_value)) {
+        if (Array.from(deliveryPoints.options).some(option => option.value.toString() === original_value)) {
             deliveryPoints.value = original_value;
         } else {
             deliveryPoints.value = deliveryPoints.options[0].toString();

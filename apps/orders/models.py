@@ -9,6 +9,11 @@ from apps.payments.models import PAYMENT_FORMS
 
 
 class Order(models.Model):
+    DELIVERY_TYPES = (
+        ("Recogida en Parking", "Recogida en Parking"),
+        ("Recogida en Tienda", "Recogida en Tienda"),
+    )
+
     customer = models.ForeignKey(
         "users.Customer", on_delete=models.CASCADE, null=True, blank=True
     )
@@ -32,6 +37,8 @@ class Order(models.Model):
             ).start_date
             end_date = OrderProduct.objects.get(order=self, product=product).end_date
             total += (end_date - start_date).days * product_price
+        if self.delivery_point.delivery_type == "Recogida en Parking" and total < 5000:
+            total += 100
         return total
 
     @property

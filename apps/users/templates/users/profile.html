@@ -102,7 +102,7 @@
             }
 
             /* Set the value to the original one if its within the available options*/
-            if (deliveryPoints.options.some(option => option.value.toString() === original_value)) {
+            if (Array.from(deliveryPoints.options).some(option => option.value.toString() === original_value)) {
                 deliveryPoints.value = original_value;
             } else {
                 deliveryPoints.value = deliveryPoints.options[0].toString();
