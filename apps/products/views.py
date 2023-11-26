@@ -199,8 +199,9 @@ class ProductUpdateView(TemplateView):
                     return render(
                         request, "edit.html", {"product": product, "form": form}
                     )
-            else:
-                return render(request, "forbidden.html")
+        else:
+            return render(request, "forbidden.html")
+
 
 class CarSearchView(TemplateView):
     def get(self, request):
@@ -222,4 +223,3 @@ class CarSearchView(TemplateView):
 
         products = Product.objects.all()
         return render(request, "product-list.html", {"products": filtered_products})
-
