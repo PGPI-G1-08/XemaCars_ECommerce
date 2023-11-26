@@ -30,9 +30,9 @@ def profile(request):
     ]
 
     if request.method == "POST":
-        form = EditDeliveryPointAndPaymentMethodForm(
-            request.POST, data={"delivery_points": delivery_point}
-        )
+        data = request.POST.copy()
+        data["delivery_points"] = delivery_point
+        form = EditDeliveryPointAndPaymentMethodForm(data)
         if form.is_valid():
             user = request.user
 
@@ -45,10 +45,10 @@ def profile(request):
 
             payment_method = form.cleaned_data.get("payment_method")
             if payment_method:
-                payment_method = PaymentMethod.objects.create(
+                payment_method = PaymentMethod.objects.get_or_create(
                     payment_type=payment_method
-                )
-                customer.payment_methods.set([payment_method])
+                )[0]
+                customer.preferred_payment_method = payment_method
             customer.save()
 
             return redirect("/profile")
@@ -57,10 +57,10 @@ def profile(request):
         user = request.user
         customer = Customer.objects.get(user=user)
         form = EditDeliveryPointAndPaymentMethodForm(
-            data={"delivery_points": delivery_point},
-            initial={
+            data={
+                "delivery_points": delivery_point,
                 "preferred_delivery_point": customer.preferred_delivery_point,
-                "payment_method": customer.payment_methods.first(),
+                "payment_method": customer.preferred_payment_method,
             },
         )
     return render(request, "users/profile.html", {"form": form})
