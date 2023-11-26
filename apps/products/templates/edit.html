@@ -24,49 +24,49 @@
                     <label for="id_name">
                         Modelo
                     </label>
-                    <input type="text" name="name" id="id_name" value="{{ product.name }}">
+                    {{ form.name }}
                 </div>
                 <div class="form-field">
                     <label for="id_brand">
                         Marca
                     </label>
-                    <input type="text" name="brand" id="id_brand" value="{{ product.brand }}">
+                    {{ form.brand }}
                 </div>
                 <div class="form-field">
                     <label for="id_year">
                         Año
                     </label>
-                    <input type="text" name="year" id="id_year" value="{{ product.year }}">
+                    {{ form.year }}
                 </div>
                 <div class="form-field">
                     <label for="id_combustion_type">
                         Combustion
                     </label>
-                    <input type="text" name="combustion_type" id="id_combustion_type" value="{{ product.combustion_type}}">
+                    {{ form.combustion_type }}
                 </div>
                 <div class="form-field">
                     <label for="id_description">
                         Descripción
                     </label>
-                    <input type="text" name="description" id="id_description" value="{{ product.description }}">
+                    {{ form.description }}
                 </div>
                 <div class="form-field">
                     <label for="id_price">
                         Precio
                     </label>
-                    <input type="text" name="price" id="id_price" value="{{ product.price }}">
+                    {{ form.price }}
                 </div>
                 <div class="form-field">
                     <label for="id_image_url">
                         Imagen
                     </label>
-                    <input type="text" name="image_url" id="id_image_url" value="{{ product.image_url }}">
+                    {{ form.image_url }}
                 </div>
                 <div class="form-field">
                     <label for="id_available">
                         Stock
                     </label>
-                    <input type="checkbox" name="available" id="id_available" value="{{ product.available }}">
+                    {{ form.available }}
                 </div>
                 <button type="submit">Guardar</button>
             </form>

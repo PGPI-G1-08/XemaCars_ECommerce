@@ -14,6 +14,7 @@ h2 {
   max-height: 380px;
   gap: 20px;
   justify-content: space-around;
+  position: relative;
 }
 
 .detail-image {
@@ -26,6 +27,7 @@ h2 {
 .combustion {
   margin-bottom: 5px;
 }
+
 .detail-info {
   width: 40%;
   display: flex;
@@ -43,4 +45,14 @@ h2 {
 
 a {
   text-decoration: none;
+}
+
+#admin-edit {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

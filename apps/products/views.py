@@ -103,7 +103,8 @@ def get_disabled_dates(_, pk):
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-#ADMIN
+
+# ADMIN
 class ProductDeleteView(TemplateView):
     def get(self, request, pk):
         if request.user.is_superuser:
@@ -111,7 +112,7 @@ class ProductDeleteView(TemplateView):
             return render(request, "delete.html", {"product": product})
         else:
             return render(request, "forbidden.html")
-        
+
     def post(self, request, pk):
         if request.user.is_superuser:
             product = get_object_or_404(Product, pk=pk)
@@ -120,21 +121,21 @@ class ProductDeleteView(TemplateView):
         else:
             return render(request, "forbidden.html")
 
-        
+
 class ProductUpdateView(TemplateView):
     def get(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
-        form = EditProductForm()
+        form = EditProductForm(instance=product)
         if request.user.is_superuser:
-            return render(request, "edit.html", { "product": product, "form": form})
+            return render(request, "edit.html", {"product": product, "form": form})
         else:
             return render(request, "forbidden.html")
-            
+
     def post(self, request, pk):
         if request.user.is_superuser:
             product = get_object_or_404(Product, pk=pk)
             post = request.POST.copy()
-            post["price"] = post["price"].replace(",",".")
+            post["price"] = post["price"].replace(",", ".")
             request.POST = post
             form = EditProductForm(request.POST)
             if request.method == "POST":
@@ -146,7 +147,9 @@ class ProductUpdateView(TemplateView):
                     if form.cleaned_data.get("year"):
                         product.year = form.cleaned_data.get("year")
                     if form.cleaned_data.get("combustion_type"):
-                        product.combustion_type = form.cleaned_data.get("combustion_type")
+                        product.combustion_type = form.cleaned_data.get(
+                            "combustion_type"
+                        )
                     if form.cleaned_data.get("description"):
                         product.description = form.cleaned_data.get("description")
                     if form.cleaned_data.get("price"):
@@ -158,7 +161,8 @@ class ProductUpdateView(TemplateView):
                     product.save()
                     return redirect("/products")
                 else:
-                    return render(request, "edit.html", {"product": product, "form": form})
+                    return render(
+                        request, "edit.html", {"product": product, "form": form}
+                    )
             else:
-                return render(request, "forbidden.html")   
-        
+                return render(request, "forbidden.html")

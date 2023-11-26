@@ -28,9 +28,9 @@
                 <p>{{ product.description }}</p>
                 <h2 class="product-price">{{ product.price }} € / día</h2>
                 {% if user.is_superuser %}
-                    <div id="price-available">
-                        <a href="/products/details/{{ product.id }}/edit"><span class="material-icons">edit</span></a>
-                        <a href="/products/details/{{ product.id }}/delete"><span class="material-icons">delete</span></a>
+                    <div id="admin-edit">
+                        <a class="icon-link" href="/products/details/{{ product.id }}/edit"><span class="material-icons">edit</span></a>
+                        <a class="icon-link" href="/products/details/{{ product.id }}/delete"><span class="material-icons">delete</span></a>
                     </div>
                 {% else %}
                     {% if product.available %}
