@@ -57,8 +57,8 @@ def profile(request):
         user = request.user
         customer = Customer.objects.get(user=user)
         form = EditDeliveryPointAndPaymentMethodForm(
-            data={"delivery_points": delivery_point},
-            initial={
+            data={
+                "delivery_points": delivery_point,
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.preferred_payment_method,
             },
