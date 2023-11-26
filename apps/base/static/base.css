@@ -378,6 +378,16 @@ footer a {
   background-color: var(--grey);
 }
 
+/* LINK ICON */
+
+.icon-link {
+  color: var(--orange);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 /* CARD */
 
 .card-container {
@@ -558,6 +568,17 @@ button[type='submit'] {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black"><path d="M7 7l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
+}
+
+.form textarea {
+  padding: 10px;
+  font-family: var(--fuente2);
+  font-size: var(--body-text);
+  border: 1px solid var(--grey);
+  border-radius: var(--border-radius);
+  resize: vertical;
+  min-height: 100px;
+  max-height: 300px;
 }
 
 .form-errors {

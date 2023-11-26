@@ -26,7 +26,6 @@
             <div class="combustion">
                 <h4 class="product-combustion">{{ product.combustion_type }}</h4>
             </div>
-            
             <p class="card-rating">
                 <span class="material-icons">star</span>
                 {% if product.average_rating %}
@@ -38,9 +37,15 @@
             <p>{{ product.description }}</p>
             <h2 class="product-price">{{ product.price }} € / día</h2>
             {% if product.available %}
-            <a id="buy-btn" class="primary-button" >Comprar</a>
+                <a id="buy-btn" class="primary-button" >Comprar</a>
             {% else %}
-            <a class="primary-button disabled-btn" >Producto no disponible</a>
+                <a class="primary-button disabled-btn" >Producto no disponible</a>
+            {% endif %}
+            {% if user.is_superuser %}
+                <div id="admin-edit">
+                    <a class="icon-link" href="/products/details/{{ product.id }}/edit"><span class="material-icons">edit</span></a>
+                    <a class="icon-link" href="/products/details/{{ product.id }}/delete"><span class="material-icons">delete</span></a>
+                </div>
             {% endif %}
         </div>
     </div>
