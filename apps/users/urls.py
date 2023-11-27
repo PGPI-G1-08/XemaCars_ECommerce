@@ -7,6 +7,7 @@ from .views import (
     UserDeleteView,
     UserEditView,
     profile,
+    get_stripe_payment_methods,
 )
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("users/delete/<int:pk>", UserDeleteView.as_view(), name="user_delete"),
     path("users/edit/<int:pk>", UserEditView.as_view(), name="user_edit"),
     path("profile/", profile, name="profile"),
+    path("payment-methods/", get_stripe_payment_methods, name="payment-methods"),
 ]

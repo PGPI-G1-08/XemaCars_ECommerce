@@ -356,6 +356,7 @@ footer a {
   cursor: pointer;
   display: flex;
   width: fit-content;
+  text-decoration: none;
 }
 
 .secondary-button:hover {

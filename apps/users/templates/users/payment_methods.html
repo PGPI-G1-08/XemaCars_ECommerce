@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Metodos de Pago{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'payment-methods.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Metodos de Pago</h1>
+    {% for method in payment_methods %}
+        <div class="card">
+            <div class="credit-card">
+                <h3>{{ method.card.brand|title }} que termina en {{ method.card.last4 }}</h3>
+                <h6><b>Expira el</b> {{ method.card.exp_month }}/{{ method.card.exp_year }}</h6>
+                <!-- Delete button and set as default button -->
+                <div class="row">
+                    <form action="/payments/delete/{{method.id}}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="secondary-button">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

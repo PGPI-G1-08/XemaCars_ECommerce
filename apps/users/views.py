@@ -12,6 +12,7 @@ from .forms import LoginForm
 from .models import Customer
 
 from django.shortcuts import get_object_or_404
+import stripe
 
 
 from apps.users.forms import (
@@ -203,3 +204,16 @@ class UserEditView(TemplateView):
                 )
         else:
             return render(request, "forbidden.html")
+
+
+@login_required(login_url="/signin")
+def get_stripe_payment_methods(request):
+    user = request.user
+    customer = Customer.objects.get(user=user)
+    stripe_customer = stripe.Customer.retrieve(customer.stripe_customer_id)
+    payment_methods = stripe.PaymentMethod.list(
+        customer=stripe_customer.id, type="card"
+    )
+    return render(
+        request, "users/payment_methods.html", {"payment_methods": payment_methods}
+    )
