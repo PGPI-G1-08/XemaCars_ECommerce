@@ -16,6 +16,8 @@ from apps.cart.models import CartProduct
 
 import stripe
 
+from django.core.mail import send_mail
+
 
 def add_order(request):
     if request.method != "POST":
@@ -102,10 +104,14 @@ def add_order(request):
                 )
                 order_product.save()
 
+            email = request.user.email
+
             order.save()
 
     except ValidationError as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
+
+    send_mail_after_order(order, email)
 
     return HttpResponse(
         json.dumps({"order_id": order.id}), status=200, content_type="application/json"
@@ -161,3 +167,51 @@ def handle_payment(request):
         raise ValidationError("El pago no ha sido completado")
     else:
         raise ValidationError("El pago no ha sido completado")
+
+
+def send_mail_after_order(order, email):
+    products = OrderProduct.objects.filter(order=order)
+    subject = "XemaCars - Orden de compra"
+    message = f"""
+    Gracias por tu compra!
+    Detalle de la orden:
+
+    """
+
+    for product in products:
+        message += f"""
+        Producto: {product.product.name}
+        Fecha de inicio: {product.start_date}
+        Fecha de fin: {product.end_date}
+
+        """
+    message += f"""
+    Punto de entrega: {order.delivery_point.name}
+    """
+
+    message += f"""
+    Metodo de pago: {order.payment_form.payment_type}
+    """
+
+    message += f"""
+    Total: {order.total} €
+    """
+
+    message += f"""
+
+    Numero de orden: {order.id}
+
+    """
+
+    message += f"""
+    Para cualquier consulta, comunicate con nosotros a traves de correo electronico a "xemacars.nrply@outlook.es",
+    """
+
+    # Send email
+    send_mail(
+        subject,
+        message,
+        "xemacars.nrply@outlook.es",
+        [email],
+        fail_silently=False,
+    )

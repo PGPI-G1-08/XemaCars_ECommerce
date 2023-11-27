@@ -168,3 +168,16 @@ if DEBUG:
 else:
     STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
     STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+
+# Email settings
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
+if DEBUG:
+    SENDGRID_API_KEY = env("SENDGRID_API_KEY")
+    EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+else:
+    SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+    EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
