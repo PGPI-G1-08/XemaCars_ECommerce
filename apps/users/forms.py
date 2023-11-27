@@ -66,6 +66,12 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("El usuario ya existe")
         return username
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El correo electrónico ya existe")
+        return email
+
 
 class EditForm(forms.Form):
     first_name = forms.CharField(

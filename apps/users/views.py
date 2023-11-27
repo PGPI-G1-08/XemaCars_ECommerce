@@ -102,8 +102,6 @@ class RegisterView(APIView):
     def post(self, request):
         form = RegisterForm(request.POST)
 
-        message = None
-
         if form.is_valid():
             first_name = form.cleaned_data.get("first_name")
             last_name = form.cleaned_data.get("last_name")
