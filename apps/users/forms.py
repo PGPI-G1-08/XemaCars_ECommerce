@@ -11,10 +11,11 @@ from apps.payments.models import PAYMENT_FORMS
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
+    email = forms.EmailField(
         required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Usuario"}),
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"}),
     )
+
     password = forms.CharField(
         required=True,
         min_length=6,
@@ -22,6 +23,12 @@ class LoginForm(forms.Form):
     )
 
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El usuario no existe")
+        return email
 
 
 class RegisterForm(UserCreationForm):
@@ -65,6 +72,12 @@ class RegisterForm(UserCreationForm):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("El usuario ya existe")
         return username
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El correo electrónico ya existe")
+        return email
 
 
 class EditForm(forms.Form):
