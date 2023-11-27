@@ -204,7 +204,7 @@ def send_mail_after_order(order, email):
     """
 
     message += f"""
-    Para cualquier consulta, comunicate con nosotros a traves de correo electronico a "xemacars.nrply@outlook.es",
+    Para cualquier consulta, comunicate con nosotros a traves de correo electronico a "contacto@xemacars.com",
     """
 
     # Send email
