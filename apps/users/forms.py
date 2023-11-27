@@ -15,6 +15,7 @@ class LoginForm(forms.Form):
         required=True,
         widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"}),
     )
+
     password = forms.CharField(
         required=True,
         min_length=6,
@@ -22,6 +23,12 @@ class LoginForm(forms.Form):
     )
 
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El correo electrónico no existe")
+        return email
 
 
 class RegisterForm(UserCreationForm):
