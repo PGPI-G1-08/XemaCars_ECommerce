@@ -27,7 +27,7 @@ class LoginForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data["email"]
         if not User.objects.filter(email=email).exists():
-            raise forms.ValidationError("El correo electrónico no existe")
+            raise forms.ValidationError("El usuario no existe")
         return email
 
 
