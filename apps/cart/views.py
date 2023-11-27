@@ -157,7 +157,6 @@ def order_summary(request):
                 for payment_method in stripe_payment_methods
             ]
             stripe_payment_methods.append(("Nueva Tarjeta", "Nueva Tarjeta"))
-            print(stripe_payment_methods)
 
             form = DeliveryAndPaymentForm(
                 data={
