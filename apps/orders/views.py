@@ -161,6 +161,14 @@ def handle_payment(request):
     intent = stripe.PaymentIntent.retrieve(intent_id)
 
     status = intent["status"]
+
+    save_card = data["save_card"]
+    if save_card:
+        if user.is_anonymous:
+            user = request.user.customer
+            customer = stripe.Customer.retrieve(user.stripe_customer_id)
+            customer.sources.create(source=token)
+
     if status == "succeeded":
         return
     elif status == "requires_payment_method":
@@ -214,4 +222,43 @@ def send_mail_after_order(order, email):
         "xemacars.nrply@outlook.es",
         [email],
         fail_silently=False,
+    )
+
+
+def create_payment_intent(request):
+    data = json.loads(request.body)
+    if request.user == None or request.user.is_anonymous:
+        cart = AnonCart(request)
+        total = cart.total()
+    else:
+        customer = request.user.customer
+        total = customer.cart.total
+
+    # try:
+    if request.user == None or request.user.is_anonymous:
+        intent = stripe.PaymentIntent.create(
+            # total is multiplied by 100 because stripe works with cents
+            amount=int(total) * 100,
+            currency="eur",
+        )
+    else:
+        if request.user.customer.stripe_customer_id == None:
+            request.user.customer.stripe_customer_id = stripe.Customer.create(
+                email=request.user.email
+            ).id
+            request.user.customer.save()
+        intent = stripe.PaymentIntent.create(
+            setup_future_usage="off_session" if data["save_card"] else None,
+            # total is multiplied by 100 because stripe works with cents
+            amount=int(total) * 100,
+            currency="eur",
+            customer=request.user.customer.stripe_customer_id,
+        )
+    # except Exception as e:
+    #     return HttpResponse(json.dumps({"error": e.error}), status=400)
+
+    return HttpResponse(
+        json.dumps({"client_secret": intent["client_secret"]}),
+        status=200,
+        content_type="application/json",
     )

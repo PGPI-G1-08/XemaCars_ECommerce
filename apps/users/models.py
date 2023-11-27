@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.cart.models import Cart
+import stripe
 
 # Create your models here.
 
@@ -29,6 +30,7 @@ class Customer(models.Model):
         cart = Cart()
         cart.save()
         self.cart = cart
+        self.stripe_customer_id = stripe.Customer.create(email=self.user.email).id
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -53,14 +53,13 @@
                 </form> 
             </div>
 
-            <form id="payment-form">
-              <div id="payment-element">
+            <form id="payment-form" hidden>
+                <input type="hidden" name="elements" value="">
+                <div id="payment-element">
                 <!--Stripe.js injects the Payment Element-->
-              </div>
-              <button id="submit">
-                <div class="spinner hidden" id="spinner"></div>
-              </button>
-              <div id="payment-message" class="hidden"></div>
+                </div>
+                <input id="save-card" type="checkbox"> Guardar tarjeta para futuras compras</input>
+                <div id="payment-message" class="hidden"></div>
             </form>
         </div>
 
@@ -92,6 +91,12 @@
     {% block extrajs %}
     /* event listener for when the page is loaded */
     window.addEventListener('load', function() {
+        getClientSecret(true);
+        saveCard = document.getElementById('save-card');
+        saveCard.addEventListener('change', function(){
+            getClientSecret(false);
+        });
+
         paymentMethod = document.getElementById('id_preferred_payment_method');
         deliveryPoints = document.getElementById('id_preferred_delivery_point');
         original_options = Array.from(deliveryPoints.options);
@@ -116,7 +121,6 @@
         paymentMethod.addEventListener('change', function(){
             updatePaymentForm();
         });
-
     });
 
     function updateDeliveryPoints() {
@@ -217,7 +221,8 @@
             body: JSON.stringify({
                 'payment_method': paymentMethod,
                 'delivery_point': deliveryPoint,
-                'client_secret': '{{client_secret}}',
+                'client_secret': clientSecret,
+                'save_card': false,
                 {% if not user.is_authenticated %}
                 'email': document.querySelector('#id_email').value,
                 {% endif %}
@@ -264,19 +269,41 @@
 
     const stripe = Stripe("pk_test_51OGlWZAFXp3GBC3KvH4MnUio1STFLt5EfUgDPS61cQiQIGjLOzxbLS8f8OU5gzz2GqNAeenPwnYhfMEhAAugrxAk00sZJUIPUO");
 
-    const clientSecret = "{{client_secret}}";
+    var elements
+    var clientSecret
 
-    const appearance = {
-        theme: 'stripe',
-    };
-    elements = stripe.elements({ appearance, clientSecret });
+    async function getClientSecret(renderCardForm) {
+        saveCard = document.getElementById('save-card');
+        const response = await fetch("/orders/create-payment-intent", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'save_card': saveCard.checked,
+            })
+        });
+        const data = await response.json();
+        clientSecret = data.client_secret;
 
-    const paymentElementOptions = {
-        layout: "tabs",
-    };
+        const appearance = {
+            theme: 'stripe',
+        }; 
+        elements = stripe.elements({ appearance, clientSecret });
+        const paymentElementOptions = {
+            layout: "tabs",
+        };
 
-    const paymentElement = elements.create("payment", paymentElementOptions);
-    paymentElement.mount("#payment-element");
+        const paymentElement = elements.create("payment", paymentElementOptions);
+        paymentElement.mount("#payment-element");
+        if (renderCardForm) {
+            loadCardForm(paymentElement);
+        }
+    }
+
+    function loadCardForm(paymentElement) {
+    }
 
     async function handleSubmit() {
         paymentMethod = document.querySelector('#id_payment_method').value;
@@ -286,6 +313,7 @@
         setLoading(true);
 
         const response = await stripe.confirmPayment({
+            type: 'card',
             elements,
             redirect: 'if_required'
         });
@@ -323,10 +351,8 @@
         if (isLoading) {
             // Disable the button and show a spinner
             buyButton.classList.add('disabled-btn');
-            document.querySelector("#spinner").classList.remove("hidden");
         } else {
             buyButton.classList.remove('disabled-btn');
-            document.querySelector("#spinner").classList.add("hidden");
         }
     }
 

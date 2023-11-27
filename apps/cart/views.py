@@ -160,14 +160,6 @@ def order_summary(request):
                     "payment_method": customer.preferred_payment_method,
                 },
             )
-        try:
-            intent = stripe.PaymentIntent.create(
-                amount=int(total),
-                currency="eur",
-            )
-        except Exception as e:
-            return HttpResponse(json.dumps({"error": e.error}), status=400)
-
         return render(
             request,
             "order-summary.html",
@@ -175,6 +167,5 @@ def order_summary(request):
                 "form": form,
                 "cart_products": cart_products,
                 "total": total,
-                "client_secret": intent["client_secret"],
             },
         )
