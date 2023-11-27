@@ -92,7 +92,7 @@ class EditForm(forms.Form):
         return phone_number
 
 
-class EditDeliveryPointAndPaymentMethodForm(forms.Form):
+class DeliveryAndPaymentForm(forms.Form):
     DELIVERY_TYPES = (
         ("Recogida en Parking", "Recogida en Parking"),
         ("Recogida en Tienda", "Recogida en Tienda"),
@@ -107,6 +107,10 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
         required=False,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
+    stripe_payment_methods = forms.ChoiceField(
+        required=False,
+        choices=[("", "Nueva Tarjeta")],
+    )
 
     email = forms.EmailField(
         required=False,
@@ -114,8 +118,12 @@ class EditDeliveryPointAndPaymentMethodForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        super(EditDeliveryPointAndPaymentMethodForm, self).__init__(*args, **kwargs)
+        super(DeliveryAndPaymentForm, self).__init__(*args, **kwargs)
         if self.data.get("delivery_points"):
             self.fields.get("preferred_delivery_point").choices = self.data.get(
                 "delivery_points"
+            )
+        if self.data.get("stripe_payment_methods"):
+            self.fields.get("stripe_payment_methods").choices = self.data.get(
+                "stripe_payment_methods"
             )

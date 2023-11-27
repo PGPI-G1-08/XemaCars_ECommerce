@@ -44,6 +44,11 @@
                     <div class="select-field">      
                         <label for="id_payment_method">Método de Pago:</label>
                         {{ form.payment_method }}
+                        <span id="stripe-payment-methods">
+                            {% if user.is_authenticated %}
+                                {{ form.stripe_payment_methods }}
+                            {% endif %}
+                        </span>
                     </div>
                     <div class="select-field">
                         <label for="id_preferred_delivery_point">Punto de Recogida:</label>
@@ -58,7 +63,9 @@
                 <div id="payment-element">
                 <!--Stripe.js injects the Payment Element-->
                 </div>
-                <input id="save-card" type="checkbox"> Guardar tarjeta para futuras compras</input>
+                {% if user.is_authenticated %}
+                    <input id="save-card" type="checkbox"> Guardar tarjeta para futuras compras</input>
+                {% endif %}
                 <div id="payment-message" class="hidden"></div>
             </form>
         </div>
@@ -91,13 +98,8 @@
     {% block extrajs %}
     /* event listener for when the page is loaded */
     window.addEventListener('load', function() {
-        getClientSecret(true);
-        saveCard = document.getElementById('save-card');
-        saveCard.addEventListener('change', function(){
-            getClientSecret(false);
-        });
-
         paymentMethod = document.getElementById('id_preferred_payment_method');
+        stripePaymentMethods = document.getElementById('stripe-payment-methods');
         deliveryPoints = document.getElementById('id_preferred_delivery_point');
         original_options = Array.from(deliveryPoints.options);
 
@@ -121,6 +123,24 @@
         paymentMethod.addEventListener('change', function(){
             updatePaymentForm();
         });
+
+        stripePaymentMethods.addEventListener('change', function(){
+            updatePaymentForm();
+        });
+
+        getClientSecret();
+        {% if user.is_authenticated %}
+            saveCard = document.getElementById('save-card');
+            saveCard.addEventListener('change', function(){
+                getClientSecret();
+            });
+
+            paymentMethods = document.getElementById('id_stripe_payment_methods');
+            paymentMethods.addEventListener('change', function(){
+                getClientSecret();
+            });
+        {% endif %}
+
     });
 
     function updateDeliveryPoints() {
@@ -175,10 +195,23 @@
     function updatePaymentForm() {
         paymentMethod = document.getElementById('id_payment_method');
         paymentForm = document.getElementById('payment-form');
+        stripePaymentMethods = document.getElementById('stripe-payment-methods');
 
         if (paymentMethod.value == 'Tarjeta de crédito') {
-            paymentForm.hidden = false;
+            stripePaymentMethods.hidden = false;
+
+            {% if user.is_authenticated %}
+                paymentMethods = document.getElementById('id_stripe_payment_methods');
+                if (paymentMethods.value == 'Nueva Tarjeta') {
+                    paymentForm.hidden = false;
+                } else {
+                    paymentForm.hidden = true;
+                }
+            {% else %}
+                paymentForm.hidden = false;
+            {% endif %}
         } else {
+            stripePaymentMethods.hidden = true;
             paymentForm.hidden = true;
         }
     }
@@ -212,6 +245,11 @@
     async function addOrder(){
         const paymentMethod = document.querySelector('#id_payment_method').value;
         const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        {%if user.is_authenticated %}
+            saveCard = document.getElementById('save-card').checked;
+        {% else %}
+            saveCard = false;
+        {% endif %}
         const response = await fetch("/orders/add",{
             method: 'POST',
             headers: {
@@ -222,7 +260,7 @@
                 'payment_method': paymentMethod,
                 'delivery_point': deliveryPoint,
                 'client_secret': clientSecret,
-                'save_card': false,
+                'save_card': saveCard,
                 {% if not user.is_authenticated %}
                 'email': document.querySelector('#id_email').value,
                 {% endif %}
@@ -272,8 +310,19 @@
     var elements
     var clientSecret
 
-    async function getClientSecret(renderCardForm) {
-        saveCard = document.getElementById('save-card');
+    async function getClientSecret() {
+        {% if user.is_authenticated %}
+            saveCard = document.getElementById('save-card').checked;
+        {% else %}
+            saveCard = false;
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            paymentMethod = document.getElementById('id_stripe_payment_methods').value;
+        {% else %}
+            paymentMethod = 'Nueva Tarjeta';
+        {% endif %}
+
         const response = await fetch("/orders/create-payment-intent", {
             method: "POST",
             headers: {
@@ -281,11 +330,13 @@
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             body: JSON.stringify({
-                'save_card': saveCard.checked,
+                'save_card': saveCard,
+                'payment_method': paymentMethod,
             })
         });
         const data = await response.json();
         clientSecret = data.client_secret;
+        console.log(clientSecret);
 
         const appearance = {
             theme: 'stripe',
@@ -297,12 +348,6 @@
 
         const paymentElement = elements.create("payment", paymentElementOptions);
         paymentElement.mount("#payment-element");
-        if (renderCardForm) {
-            loadCardForm(paymentElement);
-        }
-    }
-
-    function loadCardForm(paymentElement) {
     }
 
     async function handleSubmit() {
@@ -312,11 +357,30 @@
         }
         setLoading(true);
 
-        const response = await stripe.confirmPayment({
-            type: 'card',
-            elements,
-            redirect: 'if_required'
-        });
+        {% if user.is_authenticated %}
+            payment_method = document.getElementById('id_stripe_payment_methods').value;
+            if (payment_method == 'Nueva Tarjeta') {
+                const response = await stripe.confirmPayment({
+                    type: 'card',
+                    elements,
+                    redirect: 'if_required'
+                });
+            } else {
+                const response = await stripe.confirmPayment(
+                    {
+                        clientSecret: clientSecret,
+                        payment_method: payment_method,
+                        redirect: 'if_required'
+                    }
+                );
+            }
+        {% else %}
+            const response = await stripe.confirmPayment({
+                type: 'card',
+                elements,
+                redirect: 'if_required'
+            });
+        {% endif %}
 
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to

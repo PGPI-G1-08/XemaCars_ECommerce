@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from apps.users.forms import EditDeliveryPointAndPaymentMethodForm
+from apps.users.forms import DeliveryAndPaymentForm
 from apps.cart.anon_cart import AnonCart
 from apps.products.models import Product
 from apps.users.models import Customer
@@ -133,9 +133,7 @@ def order_summary(request):
 
             total = cart.total()
 
-            form = EditDeliveryPointAndPaymentMethodForm(
-                data={"delivery_points": delivery_point}
-            )
+            form = DeliveryAndPaymentForm(data={"delivery_points": delivery_point})
 
         else:
             user = request.user
@@ -150,7 +148,18 @@ def order_summary(request):
                     payment_type="A contrareembolso"
                 )[0]
 
-            form = EditDeliveryPointAndPaymentMethodForm(
+            stripe_payment_methods = customer.get_stripe_payment_methods()
+            stripe_payment_methods = [
+                (
+                    payment_method.id,
+                    f"{payment_method.card.brand}, termina en {payment_method.card.last4}",
+                )
+                for payment_method in stripe_payment_methods
+            ]
+            stripe_payment_methods.append(("Nueva Tarjeta", "Nueva Tarjeta"))
+            print(stripe_payment_methods)
+
+            form = DeliveryAndPaymentForm(
                 data={
                     "delivery_points": delivery_point,
                     "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
@@ -158,6 +167,7 @@ def order_summary(request):
                     else None,
                     "preferred_delivery_point": customer.preferred_delivery_point,
                     "payment_method": customer.preferred_payment_method,
+                    "stripe_payment_methods": stripe_payment_methods,
                 },
             )
         return render(

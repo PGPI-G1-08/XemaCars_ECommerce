@@ -3,8 +3,6 @@ import json
 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.shortcuts import redirect
 from django.shortcuts import redirect, render
 
 from apps.orders.models import Order
@@ -162,13 +160,6 @@ def handle_payment(request):
 
     status = intent["status"]
 
-    save_card = data["save_card"]
-    if save_card:
-        if user.is_anonymous:
-            user = request.user.customer
-            customer = stripe.Customer.retrieve(user.stripe_customer_id)
-            customer.sources.create(source=token)
-
     if status == "succeeded":
         return
     elif status == "requires_payment_method":
@@ -247,12 +238,48 @@ def create_payment_intent(request):
                 email=request.user.email
             ).id
             request.user.customer.save()
+
+        save_card = data["save_card"]
+        payment_method = data["payment_method"]
+
+        # Check if the selected payment method is in the customer's payment methods
+        payment_methods = request.user.customer.get_stripe_payment_methods()
+        valid_payment_method = False
+        if payment_method != "Nueva Tarjeta":
+            for pm in payment_methods:
+                if payment_method == pm.id:
+                    valid_payment_method = True
+                    break
+        else:
+            valid_payment_method = True
+
+        if not valid_payment_method:
+            return HttpResponse(
+                json.dumps({"error": "Metodo de pago no encontrado"}),
+                status=404,
+                content_type="application/json",
+            )
+
+        off_session = save_card or payment_method != "Nueva Tarjeta"
+
+        # If it is, create an intent
         intent = stripe.PaymentIntent.create(
-            setup_future_usage="off_session" if data["save_card"] else None,
+            setup_future_usage="off_session" if off_session else None,
             # total is multiplied by 100 because stripe works with cents
             amount=int(total) * 100,
             currency="eur",
             customer=request.user.customer.stripe_customer_id,
+            payment_method=payment_method
+            if payment_method != "Nueva Tarjeta"
+            else None,
+            confirm=True if payment_method != "Nueva Tarjeta" else False,
+            # No redirects
+            automatic_payment_methods={
+                "enabled": True,
+                "allow_redirects": "never",
+            }
+            if payment_method != "Nueva Tarjeta"
+            else {},
         )
     # except Exception as e:
     #     return HttpResponse(json.dumps({"error": e.error}), status=400)

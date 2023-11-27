@@ -9,10 +9,7 @@ from apps.users.models import Customer
 def delete(request, payment_method_id):
     user = request.user
     customer = Customer.objects.get(user=user)
-    stripe_customer = stripe.Customer.retrieve(customer.stripe_customer_id)
-    payment_methods = stripe.PaymentMethod.list(
-        customer=stripe_customer.id, type="card"
-    )
+    payment_methods = customer.get_stripe_payment_methods()
 
     for payment_method in payment_methods:
         if payment_method.id == payment_method_id:

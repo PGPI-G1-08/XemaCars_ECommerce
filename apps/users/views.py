@@ -19,7 +19,7 @@ from apps.users.forms import (
     LoginForm,
     RegisterForm,
     EditForm,
-    EditDeliveryPointAndPaymentMethodForm,
+    DeliveryAndPaymentForm,
 )
 
 
@@ -33,7 +33,7 @@ def profile(request):
     if request.method == "POST":
         data = request.POST.copy()
         data["delivery_points"] = delivery_point
-        form = EditDeliveryPointAndPaymentMethodForm(data)
+        form = DeliveryAndPaymentForm(data)
         if form.is_valid():
             user = request.user
 
@@ -57,7 +57,7 @@ def profile(request):
     if request.method == "GET":
         user = request.user
         customer = Customer.objects.get(user=user)
-        form = EditDeliveryPointAndPaymentMethodForm(
+        form = DeliveryAndPaymentForm(
             data={
                 "delivery_points": delivery_point,
                 "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
@@ -208,12 +208,8 @@ class UserEditView(TemplateView):
 
 @login_required(login_url="/signin")
 def get_stripe_payment_methods(request):
-    user = request.user
-    customer = Customer.objects.get(user=user)
-    stripe_customer = stripe.Customer.retrieve(customer.stripe_customer_id)
-    payment_methods = stripe.PaymentMethod.list(
-        customer=stripe_customer.id, type="card"
-    )
+    customer = request.user.customer
+    payment_methods = customer.get_stripe_payment_methods()
     return render(
         request, "users/payment_methods.html", {"payment_methods": payment_methods}
     )

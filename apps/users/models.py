@@ -33,5 +33,14 @@ class Customer(models.Model):
         self.stripe_customer_id = stripe.Customer.create(email=self.user.email).id
         super().save(*args, **kwargs)
 
+    def get_stripe_payment_methods(self):
+        if self.stripe_customer_id == None:
+            self.stripe_customer_id = stripe.Customer.create(email=self.user.email).id
+        stripe_customer = stripe.Customer.retrieve(self.stripe_customer_id)
+        payment_methods = stripe.PaymentMethod.list(
+            customer=stripe_customer.id, type="card"
+        )
+        return payment_methods
+
     def __str__(self):
         return self.user.username
