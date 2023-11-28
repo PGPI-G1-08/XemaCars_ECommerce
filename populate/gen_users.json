@@ -6,8 +6,8 @@
             "username": "admin",
             "first_name": "Nombre_1",
             "last_name": "Apellido_1",
-            "email": "correo_1@example.com",
-            "password": "adminadmin",
+            "email": "correo_admin@example.com",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$n06yiBaRIKrUjXC9OFivzQ9r5243PpJ13/erEuKV7fc=",
             "is_superuser": true,
             "is_staff": true,
             "is_active": true
@@ -21,7 +21,7 @@
             "first_name": "Nombre_1",
             "last_name": "Apellido_1",
             "email": "correo_1@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -35,7 +35,7 @@
             "first_name": "Nombre_2",
             "last_name": "Apellido_2",
             "email": "correo_2@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -49,7 +49,7 @@
             "first_name": "Nombre_3",
             "last_name": "Apellido_3",
             "email": "correo_3@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -63,7 +63,7 @@
             "first_name": "Nombre_4",
             "last_name": "Apellido_4",
             "email": "correo_4@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -77,7 +77,7 @@
             "first_name": "Nombre_5",
             "last_name": "Apellido_5",
             "email": "correo_5@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -91,7 +91,7 @@
             "first_name": "Nombre_6",
             "last_name": "Apellido_6",
             "email": "correo_6@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -105,7 +105,7 @@
             "first_name": "Nombre_7",
             "last_name": "Apellido_7",
             "email": "correo_7@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -119,7 +119,7 @@
             "first_name": "Nombre_8",
             "last_name": "Apellido_8",
             "email": "correo_8@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -133,7 +133,7 @@
             "first_name": "Nombre_9",
             "last_name": "Apellido_9",
             "email": "correo_9@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
@@ -147,7 +147,7 @@
             "first_name": "Nombre_10",
             "last_name": "Apellido_10",
             "email": "correo_10@example.com",
-            "password": "password1",
+            "password": "pbkdf2_sha256$390000$f1nd1ngn3m0$4kzzSaWfERbH4Ghz2bkHWjqAQNsQZdGS/9DxE//tw+Q=",
             "is_superuser": false,
             "is_staff": false,
             "is_active": true
