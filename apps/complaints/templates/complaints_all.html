@@ -26,13 +26,15 @@
                                 {% endif %}
                                 <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
                             </div>
+                        </div>
+                        <div class="title-date">
+                            <p>{{ complaint.description }}</p>
                             {% if user.is_superuser %}
                                 {% if complaint.status == "Abierto" %}
-                                    <a href="/complaints/answer/{{ complaint.id }}" class="edit-button">Responder</a>
+                                    <a href="/complaints/answer/{{ complaint.id }}" class="primary-button">Responder</a>
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <p>{{ complaint.description }}</p>
                         {% if complaint.status == "Cerrado" %}
                             <br>
                             <strong>Respuesta: </strong><span>{{ complaint.answer }}</span>

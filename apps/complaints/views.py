@@ -38,7 +38,7 @@ class ComplaintAllView(LoginRequiredMixin, ListView):
     login_url = "/signin/"
 
     def get_queryset(self):
-        return Complaint.objects.all()
+        return Complaint.objects.all().order_by("status")
 
 
 class ComplaintAnswerView(UserPassesTestMixin, UpdateView):
