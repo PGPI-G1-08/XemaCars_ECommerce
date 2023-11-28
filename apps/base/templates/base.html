@@ -40,7 +40,9 @@
                 <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
                     <a href="/profile">Perfil</a>
-                    <a href="/complaints">Reclamaciones</a>
+                    {% if not user.is_superuser %}
+                        <a href="/complaints">Reclamaciones</a>
+                    {% endif %}
                     <a href="/logout">Cerrar Sesión</a>
                 </div>
             </div>

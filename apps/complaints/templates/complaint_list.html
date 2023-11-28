@@ -18,12 +18,22 @@
             <div class="card">
                 <div class="title-date">
                     <h3 class="title">{{ complaint.title }}</h3>
-                    <h3>{{ complaint.date|date:"d/m/Y H:i" }}</h3>
+                    <div class="status-date">
+                        {% if complaint.status == "Abierto" %}
+                            <h3 class="available-text">Abierto</h3>
+                        {% else %}
+                            <h3 class="not-available-text">Cerrado</h3>
+                        {% endif %}
+                        <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
+                    </div>
                 </div>
                 <p>{{ complaint.description }}</p>
             </div>
         {% endfor %}
     {% else %}
-        <h1 style="margin: 40px 0">No hay reclamaciones</h1>
+        <div class="hero-add">
+            <h1 style="margin: 40px 0">No hay reclamaciones</h1>
+            <a href="/complaints/add" class="primary-button">Añadir</a>
+        </div>
     {% endif %}
 {% endblock %}

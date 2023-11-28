@@ -11,7 +11,7 @@ class Complaint(models.Model):
 
     STATUS_CHOICES = [("abierto", "Abierto"), ("cerrado_solucionado", "Cerrado")]
 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="open")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Abierto")
 
     def __str__(self):
         return self.title
