@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from apps.products.forms import FilterForm
 from apps.products.models import Product
@@ -19,9 +19,11 @@ def index(request):
                 for product in products
                 if name.lower() in product.complete_name.lower()
             ]
-        return render(
-            request, "product-list.html", {"products": products, "form": form}
-        )
+
+        products = [product.id for product in products]
+        request.session["products"] = products
+        request.session["form"] = form.cleaned_data
+        return redirect("/products")
     else:
         return render(request, "home.html", {"form": form})
 

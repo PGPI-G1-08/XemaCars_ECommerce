@@ -49,7 +49,14 @@ class ProductAddView(TemplateView):
 class ProductListView(TemplateView):
     def get(self, request):
         form = FilterForm()
-        products = Product.objects.all()
+        if request.session.get("products") is not None:
+            products_session = request.session["products"]
+            products = Product.objects.filter(id__in=products_session)
+            form = FilterForm(request.session["form"])
+            del request.session["products"]
+            del request.session["form"]
+        else:
+            products = Product.objects.all()
         return render(
             request, "product-list.html", {"products": products, "form": form}
         )
