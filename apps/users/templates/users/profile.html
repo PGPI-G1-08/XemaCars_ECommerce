@@ -29,12 +29,12 @@
         <form method="post">
             {% csrf_token %}
             <div class="select-field">      
-                <label for="id_payment_method">Método de Pago:</label>
+                <label for="id_payment_method">Método de Pago por Defecto:</label>
                 {{ form.payment_method }}
                 <a class="secondary-button">Gestionar métodos de pago</a>
             </div>
             <div class="select-field">
-                <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                <label for="id_preferred_delivery_point">Punto de Recogida por Defecto:</label>
                 {{ form.preferred_delivery_point }}
             </div>
             <div class="button-container">

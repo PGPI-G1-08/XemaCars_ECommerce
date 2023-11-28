@@ -12,11 +12,8 @@ class Customer(models.Model):
     )
     address = models.CharField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=255, blank=True)
-    payment_methods = models.ManyToOneRel(
-        "payments.PaymentMethod",
-        on_delete=models.CASCADE,
-        field_name="customer",
-        to="payments.PaymentMethod",
+    preferred_payment_method = models.ForeignKey(
+        "payments.PaymentMethod", on_delete=models.SET_NULL, null=True, blank=True
     )
     preferred_delivery_point = models.ForeignKey(
         "products.DeliveryPoint", on_delete=models.SET_NULL, null=True, blank=True
