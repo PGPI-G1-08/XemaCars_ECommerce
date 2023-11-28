@@ -24,6 +24,14 @@ class Product(models.Model):
     # To prevent products from being deleted if they are in an order
     available = models.BooleanField(default=True)
 
+    @property
+    def average_rating(self):
+        opinions = self.opinion_set.all()
+        if len(opinions) > 0:
+            return opinions.aggregate(models.Avg("rating"))["rating__avg"]
+        else:
+            return 0
+
     def __str__(self):
         return self.name
 
@@ -35,7 +43,7 @@ class DeliveryPoint(models.Model):
     )
 
     delivery_type = models.CharField(max_length=255, choices=DELIVERY_TYPES)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)

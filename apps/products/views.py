@@ -1,17 +1,23 @@
 import json
 
 from apps.orders.models import OrderProduct
+from apps.opinions.models import Opinion
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm
+from .forms import ProductForm, FilterForm, CarSearchForm, OpinionForm
 from .models import Product
 
 
 class ProductAddView(TemplateView):
     def post(self, request):
         if request.method == "POST":
+            post = request.POST.copy()
+            post["price"] = post["price"].replace(",", ".")
+            request.POST = post
             form = ProductForm(request.POST)
             if form.is_valid():
                 product = Product(
@@ -82,13 +88,43 @@ class ProductListView(TemplateView):
 
 class ProductDetailView(TemplateView):
     def get(self, request, pk):
+        opinions = Product.objects.get(pk=pk).opinion_set.all()
         product = get_object_or_404(Product, pk=pk)
-        return render(request, "detail.html", {"product": product})
+        form = OpinionForm(initial={"customer": request.user.id, "product": product.id})
+        return render(
+            request,
+            "detail.html",
+            {"product": product, "opinions": opinions, "form": form},
+        )
+
+    def post(self, request, pk):
+        if request.user.is_anonymous:
+            return redirect("/signin")
+
+        form = OpinionForm(request.POST)
+        opinions = Product.objects.get(pk=pk).opinion_set.all()
+        product = get_object_or_404(Product, pk=pk)
+
+        if form.is_valid():
+            opinion = Opinion(
+                product=Product.objects.get(pk=pk),
+                customer=request.user.customer,
+                rating=form.cleaned_data["rating"],
+                title=form.cleaned_data["title"],
+                description=form.cleaned_data["description"],
+            )
+            opinion.save()
+
+        return render(
+            request,
+            "detail.html",
+            {"product": product, "opinions": opinions, "form": form},
+        )
 
 
 def get_disabled_dates(_, pk):
     product = get_object_or_404(Product, pk=pk)
-    orders = OrderProduct.objects.filter(product=product)
+    orders = OrderProduct.objects.filter(product=product).exclude(cancelled=True)
 
     data = {}
     disabled_dates = []
@@ -102,3 +138,88 @@ def get_disabled_dates(_, pk):
 
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+# ADMIN
+class ProductDeleteView(TemplateView):
+    def get(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            return render(request, "delete.html", {"product": product})
+        else:
+            return render(request, "forbidden.html")
+
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            product.delete()
+            return redirect("http://127.0.0.1:8000/products")
+        else:
+            return render(request, "forbidden.html")
+
+
+class ProductUpdateView(TemplateView):
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = ProductForm(instance=product)
+        if request.user.is_superuser:
+            return render(request, "edit.html", {"product": product, "form": form})
+        else:
+            return render(request, "forbidden.html")
+
+    def post(self, request, pk):
+        if request.user.is_superuser:
+            product = get_object_or_404(Product, pk=pk)
+            post = request.POST.copy()
+            post["price"] = post["price"].replace(",", ".")
+            request.POST = post
+            form = ProductForm(request.POST)
+            if request.method == "POST":
+                if form.is_valid():
+                    if form.cleaned_data.get("name"):
+                        product.name = form.cleaned_data.get("name")
+                    if form.cleaned_data.get("brand"):
+                        product.brand = form.cleaned_data.get("brand")
+                    if form.cleaned_data.get("year"):
+                        product.year = form.cleaned_data.get("year")
+                    if form.cleaned_data.get("combustion_type"):
+                        product.combustion_type = form.cleaned_data.get(
+                            "combustion_type"
+                        )
+                    if form.cleaned_data.get("description"):
+                        product.description = form.cleaned_data.get("description")
+                    if form.cleaned_data.get("price"):
+                        product.price = form.cleaned_data.get("price")
+                    if form.cleaned_data.get("image_url"):
+                        product.image_url = form.cleaned_data.get("image_url")
+                    product.available = form.cleaned_data.get("available")
+                    product.save()
+                    return redirect("/products")
+                else:
+                    return render(
+                        request, "edit.html", {"product": product, "form": form}
+                    )
+        else:
+            return render(request, "forbidden.html")
+
+
+class CarSearchView(TemplateView):
+    def get(self, request):
+        formCarSearch = CarSearchForm(request.GET)
+        filtered_products = []
+        if formCarSearch.is_valid() and formCarSearch.cleaned_data["search"] != "":
+            search_query = formCarSearch.cleaned_data["search"]
+            products = Product.objects.all()
+            for product in products:
+                product.complete_name = product.name + " " + product.brand
+
+            filtered_products = [
+                product
+                for product in products
+                if search_query.lower() in product.complete_name.lower()
+            ]
+        else:
+            return redirect("/products")
+
+        products = Product.objects.all()
+        return render(request, "product-list.html", {"products": filtered_products})

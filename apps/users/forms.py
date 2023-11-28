@@ -7,15 +7,15 @@ from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from apps.products.models import DeliveryPoint
 
-from apps.payments.models import PAYMENT_FORMS, PaymentMethod
-from apps.users.models import Customer
+from apps.payments.models import PAYMENT_FORMS
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
+    email = forms.EmailField(
         required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Usuario"}),
+        widget=forms.EmailInput(attrs={"placeholder": "Correo electrónico"}),
     )
+
     password = forms.CharField(
         required=True,
         min_length=6,
@@ -23,6 +23,12 @@ class LoginForm(forms.Form):
     )
 
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El usuario no existe")
+        return email
 
 
 class RegisterForm(UserCreationForm):
@@ -67,6 +73,12 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("El usuario ya existe")
         return username
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El correo electrónico ya existe")
+        return email
+
 
 class EditForm(forms.Form):
     first_name = forms.CharField(
@@ -94,15 +106,15 @@ class EditForm(forms.Form):
 
 
 class EditDeliveryPointAndPaymentMethodForm(forms.Form):
-    delivery_points = [
-        (delivery_point.get("name"), delivery_point.get("name"))
-        for delivery_point in DeliveryPoint.objects.values()
-    ]
-    preferred_delivery_point = forms.ChoiceField(
-        required=False,
-        choices=[("", "Seleccione un punto de recogida")] + delivery_points,
-    )
+    preferred_delivery_point = forms.ChoiceField()
     payment_method = forms.ChoiceField(
         required=False,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
+
+    def __init__(self, *args, **kwargs):
+        super(EditDeliveryPointAndPaymentMethodForm, self).__init__(*args, **kwargs)
+        if self.data.get("delivery_points"):
+            self.fields.get("preferred_delivery_point").choices = self.data.get(
+                "delivery_points"
+            )

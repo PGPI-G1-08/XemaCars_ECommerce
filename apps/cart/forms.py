@@ -3,16 +3,19 @@ from apps.products.models import DeliveryPoint
 from apps.payments.models import PAYMENT_FORMS, PaymentMethod
 from django import forms
 
+
 class EditDeliveryPointAndPaymentMethodForm(forms.Form):
-    delivery_points = [
-        (delivery_point.get("name"), delivery_point.get("name"))
-        for delivery_point in DeliveryPoint.objects.values()
-    ]
-    preferred_delivery_point = forms.ChoiceField(
-        required=False,
-        choices=[("", "Seleccione un punto de recogida")] + delivery_points,
-    )
+    preferred_delivery_point = forms.ChoiceField(required=False)
+
     payment_method = forms.ChoiceField(
-        required=False,
+        required=True,
         choices=[("", "Seleccione un método de pago")] + list(PAYMENT_FORMS),
     )
+    email = forms.EmailField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.data.get("delivery_points"):
+            self.fields.get("preferred_delivery_point").choices = self.data.get(
+                "delivery_points"
+            )

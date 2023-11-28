@@ -1,0 +1,242 @@
+[
+    {
+        "model": "opinions.opinion",
+        "pk": 1,
+        "fields": {
+            "customer": 4,
+            "product": 1,
+            "title": "Increíble rendimiento",
+            "description": "Este coche tiene un rendimiento excepcional. Su motor es potente y eficiente. ¡Me encanta!",
+            "rating": 5,
+            "created_at": "2023-11-20T19:46:50.636Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 2,
+        "fields": {
+            "customer": 2,
+            "product": 1,
+            "title": "Problemas constantes",
+            "description": "Desde el primer día, he tenido problemas con la transmisión. Es decepcionante considerando el precio del coche.",
+            "rating": 2,
+            "created_at": "2023-11-21T15:30:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 3,
+        "fields": {
+            "customer": 3,
+            "product": 1,
+            "title": "Buena relación calidad-precio",
+            "description": "Este coche ofrece una buena relación calidad-precio. Es cómodo y tiene características modernas.",
+            "rating": 4,
+            "created_at": "2023-11-22T12:15:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 4,
+        "fields": {
+            "customer": 4,
+            "product": 2,
+            "title": "Mejor de lo que esperaba",
+            "description": "Compré este coche con ciertas dudas, pero ha superado mis expectativas. Es elegante y tiene un buen rendimiento.",
+            "rating": 5,
+            "created_at": "2023-11-23T09:45:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 5,
+        "fields": {
+            "customer": 5,
+            "product": 2,
+            "title": "Problemas con la electrónica",
+            "description": "Experimenté problemas con la electrónica del coche. La pantalla táctil y otros sistemas no funcionan de manera consistente.",
+            "rating": 2,
+            "created_at": "2023-11-24T18:20:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 6,
+        "fields": {
+            "customer": 6,
+            "product": 2,
+            "title": "Buen diseño pero falta potencia",
+            "description": "El diseño exterior es atractivo, pero la potencia del motor no es tan impresionante como esperaba.",
+            "rating": 3,
+            "created_at": "2023-11-25T14:30:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 7,
+        "fields": {
+            "customer": 7,
+            "product": 3,
+            "title": "Muy satisfecho",
+            "description": "Este coche es todo lo que esperaba y más. Confortable, seguro y con un excelente rendimiento en carretera.",
+            "rating": 5,
+            "created_at": "2023-11-26T12:00:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 8,
+        "fields": {
+            "customer": 8,
+            "product": 3,
+            "title": "Demasiados problemas mecánicos",
+            "description": "A pesar de un buen inicio, el coche ha tenido varios problemas mecánicos. Las visitas al taller son constantes.",
+            "rating": 2,
+            "created_at": "2023-11-27T10:15:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 9,
+        "fields": {
+            "customer": 9,
+            "product": 3,
+            "title": "Buena elección",
+            "description": "Después de investigar mucho, elegí este coche y no me arrepiento. Cumple con mis necesidades y expectativas.",
+            "rating": 4,
+            "created_at": "2023-11-28T16:45:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 10,
+        "fields": {
+            "customer": 10,
+            "product": 4,
+            "title": "Me decepcionó",
+            "description": "El coche tiene un diseño atractivo, pero he tenido múltiples problemas de fiabilidad. No lo recomendaría.",
+            "rating": 1,
+            "created_at": "2023-11-29T19:30:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 11,
+        "fields": {
+            "customer": 2,
+            "product": 4,
+            "title": "Agradable sorpresa",
+            "description": "Inicialmente tenía dudas, pero este coche ha demostrado ser una agradable sorpresa. Confiabilidad y rendimiento sólidos.",
+            "rating": 4,
+            "created_at": "2023-11-30T14:20:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 12,
+        "fields": {
+            "customer": 2,
+            "product": 5,
+            "title": "Sencillo y confiable",
+            "description": "Un coche sencillo pero confiable. Perfecto para el uso diario. No tuve problemas significativos hasta ahora.",
+            "rating": 4,
+            "created_at": "2023-12-01T11:45:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 13,
+        "fields": {
+            "customer": 3,
+            "product": 5,
+            "title": "Buena relación calidad-precio",
+            "description": "Este coche ofrece una buena relación calidad-precio. No es lujoso, pero cumple con mis necesidades diarias.",
+            "rating": 3,
+            "created_at": "2023-12-02T17:10:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 14,
+        "fields": {
+            "customer": 4,
+            "product": 6,
+            "title": "Expectativas superadas",
+            "description": "Compré este coche con ciertas expectativas, pero ha superado todas ellas. Diseño elegante y rendimiento sólido.",
+            "rating": 5,
+            "created_at": "2023-12-03T09:00:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 15,
+        "fields": {
+            "customer": 5,
+            "product": 6,
+            "title": "Problemas de fabricación",
+            "description": "Tuve problemas de fabricación con este coche. Algunos detalles internos se desgastaron rápidamente.",
+            "rating": 2,
+            "created_at": "2023-12-04T14:40:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 16,
+        "fields": {
+            "customer": 6,
+            "product": 7,
+            "title": "Confortable y elegante",
+            "description": "Este coche ofrece un viaje confortable y tiene un diseño elegante. ¡Me encanta conducirlo!",
+            "rating": 4,
+            "created_at": "2023-12-05T12:30:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 17,
+        "fields": {
+            "customer": 7,
+            "product": 7,
+            "title": "No es tan eficiente en combustible",
+            "description": "Aunque el coche es cómodo, no es tan eficiente en combustible como esperaba. Consumo algo alto.",
+            "rating": 3,
+            "created_at": "2023-12-06T16:20:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 18,
+        "fields": {
+            "customer": 8,
+            "product": 8,
+            "title": "Problemas de transmisión",
+            "description": "Experimenté problemas con la transmisión después de unos meses. Fue costoso reparar.",
+            "rating": 1,
+            "created_at": "2023-12-07T10:50:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 19,
+        "fields": {
+            "customer": 9,
+            "product": 8,
+            "title": "No lo recomendaría",
+            "description": "Aunque tiene un buen aspecto exterior, este coche ha tenido problemas mecánicos frecuentes. No lo recomendaría.",
+            "rating": 2,
+            "created_at": "2023-12-08T13:15:00.000Z"
+        }
+    },
+    {
+        "model": "opinions.opinion",
+        "pk": 20,
+        "fields": {
+            "customer": 10,
+            "product": 9,
+            "title": "Buen coche para la familia",
+            "description": "Este coche es ideal para familias. Espacioso y con muchas características de seguridad. Muy satisfecho.",
+            "rating": 4,
+            "created_at": "2023-12-09T11:30:00.000Z"
+        }
+    }
+]

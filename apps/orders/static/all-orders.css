@@ -1,0 +1,69 @@
+.card {
+    background-color: var(--secondary-color);
+    width: 700px;
+    margin: 40px 0;
+}
+
+table {
+    width: 100%;
+    margin: 20px 0
+}
+
+td {
+    text-align: center;
+    width: 16%;
+}
+
+#customer-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#estado-cancelar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+h3 {
+    margin: 0;
+}
+
+.primary-button {
+    margin: 10px auto !important;
+    padding: 5px 5px !important;
+    font-family: var(--fuente1);
+    border-radius: 50% !important;
+}
+
+.disabled-btn {
+    background-color: var(--grey) !important;
+    color: var(--black);
+    transition: var(--transition-duration);
+    font-family: var(--fuente1);
+    cursor: not-allowed !important;
+    margin: 10px auto !important;
+    padding: 5px 5px !important;
+    border-radius: 50% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.disabled-btn span {
+    margin: 0;
+    padding: 0;
+}
+
+.disabled-btn:hover {
+    background-color: var(--grey);
+}
+
+.order {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px
+}

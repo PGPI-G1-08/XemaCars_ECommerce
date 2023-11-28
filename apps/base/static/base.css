@@ -378,6 +378,16 @@ footer a {
   background-color: var(--grey);
 }
 
+/* LINK ICON */
+
+.icon-link {
+  color: var(--orange);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 /* CARD */
 
 .card-container {
@@ -461,6 +471,43 @@ footer a {
   box-shadow: var(--box-shadow);
 }
 
+#form-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  padding: 0px;
+  border-radius: 12px;
+}
+
+#form-header button[type='submit'] {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0px 10px 10px 0px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#form-header input {
+  padding: 10px;
+  width: 200px;
+  height: 30px;
+  font-family: var(--fuente2);
+  font-size: var(--body-text);
+  border: 1px solid var(--grey);
+  border-radius: 10px 0px 0px 10px;
+}
+
+#form-header button[type='submit']:hover {
+  background-color: var(--dark-orange);
+}
+
 .form-field:not(.checkbox) {
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -521,6 +568,17 @@ button[type='submit'] {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black"><path d="M7 7l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
+}
+
+.form textarea {
+  padding: 10px;
+  font-family: var(--fuente2);
+  font-size: var(--body-text);
+  border: 1px solid var(--grey);
+  border-radius: var(--border-radius);
+  resize: vertical;
+  min-height: 100px;
+  max-height: 300px;
 }
 
 .form-errors {

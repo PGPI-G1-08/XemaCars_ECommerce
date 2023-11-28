@@ -13,8 +13,11 @@
     <h2 id="title">Resumen de la compra</h2>  
     <section class="summary-contents">
         {% for item in cart_products %}
-            <div id="product-{{item.product.id}}" class="summary-item">
-                <div class="summary-item-info">
+            <div id="product-{{item.product.id}}" class="cart-item">
+                <div class="cart-item-image">
+                    <img class="car-img" src="{{item.product.image_url}}" alt="Imagen del producto">
+                </div>
+                <div class="cart-item-info">
                     <h3>{{item.product.name}}</h3>
                     <attribute>
                         <label>Desde: </label>
@@ -30,6 +33,12 @@
         <div class="delivery-payment">
             <form method="post">
                 {% csrf_token %}
+                {% if not user.is_authenticated %}
+                <div class="select-field">
+                    <label for="id_email">Email:</label>
+                    {{ form.email }}
+                </div>
+                {% endif %}
                 <div class="select-field">      
                     <label for="id_payment_method">Método de Pago:</label>
                     {{ form.payment_method }}
@@ -44,8 +53,102 @@
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
         </div>
+        <p id="error-msg"></p>
         <div class="button-buy">
-            <button class="primary-button" type="submit">Confirmar compra</button>
+            <a id="buy-btn" class="primary-button">Confirmar compra</a>
         </div>
-    </section>  
+    </section> 
+    <div class="modal">
+        <div class="modal-content form card-container">
+            <div class="confirm">
+                <h2>¿Quiere confirmar la compra?</h2>
+            </div>
+            <div class="cancel-accept">
+                <a id="cancel-btn" class="secondary-button">Cancelar</a>
+                <a id="confirm-btn" class="primary-button">Confirmar</a>
+            </div>
+        </div>
+    </div> 
 {% endblock %}
+
+
+<script>
+    {% block extrajs %}
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyButton = document.querySelector('.button-buy');
+        buyButton.addEventListener('click', () => {
+            if (validateData()){
+                spawnModal();
+            }
+        });
+    });
+
+    function validateData() {
+        const paymentMethod = document.querySelector('#id_payment_method').value;
+        const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        if (paymentMethod == '' || deliveryPoint == '') {
+            showNotification('Debe seleccionar un método de pago y un punto de recogida', 'success');
+            return false;
+        }
+        {% if not user.is_authenticated %}
+            const email = document.querySelector('#id_email').value;
+            if (email == '') {
+                showNotification('Debe introducir un email', 'success');
+                return false;
+            }
+        {% endif %}
+        return true;
+    }
+
+    async function addOrder(){
+        const paymentMethod = document.querySelector('#id_payment_method').value;
+        const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        const response = await fetch("/orders/add",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'payment_method': paymentMethod,
+                'delivery_point': deliveryPoint,
+                {% if not user.is_authenticated %}
+                    'email': document.querySelector('#id_email').value,
+                {% endif %}
+            }) 
+        });
+
+        const data = await response.json();
+        if (data.error) {
+            const error_msg = document.querySelector('#error-msg');
+            error_msg.innerHTML = data.error;
+        } else {
+            closeModal();
+            window.location.href = '/products';
+        }
+        
+    }
+
+    function closeModal() {
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'none';
+    }
+
+    
+    async function spawnModal() {
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'flex';
+        const close = document.querySelector('#cancel-btn');
+        close.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        const confirm = document.querySelector('#confirm-btn');
+        confirm.addEventListener('click', () => {
+            addOrder();
+        });
+        
+    }
+
+    {% endblock %}
+</script>
+
