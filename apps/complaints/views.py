@@ -2,10 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
+from django.views.generic.edit import UpdateView
 from .forms import ComplaintForm, AnswerForm
 from .models import Complaint
-from django.views.generic import TemplateView
-
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import UserPassesTestMixin
 # Create your views here.
 
 
@@ -39,31 +40,20 @@ class ComplaintAllView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Complaint.objects.all()
 
-class ComplaintAnswerView(TemplateView):
-    def get(self, request, pk):
-        if request.user.is_superuser:
-            form = AnswerForm()
-            complaint = Complaint.objects.get(customer=customer, pk=pk)
-            return render(
-                request, "complaints/answer_complaint.html", {"complaint": complaint, "form": form}
-            )
-        else:
-            return render(request, "forbidden.html")
 
-    def post(self, request, pk):
-        if request.user.is_superuser:
-            complaint = Complaint.objects.get(customer=customer, pk=pk)
-            form = AnswerForm(request.POST)
-            if form.is_valid():
-                if form.cleaned_data.get("answer"):
-                    complaint.answer = form.cleaned_data.get("answer")
-                complaint.save()
-                return redirect("/complaints/list")
-            else:
-                return render(
-                    request, "complaints/answer_complaint.html", {"complaint": complaint, "form": form}
-                )
-        else:
-            return render(request, "forbidden.html")
+class ComplaintAnswerView(UserPassesTestMixin, UpdateView):
+    model = Complaint
+    form_class = AnswerForm
+    template_name = "answer_complaint.html"
+    success_url = "/complaints/list"
+    login_url = "/signin/"
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def form_valid(self, form):
+        form.instance.status = "Cerrado"
+        return super().form_valid(form)
+
+    
     
