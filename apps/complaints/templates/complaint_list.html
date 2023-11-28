@@ -28,6 +28,10 @@
                     </div>
                 </div>
                 <p>{{ complaint.description }}</p>
+                {% if complaint.status == "Cerrado" %}
+                    <br>
+                    <strong>Respuesta: </strong><span>{{ complaint.answer }}</span>
+                {% endif %}
             </div>
         {% endfor %}
     {% else %}
