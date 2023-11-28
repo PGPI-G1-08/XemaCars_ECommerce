@@ -30,6 +30,7 @@
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
                 <a href="/products/add" class="header-profile">Añadir Producto</a>
+                <a href="/complaints/list" class="header-profile">Reclamaciones</a>
                 <a href={% url 'all-orders' %} class="header-profile">Todos los Pedidos</a>
             {% endif %}
             <div class="dropdown">

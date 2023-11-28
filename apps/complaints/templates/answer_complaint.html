@@ -1,0 +1,19 @@
+<h2>Responder Reclamación</h2>
+
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Responder Reclamación{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "add_complaint.css" %}">
+{% endblock %}
+
+{% block content %}
+  <form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Responder</button>
+  </form>
+{% endblock %}
