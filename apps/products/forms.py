@@ -25,6 +25,12 @@ class ProductForm(ModelForm):
 
 
 class FilterForm(forms.Form):
+    nombre = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "¿Qué coche deseas?"}),
+    )
+
     año_mínimo = forms.IntegerField(
         required=False,
     )
@@ -91,7 +97,3 @@ class OpinionForm(forms.Form):
             raise ValidationError(
                 "No puedes opinar sobre un producto que no has comprado"
             )
-
-
-class CarSearchForm(forms.Form):
-    search = forms.CharField(max_length=255)
