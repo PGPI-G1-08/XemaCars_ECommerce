@@ -91,17 +91,13 @@ WSGI_APPLICATION = "XemaCars_ECommerce.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DB_DOCKER_NAME = env("DB_DOCKER_NAME")
-DB_DOCKER_USER = env("DB_DOCKER_USER")
-DB_DOCKER_PASSWORD = env("DB_DOCKER_PASSWORD")
-DB_DOCKER_HOST = env("DB_DOCKER_HOST")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_DOCKER_NAME,
-        "USER": DB_DOCKER_USER,
-        "PASSWORD": DB_DOCKER_PASSWORD,
-        "HOST": DB_DOCKER_HOST,
+        "NAME": "xemacarsdb",
+        "USER": "xemacars",
+        "PASSWORD": "xemacars",
+        "HOST": "db",
     }
 }
 
