@@ -1,0 +1,12 @@
+.content p {
+    display: flex;
+    flex-direction: column;
+}
+
+.content label {
+    margin: 10px 0
+}
+
+.content button {
+    margin-top: 20px
+}

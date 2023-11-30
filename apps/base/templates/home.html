@@ -9,4 +9,28 @@
     <img src="{% static 'hero.jpg' %}" alt="hero">
     <h1 id="xemacars">XemaCars</h1>
     <h3 id="slogan">Alquiler de coches de lujo a precio de amigo</h3>
+    <form id="form-header" method="post">
+        {% csrf_token %}
+            {{ form.nombre }}
+            <div id="hidden-form">
+                {{ form.año_mínimo.label_tag }}
+                {{ form.año_mínimo }}
+                {{ form.marca.label_tag }}
+                {{ form.marca }}
+                {{ form.tipo_de_combustión.label_tag }}
+                {{ form.tipo_de_combustión }}
+                {{ form.precio_máximo.label_tag }}
+                {{ form.precio_máximo }}
+                {{ form.non_field_errors }}
+                <div class="field-wrapper">
+                    {{ form.solo_disponibles.label_tag }}
+                    {{ form.solo_disponibles }}
+                </div>
+                <div class="links">
+                    <input type="submit" value="Filtrar">
+                    <a href="/products">Resetear Filtros</a>
+                </div>
+            </div>
+            <button type="submit">Buscar <span class="material-icons">search</span></button>
+    </form>
 {% endblock %}

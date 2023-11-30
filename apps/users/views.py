@@ -73,28 +73,24 @@ def profile(request):
 class LoginView(TemplateView):
     def post(self, request):
         form = LoginForm(request.POST)
-        message = None
 
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             remember_me = form.cleaned_data.get("remember_me")
+            username = User.objects.get(email=email).username
 
             user = authenticate(username=username, password=password)
 
             if user is not None:
                 login(request, user)
 
-                if not remember_me:
-                    request.session.set_expiry(0)
+                if remember_me:
+                    request.session.set_expiry(1209600)
 
                 return redirect("/")
-            else:
-                message = "Usuario o contraseña incorrectos"
-        else:
-            message = "Formulario inválido"
 
-        return render(request, "users/login.html", {"form": form, "message": message})
+        return render(request, "users/login.html", {"form": form})
 
     def get(self, request):
         form = LoginForm()
@@ -109,8 +105,6 @@ def logout_view(request):
 class RegisterView(APIView):
     def post(self, request):
         form = RegisterForm(request.POST)
-
-        message = None
 
         if form.is_valid():
             first_name = form.cleaned_data.get("first_name")

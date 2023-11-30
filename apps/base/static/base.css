@@ -480,6 +480,7 @@ footer a {
   max-width: 300px;
   padding: 0px;
   border-radius: 12px;
+  margin: 40px auto
 }
 
 #form-header button[type='submit'] {
