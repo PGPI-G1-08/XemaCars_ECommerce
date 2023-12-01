@@ -10,17 +10,23 @@
 
 {% block content %}
 <img src="{% static 'hero.jpg' %}" alt="hero">
-{% if message %}
-<p class="form-errors text-white">{{ message }}</p>
+{% if form.errors %}
+<section class="form-errors-container">
+    {% for field, errors in form.errors.items %}
+    <section class="form-errors">
+        <p class="text-white">{{ errors|striptags }}</p>
+    </section>
+    {% endfor %}
+</section>
 {% endif %}
 <form method="post" class="form">
     <h3 class="card-title">Bienvenido a XemaCars Ltd.</h3>
     {% csrf_token %}
     <div class="form-field">
-        <label for="id_username">
-            Usuario
+        <label for="id_email">
+            Email
         </label>
-        {{ form.username }}
+        {{ form.email }}
     </div>
     <div class="form-field">
         <label for="id_password">
@@ -29,7 +35,7 @@
         {{ form.password }}
     </div>
     <div class="form-field">
-       <label for="id_remember_me">Recuérdame</label><span>{{ form.remember_me }}</span>
+        <label for="id_remember_me">Recuérdame</label><span>{{ form.remember_me }}</span>
     </div>
     <button class="primary-button" type="submit">Iniciar Sesión</button>
 </form>

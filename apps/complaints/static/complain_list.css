@@ -1,0 +1,36 @@
+.card {
+    margin-bottom: 40px;
+}
+
+.title-date, .hero-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px
+}
+
+.status-date {
+    display: flex;
+    align-items: center;
+    gap: 20px
+}
+
+h3 {
+    margin: 0
+}
+
+.content h1 {
+    margin: 40px 0;
+}
+
+.content p {
+    margin-top: 10px
+}
+
+.content a{
+    text-decoration: none;
+}
+
+.title {
+    width: 70%
+}

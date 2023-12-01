@@ -67,3 +67,7 @@ footer {
 .button-products:hover {
     background-color: #0056b3; 
 }
+
+#hidden-form {
+    display: none;
+}

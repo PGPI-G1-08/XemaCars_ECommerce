@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from .forms import ProductForm, FilterForm, CarSearchForm, OpinionForm
+from .forms import ProductForm, FilterForm, OpinionForm
 from .models import Product
 
 
@@ -52,7 +52,14 @@ class ProductAddView(TemplateView):
 class ProductListView(TemplateView):
     def get(self, request):
         form = FilterForm()
-        products = Product.objects.all()
+        if request.session.get("products") is not None:
+            products_session = request.session["products"]
+            products = Product.objects.filter(id__in=products_session)
+            form = FilterForm(request.session["form"])
+            del request.session["products"]
+            del request.session["form"]
+        else:
+            products = Product.objects.all()
         return render(
             request, "product-list.html", {"products": products, "form": form}
         )
@@ -60,9 +67,10 @@ class ProductListView(TemplateView):
     def post(self, request):
         form = FilterForm(request.POST)
         if form.is_valid():
+            products = Product.objects.all()
             available = form.cleaned_data["solo_disponibles"]
             if available is True:
-                products = Product.objects.filter(available=available)
+                products = products.filter(available=available)
             else:
                 products = Product.objects.all()
             if form.cleaned_data["año_mínimo"]:
@@ -78,6 +86,16 @@ class ProductListView(TemplateView):
             if form.cleaned_data["precio_máximo"]:
                 price = form.cleaned_data["precio_máximo"]
                 products = products.filter(price__lte=price)
+            if form.cleaned_data["nombre"]:
+                name = form.cleaned_data["nombre"]
+                for product in products:
+                    product.complete_name = product.name + " " + product.brand
+
+                products = [
+                    product
+                    for product in products
+                    if name.lower() in product.complete_name.lower()
+                ]
         else:
             products = Product.objects.all()
 
@@ -138,7 +156,6 @@ def get_disabled_dates(_, pk):
 
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
-
 
 # ADMIN
 class ProductDeleteView(TemplateView):
@@ -201,25 +218,3 @@ class ProductUpdateView(TemplateView):
                     )
         else:
             return render(request, "forbidden.html")
-
-
-class CarSearchView(TemplateView):
-    def get(self, request):
-        formCarSearch = CarSearchForm(request.GET)
-        filtered_products = []
-        if formCarSearch.is_valid() and formCarSearch.cleaned_data["search"] != "":
-            search_query = formCarSearch.cleaned_data["search"]
-            products = Product.objects.all()
-            for product in products:
-                product.complete_name = product.name + " " + product.brand
-
-            filtered_products = [
-                product
-                for product in products
-                if search_query.lower() in product.complete_name.lower()
-            ]
-        else:
-            return redirect("/products")
-
-        products = Product.objects.all()
-        return render(request, "product-list.html", {"products": filtered_products})

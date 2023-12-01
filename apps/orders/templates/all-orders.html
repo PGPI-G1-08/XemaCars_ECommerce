@@ -36,7 +36,11 @@
         <div class="order">
             <div class="card">
                 <div id="customer-date">
-                    <h2>{{ order.customer }}</h2>
+                    {% if order.customer != null %}
+                        <h2>{{ order.customer }}</h2>
+                    {% else %}
+                        <h2>{{ order.email }}</h2>
+                        {% endif %}
                     <h3>{{ order.date|date:"d/m/Y" }}</h3>
                 </div>
                 <table>

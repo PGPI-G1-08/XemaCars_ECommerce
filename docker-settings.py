@@ -30,11 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="your secret key")
 DEBUG = "RENDER" not in os.environ
 
 # load production server from .env
-ALLOWED_HOSTS = []
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = ["*"]
 
 # Environment variables from .env file
 env = environ.Env()
@@ -95,27 +91,15 @@ WSGI_APPLICATION = "XemaCars_ECommerce.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if "RENDER" in os.environ:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=os.environ.get("DATABASE_URL"),
-            conn_max_age=600,
-        )
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "xemacarsdb",
+        "USER": "xemacars",
+        "PASSWORD": "xemacars",
+        "HOST": "db",
     }
-else:
-    DB_NAME = env("DB_NAME")
-    DB_USER = env("DB_USER")
-    DB_PASSWORD = env("DB_PASSWORD")
-    DB_HOST = env("DB_HOST")
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": DB_NAME,
-            "USER": DB_USER,
-            "PASSWORD": DB_PASSWORD,
-            "HOST": DB_HOST,
-        }
-    }
+}
 
 
 # Password validation
