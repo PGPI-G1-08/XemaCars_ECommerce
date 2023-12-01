@@ -1,3 +1,6 @@
+from datetime import date
+import random
+import string
 from datetime import date, datetime
 
 from django.core.exceptions import ValidationError
@@ -19,6 +22,17 @@ class Order(models.Model):
     delivery_point = models.ForeignKey(
         "products.DeliveryPoint", on_delete=models.SET_NULL, null=True
     )
+    identifier = models.CharField(max_length=30, unique=True)
+
+    def save(self, *args, **kwargs):
+        while not self.identifier:
+            identifier = " ".join(
+                "".join(random.choices(string.ascii_uppercase + string.digits, k=5))
+                for _ in range(4)
+            )
+            if not Order.objects.filter(identifier=identifier).exists():
+                self.identifier = identifier
+        super().save(*args, **kwargs)
 
     @property
     def total(self):

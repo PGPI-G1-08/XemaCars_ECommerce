@@ -26,6 +26,7 @@
                 <a href="/cart"><span class="material-icons header-profile">shopping_cart</span></a>
                 <span id="cart-count"><p></p></span>
             </div>
+            <a href={% url 'search_order' %} class="header-profile">Buscar Pedido</a>
         {% if user.is_authenticated %}
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
@@ -37,6 +38,7 @@
                 <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
                     <a href="/profile">Perfil</a>
+                    <a href={% url 'my_orders' %} class="header-profile">Mis Pedidos</a>
                     {% if not user.is_superuser %}
                         <a href="/complaints">Reclamaciones</a>
                     {% endif %}
