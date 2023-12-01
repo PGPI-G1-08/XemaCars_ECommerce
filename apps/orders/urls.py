@@ -3,7 +3,7 @@ from django.urls import path
 from .views import add_order
 
 urlpatterns = [
-    path("all_orders", views.all_orders, name="all-orders"),
+    path("all_orders", views.AdminOrdersView.as_view(), name="all-orders"),
     path("add", views.add_order, name="add_order"),
     path(
         "cancel_orderproduct/<int:orderproduct_id>/",
@@ -15,4 +15,5 @@ urlpatterns = [
         views.cancel_order,
         name="cancel_order",
     ),
+    path("client_orders", views.client_orders, name="client-orders"),
 ]

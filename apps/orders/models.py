@@ -45,13 +45,16 @@ class OrderProduct(models.Model):
     cancelled = models.BooleanField(default=False)
 
     @property
-    def order_product_status(self):
-        if self.start_date > date.today():
-            return "No empezado"
-        elif self.start_date <= date.today() and date.today() <= self.end_date:
-            return "En posesión"
+    def status(self):
+        if self.cancelled:
+            return "Cancelado"
         else:
-            return "Finalizado"
+            if self.start_date > date.today():
+                return "No empezado"
+            elif self.start_date <= date.today() and date.today() <= self.end_date:
+                return "En posesión"
+            else:
+                return "Finalizado"
 
     class Meta:
         unique_together = ("order", "product")

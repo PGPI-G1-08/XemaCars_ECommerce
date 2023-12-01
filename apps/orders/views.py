@@ -11,7 +11,8 @@ import json
 from django.shortcuts import redirect
 from django.shortcuts import render, redirect
 
-
+from .forms import FilterOrders
+from django.views.generic import TemplateView
 
 @login_required(login_url="/signin")
 def add_order(request):
@@ -54,17 +55,38 @@ def add_order(request):
 
     return HttpResponse(json.dumps({"order_id": order.id}), status=200, content_type="application/json")
 
-def all_orders(request):
-    if request.user.is_superuser:
-        orders = Order.objects.all()
-        for order in orders:
-            order.order_products = OrderProduct.objects.filter(order=order).order_by(
-                "id"
-            )
-        return render(request, "all-orders.html", {"orders": orders})
-    else:
-        return render(request, "forbidden.html")
+class AdminOrdersView(TemplateView):
+    def get(self, request):
+        if request.user.is_superuser:
+            form = FilterOrders()
+            orders = Order.objects.all()
+            for order in orders:
+                order.order_products = OrderProduct.objects.filter(order=order)
+            return render(request, "all-orders.html", {"orders": orders, "form": form})
+        else:
+            return render(request, "forbidden.html")
+    
+    def post(self, request):
+        form = FilterOrders(request.POST)
+        if form.is_valid():
+            only_active = form.cleaned_data["no_cancelados"]
+            if only_active is True:
+                orders = [order_product.order for order_product in OrderProduct.objects.all() if order_product.cancelled != only_active]
+                for order in orders:
+                    order.order_products = OrderProduct.objects.filter(order=order)
+            else:
+                orders = Order.objects.all()
+            if form.cleaned_data["estado"]:
+                status = form.cleaned_data["estado"]
+                orders = [order_product.order for order_product in OrderProduct.objects.all() if status.lower() in order_product.status.lower()]
+                for order in orders:
+                    order.order_products = OrderProduct.objects.filter(order=order)
+        else:
+            orders = Order.objects.all()
 
+        return render(
+            request, "all-orders.html", {"orders": orders, "form": form}
+        )
 
 def cancel_orderproduct(request, orderproduct_id):
     if request.user.is_superuser:
@@ -88,3 +110,12 @@ def cancel_order(request, order_id):
         return redirect("all-orders")
     else:
         return render(request, "forbidden.html")
+
+
+def client_orders(request, pk):
+    orders = Order.objects.get(Customer, pk=pk)
+    for order in orders:
+        order.order_products = OrderProduct.objects.filter(order=order).order_by(
+            "id"
+        )
+    return render(request, "client-orders.html", {"orders": orders})
