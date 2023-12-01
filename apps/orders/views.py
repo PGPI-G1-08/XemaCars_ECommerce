@@ -117,34 +117,38 @@ class AdminOrdersView(TemplateView):
     def get(self, request):
         if request.user.is_superuser:
             form = FilterOrders()
-            orders = Order.objects.all()
+            orders = Order.objects.all().order_by("-date")
             for order in orders:
                 order.order_products = OrderProduct.objects.filter(order=order)
             return render(request, "all-orders.html", {"orders": orders, "form": form})
         else:
             return render(request, "forbidden.html")
-    
+
     def post(self, request):
         form = FilterOrders(request.POST)
         if form.is_valid():
             only_active = form.cleaned_data["no_cancelados"]
+            status = form.cleaned_data["status"]
             if only_active is True:
-                orders = [order_product.order for order_product in OrderProduct.objects.all() if order_product.cancelled != only_active]
-                for order in orders:
-                    order.order_products = OrderProduct.objects.filter(order=order)
+                orders = Order.objects.filter(cancelled=False).order_by("-date")
             else:
-                orders = Order.objects.all()
-            if form.cleaned_data["estado"]:
-                status = form.cleaned_data["estado"]
-                orders = [order_product.order for order_product in OrderProduct.objects.all() if status.lower() in order_product.status.lower()]
-                for order in orders:
-                    order.order_products = OrderProduct.objects.filter(order=order)
+                orders = Order.objects.all().order_by("-date")
+            if status != "Todos":
+                orders = [
+                    order
+                    for order in orders
+                    if any(
+                        status.lower() in op.status.lower()
+                        for op in order.orderproduct_set.all()
+                    )
+                ]
         else:
-            orders = Order.objects.all()
+            orders = Order.objects.all().order_by("-date")
 
-        return render(
-            request, "all-orders.html", {"orders": orders, "form": form}
-        )
+        for order in orders:
+            order.order_products = OrderProduct.objects.filter(order=order)
+        return render(request, "all-orders.html", {"orders": orders, "form": form})
+
 
 def cancel_orderproduct(request, orderproduct_id):
     if request.user.is_superuser:
@@ -173,7 +177,5 @@ def cancel_order(request, order_id):
 def client_orders(request, pk):
     orders = Order.objects.get(Customer, pk=pk)
     for order in orders:
-        order.order_products = OrderProduct.objects.filter(order=order).order_by(
-            "id"
-        )
+        order.order_products = OrderProduct.objects.filter(order=order).order_by("id")
     return render(request, "client-orders.html", {"orders": orders})

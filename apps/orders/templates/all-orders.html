@@ -13,19 +13,17 @@
     <pre> 
         <h1>Pedidos</h1>
     </pre>
-    <form method="post">
-        <div class="form">
-            {% csrf_token %}
-            {{ form.estado.label_tag }}
-            {{ form.estado }}
-            <div class="field-wrapper">
-                {{ form.no_cancelados.label_tag }}
-                {{ form.no_cancelados }}
-            </div>
-            <div class="links">
-                <input type="submit" value="Filtrar">
-                <a href="all_orders">Resetear Filtros</a>
-            </div>
+    <form method="post" class="filter">
+        {% csrf_token %}
+        {{ form.status.label_tag }}
+        {{ form.status }}
+        <div class="field-wrapper">
+            {{ form.no_cancelados.label_tag }}
+            {{ form.no_cancelados }}
+        </div>
+        <div class="links">
+            <input type="submit" value="Filtrar">
+            <a href="all_orders">Resetear Filtros</a>
         </div>
     </form>
     {% endif %}

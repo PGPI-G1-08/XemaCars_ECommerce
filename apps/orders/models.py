@@ -1,9 +1,7 @@
-from datetime import date
+from datetime import date, datetime
 
 from django.core.exceptions import ValidationError
 from django.db import models
-
-from apps.payments.models import PAYMENT_FORMS
 
 # Create your models here.
 
@@ -62,6 +60,12 @@ class OrderProduct(models.Model):
         else:
             if self.start_date > date.today():
                 return "No empezado"
+            # If the order is for today and the time is before 12:00
+            elif (
+                self.start_date == date.today()
+                and datetime.now().time() < datetime(1, 1, 1, 22).time()
+            ):
+                return f"En {self.order.delivery_point}"
             elif self.start_date <= date.today() and date.today() <= self.end_date:
                 return "En posesión"
             else:

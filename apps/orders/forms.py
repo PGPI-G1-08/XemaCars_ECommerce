@@ -1,13 +1,21 @@
 from django import forms
 
-from django.db import models
-from django.forms import ModelForm
-from django.core.exceptions import ValidationError
-
-from apps.orders.models import OrderProduct
 
 class FilterOrders(forms.Form):
-    estado = forms.CharField(
+    status = forms.CharField(
+        required=False,
+    )
+
+    status = forms.ChoiceField(
+        label="Estado",
+        choices=[
+            ("Todos", "Todos"),
+            ("No Empezado", "No Empezado"),
+            ("En Tienda", "En Tienda"),
+            ("En Parking", "En Parking"),
+            ("En Posesión", "En Posesión"),
+            ("Finalizado", "Finalizado"),
+        ],
         required=False,
     )
 
