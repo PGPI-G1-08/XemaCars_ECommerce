@@ -2,7 +2,8 @@ from django import forms
 
 
 class FilterOrders(forms.Form):
-    status = forms.CharField(
+    customer = forms.CharField(
+        label="Cliente o Correo",
         required=False,
     )
 

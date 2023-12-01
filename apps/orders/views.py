@@ -129,10 +129,27 @@ class AdminOrdersView(TemplateView):
         if form.is_valid():
             only_active = form.cleaned_data["no_cancelados"]
             status = form.cleaned_data["status"]
-            if only_active is True:
-                orders = Order.objects.filter(cancelled=False).order_by("-date")
-            else:
-                orders = Order.objects.all().order_by("-date")
+            customer = form.cleaned_data["customer"]
+            orders = Order.objects.all().order_by("-date")
+            if only_active:
+                orders = [order for order in orders if not order.completely_cancelled]
+            if customer != "":
+                # Check for username, email and order emails
+                orders = [
+                    order
+                    for order in orders
+                    if (
+                        order.customer is not None
+                        and (
+                            customer.lower() in order.customer.user.username.lower()
+                            or customer.lower() in order.customer.user.email.lower()
+                        )
+                    )
+                    or (
+                        order.email is not None
+                        and customer.lower() in order.email.lower()
+                    )
+                ]
             if status != "Todos":
                 orders = [
                     order
