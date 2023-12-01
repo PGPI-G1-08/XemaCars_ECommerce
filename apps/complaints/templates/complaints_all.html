@@ -27,6 +27,8 @@
                                 <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
                             </div>
                         </div>
+                        <h6 class="">De: {{ complaint.customer.user.first_name }} {{complaint.customer.user.last_name}}</h6>
+                        <h6 class="email-user">Email: {{ complaint.customer.user.email }} </h6>
                         <p>{{ complaint.description }}</p>
                         {% if user.is_superuser %}
                             {% if complaint.status == "Abierto" %}
