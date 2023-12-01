@@ -8,6 +8,7 @@ class Complaint(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    answer = models.TextField(blank=True, null=True)
 
     STATUS_CHOICES = [("abierto", "Abierto"), ("cerrado_solucionado", "Cerrado")]
 

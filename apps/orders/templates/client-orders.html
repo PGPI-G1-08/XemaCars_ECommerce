@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 
-{% block title %}Todos los Pedidos{% endblock %}
+{% block title %}Mis Pedidos{% endblock %}
 
 {% block extrahead %}
     <link rel="stylesheet" href="{% static "base.css" %}">
@@ -9,38 +9,12 @@
 {% endblock %}
 
 {% block content %}
-    {% if form %}
-    <pre> 
-        <h1>Pedidos</h1>
-    </pre>
-    <form method="post" class="filter">
-        {% csrf_token %}
-        {{ form.customer.label_tag }}
-        {{ form.customer }}
-        {{ form.status.label_tag }}
-        {{ form.status }}
-        <div class="field-wrapper">
-            {{ form.no_cancelados.label_tag }}
-            {{ form.no_cancelados }}
-        </div>
-        <div class="links">
-            <input type="submit" value="Filtrar">
-            <a href="all_orders">Resetear Filtros</a>
-        </div>
-    </form>
-    {% endif %}
-    <br>
-    <br>
     {% if orders %}
         {% for order in orders %}
         <div class="order">
             <div class="card">
                 <div id="customer-date">
-                    {% if order.customer != null %}
-                        <h2>{{ order.customer }} ({{ order.customer.user.email }})</h2>
-                    {% else %}
-                        <h2>{{ order.email }}</h2>
-                        {% endif %}
+                    <h2>{{ order.customer }}</h2>
                     <h3>{{ order.date|date:"d/m/Y" }}</h3>
                 </div>
                 <table>
@@ -50,8 +24,8 @@
                             <th>Precio</th>
                             <th>Inicio</th>
                             <th>Final</th>
-                            <th>Estado</th>
                             <th>Cancelar</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,26 +35,20 @@
                                 <td>{{ product.product.price }} € / día</td>
                                 <td>{{ product.start_date|date:"d/m/Y" }}</td>
                                 <td>{{ product.end_date|date:"d/m/Y" }}</td>
-                                <td>{{ product.status }}</td>
                                 <td>
                                     <form method="post" action="{% url 'cancel_orderproduct' product.id %}">
                                         {% csrf_token %}
                                         {% if product.cancelled %}
-                                            <button type="submit" value="X" class="circle-disabled-btn">
-                                                <span class="material-symbols-outlined">cancel</span>
+                                            <button type="submit" value="X" class="disabled-btn">
+                                                <span class="material-symbols-outlined">close</span>
                                             </button>
                                         {% else %}
-                                            <button type="submit" value="X" class="circle-button">
-                                                <span class="material-symbols-outlined">cancel</span>
+                                            <button type="submit" value="X" class="primary-button">
+                                                <span class="material-symbols-outlined">close</span>
                                             </button>
                                         {% endif %}
                                     </form>
                                 </td>
-                            </tr>
-                        {% endfor %}
-                        {% for product in order.order_status %}
-                            <tr>
-                                <td>{{ product.order_status }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -102,11 +70,11 @@
                 {% csrf_token %}
                 {% if order.completely_cancelled %}
                     <button type="submit" value="X" class="disabled-btn">
-                        <span class="material-icons">delete</span>
+                        <span class="material-symbols-outlined">close</span>
                     </button>
                 {% else %}
-                    <button type="submit" value="X" class="delete-button">
-                        <span class="material-icons">delete</span>
+                    <button type="submit" value="X" class="primary-button">
+                        <span class="material-symbols-outlined">close</span>
                     </button>
                 {% endif %}
             </form>
@@ -115,6 +83,4 @@
     {% else %}
         <h1>No Se Ha Realizado Ningun Pedido</h1>
     {% endif %}
-    </br>
-    </br>
 {% endblock %}

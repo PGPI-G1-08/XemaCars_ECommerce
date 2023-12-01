@@ -10,3 +10,14 @@
 .content button {
     margin-top: 20px
 }
+
+.answer {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.answer a{
+    text-decoration: none;
+}

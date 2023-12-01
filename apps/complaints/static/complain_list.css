@@ -34,3 +34,8 @@ h3 {
 .title {
     width: 70%
 }
+
+.button-answer {
+    display: flex;
+    justify-content: flex-end;
+}
