@@ -46,37 +46,43 @@
 <br>
 <br>
 {% if products %}
-    <section class="card-container">
-        {% for product in products %}
-            <div class="card product-catalog-card">
-                <a class="product-link" style="" href="/products/details/{{ product.id }}">
-                    <img src= "{{ product.image_url }}">
-                    <h2 class="card-title">{{ product.name }}</h2>
-                    <p class="card-rating">
-                        <span class="material-icons">star</span>
-                        {% if product.average_rating %}
-                        {{ product.average_rating|floatformat:1 }}
-                        {% else %}
-                        -
-                        {% endif %}
-                    </p>
-                    <div id="price-available">
-                        <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
+        {% regroup products by combustion_type as products_list %}
+        {% for combustion_type in products_list %}
+            <h1>{{ combustion_type.grouper }}</h1>
+            <section class="card-container">
+                {% for product in combustion_type.list %}
+                    <div class="card product-catalog-card">
+                        <a class="product-link" style="" href="/products/details/{{ product.id }}">
+                            <img src= "{{ product.image_url }}">
+                            <h2 class="card-title">{{ product.name }}</h2>
+                            <p class="card-rating">
+                                <span class="material-icons">star</span>
+                                {% if product.average_rating %}
+                                {{ product.average_rating|floatformat:1 }}
+                                {% else %}
+                                -
+                                {% endif %}
+                            </p>
+                            <div id="price-available">
+                                <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
+                                {% if product.available %}
+                                    <p class="available-text">Disponible</p>
+                                {% else %}
+                                    <p class="not-available-text">No Disponible</p>
+                                {% endif %}
+                            </div>          
+                        </a> 
                         {% if product.available %}
-                            <p class="available-text">Disponible</p>
+                        <a id="buy-btn-{{ product.id }}" class="buy-btn primary-button" >Reservar</a>
                         {% else %}
-                            <p class="not-available-text">No Disponible</p>
+                            <a class="buy-btn primary-button disabled-btn" >Producto no disponible</a>
                         {% endif %}
-                    </div>          
-                </a> 
-                {% if product.available %}
-                <a id="buy-btn-{{ product.id }}" class="buy-btn primary-button" >Reservar</a>
-                {% else %}
-                    <a class="buy-btn primary-button disabled-btn" >Producto no disponible</a>
-                {% endif %}
-            </div>
+                    </div>
+                {% endfor %}  
+            </section>
+            </br>
+            </br>
         {% endfor %}  
-    </section>
 {% else %}
     <h1 id="no-products">No hay productos con los filtros aplicados</h1>
 {% endif %}
