@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+from django.conf import settings
 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
@@ -210,7 +211,7 @@ def send_mail_after_order(order, email):
     send_mail(
         subject,
         message,
-        "xemacars.nrply@outlook.es",
+        settings.EMAIL_FROM,
         [email],
         fail_silently=False,
     )

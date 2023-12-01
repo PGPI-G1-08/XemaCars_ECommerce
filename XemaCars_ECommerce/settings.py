@@ -178,7 +178,9 @@ EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
 if DEBUG:
     SENDGRID_API_KEY = env("SENDGRID_API_KEY")
+    EMAIL_FROM = env("EMAIL_FROM")
     EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 else:
     SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+    EMAIL_FROM = os.environ.get("EMAIL_FROM")
     EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
