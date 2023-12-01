@@ -1,0 +1,53 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Reclamaciones{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "complain_list.css" %}">
+{% endblock %}
+
+{% block content %}
+    {% if user.is_superuser %}
+            {% if complaints %}
+                <div class="hero-add">
+                    <h1>Reclamaciones</h1>
+                </div>
+                {% for complaint in complaints %}
+                    <div class="card">
+                        <div class="title-date">
+                            <h3 class="title">{{ complaint.title }}</h3>
+                            <div class="status-date">
+                                {% if complaint.status == "Abierto" %}
+                                    <h3 class="available-text">Abierto</h3>
+                                {% else %}
+                                    <h3 class="not-available-text">Solucionado</h3>
+                                {% endif %}
+                                <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
+                            </div>
+                        </div>
+                        <h6 class="">De: {{ complaint.customer.user.first_name }} {{complaint.customer.user.last_name}}</h6>
+                        <h6 class="email-user">Email: {{ complaint.customer.user.email }} </h6>
+                        <p>{{ complaint.description }}</p>
+                        {% if user.is_superuser %}
+                            {% if complaint.status == "Abierto" %}
+                                <div class="button-answer">
+                                    <a href="/complaints/answer/{{ complaint.id }}" class="primary-button">Responder</a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if complaint.status == "Cerrado" %}
+                            <br>
+                            <strong>Respuesta: </strong><span>{{ complaint.answer }}</span>
+                        {% endif %}        
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="hero-add">
+                    <h1 style="margin: 40px 0">No hay reclamaciones</h1>
+                </div>
+            {% endif %}
+    {% endif %}
+
+{% endblock %}

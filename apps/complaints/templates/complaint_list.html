@@ -22,12 +22,16 @@
                         {% if complaint.status == "Abierto" %}
                             <h3 class="available-text">Abierto</h3>
                         {% else %}
-                            <h3 class="not-available-text">Cerrado</h3>
+                            <h3 class="not-available-text">Solucionado</h3>
                         {% endif %}
                         <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
                     </div>
                 </div>
                 <p>{{ complaint.description }}</p>
+                {% if complaint.status == "Cerrado" %}
+                    <br>
+                    <strong>Respuesta: </strong><span>{{ complaint.answer }}</span>
+                {% endif %}
             </div>
         {% endfor %}
     {% else %}
