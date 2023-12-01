@@ -31,6 +31,7 @@
                             <th>Precio</th>
                             <th>Inicio</th>
                             <th>Final</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@
                                 <td>{{ product.product.price }} € / día</td>
                                 <td>{{ product.start_date|date:"d/m/Y" }}</td>
                                 <td>{{ product.end_date|date:"d/m/Y" }}</td>
+                                <td>{{ product.status }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

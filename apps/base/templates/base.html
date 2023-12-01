@@ -28,7 +28,6 @@
             </div>
             <a href={% url 'search_order' %} class="header-profile">Buscar Pedido</a>
         {% if user.is_authenticated %}
-            <a href={% url 'my_orders' %} class="header-profile">Mis Pedidos</a>
             {% if user.is_superuser %}
                 <a href="/users/list" class="header-profile">Usuarios</a>
                 <a href="/products/add" class="header-profile">Añadir Producto</a>
@@ -38,6 +37,7 @@
                 <button class="drop-btn"><span id="profile-btn" class="material-icons header-profile">account_circle<span id="username">{{user.username}}</span></span></button>
                 <div class="dropdown-content">
                     <a href="/profile">Perfil</a>
+                    <a href={% url 'my_orders' %} class="header-profile">Mis Pedidos</a>
                     {% if not user.is_superuser %}
                         <a href="/complaints">Reclamaciones</a>
                     {% endif %}

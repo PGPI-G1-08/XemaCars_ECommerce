@@ -25,14 +25,13 @@ class Order(models.Model):
     identifier = models.CharField(max_length=30, unique=True)
 
     def save(self, *args, **kwargs):
-        if not self.identifier:
-            while True:
-                identifier = " ".join(
-                    "".join(random.choices(string.ascii_uppercase + string.digits, k=5))
-                    for _ in range(4)
-                )
-                if not Order.objects.filter(identifier=identifier).exists():
-                    self.identifier = identifier
+        while not self.identifier:
+            identifier = " ".join(
+                "".join(random.choices(string.ascii_uppercase + string.digits, k=5))
+                for _ in range(4)
+            )
+            if not Order.objects.filter(identifier=identifier).exists():
+                self.identifier = identifier
         super().save(*args, **kwargs)
 
     @property
