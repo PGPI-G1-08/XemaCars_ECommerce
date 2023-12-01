@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
+<link rel="stylesheet" href="{% static "orders.css" %}">
+{% endblock %}
+
+{% block content %}
+<img src="{% static 'hero.jpg' %}" alt="hero">
+<form class="form" method="post">
+    {% csrf_token %}
+    {{ form.identifier }}
+    <input type="submit" value="Filtrar">
+</form>
+{% endblock %}

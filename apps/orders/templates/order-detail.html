@@ -1,0 +1,54 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Todos los Pedidos{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static "base.css" %}">
+    <link rel="stylesheet" href="{% static "all-orders.css" %}">
+    <link rel="stylesheet" href="{% static "orders.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div class="order">
+        <div class="card">
+            <div id="customer-date">
+                <h2></h2>
+                <h3>{{ order.date|date:"d/m/Y" }}</h3>
+            </div>
+            <p><strong>ID: </strong>{{order.identifier}}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Inicio</th>
+                        <th>Final</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in order.order_products %}
+                        <tr>
+                            <td>{{ product.product.name }}</td>
+                            <td>{{ product.product.price }} € / día</td>
+                            <td>{{ product.start_date|date:"d/m/Y" }}</td>
+                            <td>{{ product.end_date|date:"d/m/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div id="customer-date">
+                <h3>Total: {{ order.total }} €</h3>
+                <div id="estado-cancelar">
+                    <h3>
+                        {% if order.completely_cancelled %}
+                            <span class="cancelled">Cancelado</span>
+                        {% else %}
+                            <span class="active">Activo</span>
+                        {% endif %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
