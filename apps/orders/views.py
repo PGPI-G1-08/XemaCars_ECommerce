@@ -10,6 +10,12 @@ from django.shortcuts import redirect, render
 from apps.orders.models import Order
 from apps.orders.models import OrderProduct
 from apps.payments.models import PaymentMethod
+
+import json
+
+from .forms import FilterOrders
+from django.views.generic import TemplateView
+
 from apps.products.models import DeliveryPoint, Product
 from apps.cart.anon_cart import AnonCart
 from apps.cart.models import CartProduct
@@ -107,16 +113,58 @@ def add_order(request):
     )
 
 
-def all_orders(request):
-    if request.user.is_superuser:
-        orders = Order.objects.all()
+class AdminOrdersView(TemplateView):
+    def get(self, request):
+        if request.user.is_superuser:
+            form = FilterOrders()
+            orders = Order.objects.all().order_by("-date")
+            for order in orders:
+                order.order_products = OrderProduct.objects.filter(order=order)
+            return render(request, "all-orders.html", {"orders": orders, "form": form})
+        else:
+            return render(request, "forbidden.html")
+
+    def post(self, request):
+        form = FilterOrders(request.POST)
+        if form.is_valid():
+            only_active = form.cleaned_data["no_cancelados"]
+            status = form.cleaned_data["status"]
+            customer = form.cleaned_data["customer"]
+            orders = Order.objects.all().order_by("-date")
+            if only_active:
+                orders = [order for order in orders if not order.completely_cancelled]
+            if customer != "":
+                # Check for username, email and order emails
+                orders = [
+                    order
+                    for order in orders
+                    if (
+                        order.customer is not None
+                        and (
+                            customer.lower() in order.customer.user.username.lower()
+                            or customer.lower() in order.customer.user.email.lower()
+                        )
+                    )
+                    or (
+                        order.email is not None
+                        and customer.lower() in order.email.lower()
+                    )
+                ]
+            if status != "Todos":
+                orders = [
+                    order
+                    for order in orders
+                    if any(
+                        status.lower() in op.status.lower()
+                        for op in order.orderproduct_set.all()
+                    )
+                ]
+        else:
+            orders = Order.objects.all().order_by("-date")
+
         for order in orders:
-            order.order_products = OrderProduct.objects.filter(order=order).order_by(
-                "id"
-            )
-        return render(request, "all-orders.html", {"orders": orders})
-    else:
-        return render(request, "forbidden.html")
+            order.order_products = OrderProduct.objects.filter(order=order)
+        return render(request, "all-orders.html", {"orders": orders, "form": form})
 
 
 def cancel_orderproduct(request, orderproduct_id):
@@ -141,3 +189,10 @@ def cancel_order(request, order_id):
         return redirect("all-orders")
     else:
         return render(request, "forbidden.html")
+
+
+def client_orders(request, pk):
+    orders = Order.objects.get(Customer, pk=pk)
+    for order in orders:
+        order.order_products = OrderProduct.objects.filter(order=order).order_by("id")
+    return render(request, "client-orders.html", {"orders": orders})
