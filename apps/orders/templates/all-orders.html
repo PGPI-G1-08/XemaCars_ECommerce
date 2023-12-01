@@ -37,7 +37,7 @@
             <div class="card">
                 <div id="customer-date">
                     {% if order.customer != null %}
-                        <h2>{{ order.customer }}</h2>
+                        <h2>{{ order.customer }} ({{ order.email }})</h2>
                     {% else %}
                         <h2>{{ order.email }}</h2>
                         {% endif %}
