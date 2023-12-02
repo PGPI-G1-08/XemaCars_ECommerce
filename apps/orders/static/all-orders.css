@@ -89,6 +89,10 @@ h3 {
   gap: 40px;
 }
 
+p {
+  margin-top: 5px;
+}
+
 .links {
   display: flex;
   justify-content: flex-end;

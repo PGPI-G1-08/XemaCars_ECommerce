@@ -18,6 +18,7 @@ from django.views.generic import TemplateView
 from apps.products.models import DeliveryPoint, Product
 from apps.cart.anon_cart import AnonCart
 from apps.cart.models import CartProduct
+from .forms import SearchIdentifierOrderForm
 
 import stripe
 
@@ -121,6 +122,59 @@ def add_order(request):
     return HttpResponse(
         json.dumps({"order_id": order.id}), status=200, content_type="application/json"
     )
+
+
+def search_order(request):
+    form = SearchIdentifierOrderForm(request.POST)
+    if form.is_valid() and form.cleaned_data["identifier"] != "":
+        order = Order.objects.filter(identifier=form.cleaned_data["identifier"])
+        if not order:
+            return redirect("search_order")
+        else:
+            order = order[0].identifier.replace(" ", "")
+            return redirect("my_order_detail", order)
+
+    return render(request, "search-order.html", {"form": form})
+
+
+def my_order_detail(request, order_identifier):
+    order_identifier = " ".join(
+        order_identifier[i : i + 5] for i in range(0, len(order_identifier), 5)
+    )
+    try:
+        order = Order.objects.get(identifier=order_identifier)
+    except Order.DoesNotExist:
+        return redirect("search_order")
+
+    order.order_products = OrderProduct.objects.filter(order=order).order_by("id")
+
+    return render(request, "order-detail.html", {"order": order})
+
+
+def my_orders(request):
+    if request.user.is_anonymous:
+        return redirect("login")
+
+    form = SearchIdentifierOrderForm(request.POST)
+    customer = request.user.customer
+    if form.is_valid() and form.cleaned_data["identifier"] != "":
+        orders = (
+            Order.objects.filter(customer=customer)
+            .filter(identifier=form.cleaned_data["identifier"])
+            .order_by("-date")
+        )
+        if not orders:
+            return redirect("my_orders")
+    else:
+        orders = Order.objects.filter(customer=customer).order_by("-date")
+
+    if orders:
+        for order in orders:
+            order.order_products = OrderProduct.objects.filter(order=order).order_by(
+                "id"
+            )
+
+    return render(request, "orders.html", {"orders": orders, "form": form})
 
 
 class AdminOrdersView(TemplateView):
