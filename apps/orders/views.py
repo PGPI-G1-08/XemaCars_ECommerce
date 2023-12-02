@@ -283,8 +283,7 @@ def send_mail_after_order(order, email):
     subject = "XemaCars - Orden de compra"
     message = f"""
     Gracias por tu compra!
-    Detalle de la orden:
-
+    Detalle de la orden:\n
     """
 
     for product in products:
@@ -303,13 +302,12 @@ def send_mail_after_order(order, email):
     """
 
     message += f"""
-    Total: {order.total} €
+    Total: {order.total} €\n
     """
 
     message += f"""
-
-    Numero de orden: {order.id}
-
+    Numero de orden: {order.identifier}. Puedes consultar tu pedido a traves de la página web o a través de este enlace:
+    https://xemacars-ecommerce.onrender.com/orders/my_order_detail/{order.identifier.replace(" ", "")}/\n
     """
 
     message += f"""
