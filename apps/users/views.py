@@ -207,3 +207,12 @@ def get_stripe_payment_methods(request):
     return render(
         request, "users/payment_methods.html", {"payment_methods": payment_methods}
     )
+
+
+@login_required(login_url="/signin")
+def delete_user(request):
+    user = request.user
+    customer = user.customer
+    customer.delete()
+    user.delete()
+    return redirect("/")
