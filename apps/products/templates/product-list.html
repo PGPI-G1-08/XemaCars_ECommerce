@@ -6,6 +6,7 @@
 {% block extrahead %}
 <link rel="stylesheet" href="{% static "base.css" %}">
 <link rel="stylesheet" href="{% static "product-list.css" %}">
+<script src="{% static "products.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -45,33 +46,76 @@
 <br>
 <br>
 {% if products %}
-    <section class="card-container">
-        {% for product in products %}
-            <a class="card" href="/products/details/{{ product.id }}">
-                <img src= "{{ product.image_url }}">
-                <h2 class="card-title">{{ product.name }}</h2>
-                <p class="card-rating">
-                    <span class="material-icons">star</span>
-                    {% if product.average_rating %}
-                    {{ product.average_rating|floatformat:1 }}
-                    {% else %}
-                    -
-                    {% endif %}
-                </p>
-                <div id="price-available">
-                    <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
-                    {% if product.available %}
-                        <p class="available-text">Disponible</p>
-                    {% else %}
-                        <p class="not-available-text">No Disponible</p>
-                    {% endif %}
-                </div>          
-            </a> 
+        {% regroup products by combustion_type as products_list %}
+        {% for combustion_type in products_list %}
+            <h1>{{ combustion_type.grouper }}</h1>
+            <section class="card-container">
+                {% for product in combustion_type.list %}
+                    <div class="card product-catalog-card">
+                        <a class="product-link" style="" href="/products/details/{{ product.id }}">
+                            <img src= "{{ product.image_url }}">
+                            <h2 class="card-title">{{ product.name }}</h2>
+                            <p class="card-rating">
+                                <span class="material-icons">star</span>
+                                {% if product.average_rating %}
+                                {{ product.average_rating|floatformat:1 }}
+                                {% else %}
+                                -
+                                {% endif %}
+                            </p>
+                            <div id="price-available">
+                                <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
+                                {% if product.available %}
+                                    <p class="available-text">Disponible</p>
+                                {% else %}
+                                    <p class="not-available-text">No Disponible</p>
+                                {% endif %}
+                            </div>          
+                        </a> 
+                        {% if product.available %}
+                        <a id="buy-btn-{{ product.id }}" class="buy-btn primary-button" >Reservar</a>
+                        {% else %}
+                            <a class="buy-btn primary-button disabled-btn" >Producto no disponible</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}  
+            </section>
+            </br>
+            </br>
         {% endfor %}  
-    </section>
 {% else %}
     <h1 id="no-products">No hay productos con los filtros aplicados</h1>
 {% endif %}
 <br>
 <br>
+<div class="modal">
+    <div class="modal-content form card-container">
+        <h2>Elige un rango de fecha</h2>
+        <span class="close material-icons">close</span>
+        <article class="form-field">
+            <label>Desde:</label>
+            <input id="from-date" type="date"/>
+        </article>
+        <article class="form-field">
+            <label>Hasta:</label>
+            <input id="to-date" type="date" disabled/>
+        </article>
+        <p id="error-msg"></p>
+        <a id="confirm-btn" class="primary-button">Confirmar</a>
+    </div>
+</div>
 {% endblock %}
+
+
+<script>
+    {% block extrajs %}
+        document.addEventListener('DOMContentLoaded', () => {
+            const buyBtns = document.querySelectorAll('.buy-btn');
+
+            buyBtns.forEach(btn => {
+                updateButton(btn.id.split('-')[2], btn, '{{ csrf_token|safe }}');
+            });
+        });
+
+    {% endblock %}
+</script>

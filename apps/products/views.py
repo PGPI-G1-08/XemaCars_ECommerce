@@ -54,12 +54,16 @@ class ProductListView(TemplateView):
         form = FilterForm()
         if request.session.get("products") is not None:
             products_session = request.session["products"]
-            products = Product.objects.filter(id__in=products_session)
+            products = (
+                Product.objects.filter(id__in=products_session)
+                .all()
+                .order_by("combustion_type")
+            )
             form = FilterForm(request.session["form"])
             del request.session["products"]
             del request.session["form"]
         else:
-            products = Product.objects.all()
+            products = Product.objects.all().order_by("combustion_type")
         return render(
             request, "product-list.html", {"products": products, "form": form}
         )
@@ -156,6 +160,7 @@ def get_disabled_dates(_, pk):
 
     data["disabled_dates"] = disabled_dates
     return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 # ADMIN
 class ProductDeleteView(TemplateView):

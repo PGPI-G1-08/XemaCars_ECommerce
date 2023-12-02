@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{% static "base.css" %}">
 <link rel="stylesheet" href="{% static "carrito.css" %}">
 <link rel="stylesheet" href="{% static "order-summary.css" %}">
+<script src="https://js.stripe.com/v3/"></script>
 {% endblock %}
 
 {% block content %}
@@ -30,25 +31,45 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="delivery-payment">
-            <form method="post">
-                {% csrf_token %}
-                {% if not user.is_authenticated %}
-                <div class="select-field">
-                    <label for="id_email">Email:</label>
-                    {{ form.email }}
+        <div class="row">
+            <div class="delivery-payment">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if not user.is_authenticated %}
+                    <div class="select-field">
+                        <label for="id_email">Email:</label>
+                        {{ form.email }}
+                    </div>
+                    {% endif %}
+                    <div class="select-field">      
+                        <label for="id_payment_method">Método de Pago:</label>
+                        {{ form.payment_method }}
+                        <span id="stripe-payment-methods">
+                            {% if user.is_authenticated %}
+                                {{ form.stripe_payment_methods }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="select-field">
+                        <label for="id_preferred_delivery_point">Punto de Recogida:</label>
+                        {{ form.preferred_delivery_method }}
+                        {{ form.preferred_delivery_point }}
+                    </div>
+                </form> 
+            </div>
+
+            <form id="payment-form" hidden>
+                <input type="hidden" name="elements" value="">
+                <div id="payment-element">
+                <!--Stripe.js injects the Payment Element-->
                 </div>
+                {% if user.is_authenticated %}
+                    <input id="save-card" type="checkbox"> Guardar tarjeta para futuras compras</input>
                 {% endif %}
-                <div class="select-field">      
-                    <label for="id_payment_method">Método de Pago:</label>
-                    {{ form.payment_method }}
-                </div>
-                <div class="select-field">
-                    <label for="id_preferred_delivery_point">Punto de Recogida:</label>
-                    {{ form.preferred_delivery_point }}
-                </div>
-            </form> 
+                <div id="payment-message" class="hidden"></div>
+            </form>
         </div>
+
         <div class="cart-total">
             <h3>Total: </h3>
             <h4 id="price">{{total}} €</h4>
@@ -63,6 +84,7 @@
             <div class="confirm">
                 <h2>¿Quiere confirmar la compra?</h2>
             </div>
+            <h6>Se le enviará un email con los detalles de la compra</h6>
             <div class="cancel-accept">
                 <a id="cancel-btn" class="secondary-button">Cancelar</a>
                 <a id="confirm-btn" class="primary-button">Confirmar</a>
@@ -74,6 +96,126 @@
 
 <script>
     {% block extrajs %}
+    /* event listener for when the page is loaded */
+    window.addEventListener('load', function() {
+        paymentMethod = document.getElementById('id_preferred_payment_method');
+        stripePaymentMethods = document.getElementById('stripe-payment-methods');
+        deliveryPoints = document.getElementById('id_preferred_delivery_point');
+        original_options = Array.from(deliveryPoints.options);
+
+        price = document.querySelector('#price');
+        total = parseFloat(price.innerHTML);
+
+        if (deliveryPoints.value == 'Seleccione un punto de recogida') {
+            deliveryPoints.options.length = 0;
+            deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+            deliveryPoints.disabled = true;
+        }
+
+        deliveryMethod = document.getElementById('id_preferred_delivery_method');
+
+        updateDeliveryPoints();
+        deliveryMethod.addEventListener('change', function(){
+            updateDeliveryPoints();
+        });
+
+        updatePaymentForm();
+        paymentMethod.addEventListener('change', function(){
+            updatePaymentForm();
+        });
+
+        stripePaymentMethods.addEventListener('change', function(){
+            updatePaymentForm();
+        });
+
+        getClientSecret();
+        {% if user.is_authenticated %}
+            saveCard = document.getElementById('save-card');
+            saveCard.addEventListener('change', function(){
+                getClientSecret();
+            });
+
+            paymentMethods = document.getElementById('id_stripe_payment_methods');
+            paymentMethods.addEventListener('change', function(){
+                getClientSecret();
+            });
+        {% endif %}
+
+    });
+
+    function updateDeliveryPoints() {
+        deliveryPoints = document.getElementById('id_preferred_delivery_point');
+        deliveryMethod = document.getElementById('id_preferred_delivery_method');
+        paymentForm = document.getElementById('payment-form');
+
+        original_value = deliveryPoints.value.toString();
+
+        if (deliveryMethod.value == 'Recogida en Tienda') {
+            /* Get those options that have "Tienda" in their name*/
+            deliveryPoints.options.length = 0;
+            deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+            deliveryPoints.disabled = false;
+            for (i = 0; i < original_options.length; i++) {
+                if (original_options[i].text.includes('Tienda')) {
+                    deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
+                }
+            }
+            price.innerHTML = total.toFixed(1).replace(".",",") + ' €';
+        } else if (deliveryMethod.value == 'Recogida en Parking') {
+            /* Get those original_options that have "Parking" in their name*/
+            deliveryPoints.options.length = 0;
+            deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+            deliveryPoints.disabled = false;
+            for (i = 0; i < original_options.length; i++) {
+                if (original_options[i].text.includes('Parking')) {
+                    deliveryPoints.options[deliveryPoints.options.length] = new Option(original_options[i].text, original_options[i].value);
+                }
+            }
+
+            /* Increase total if necessary */
+            if (total < 5000) {
+                price.innerHTML = (total + 100).toFixed(1).replace(".",",") + ' €';
+            }
+        } else {
+            deliveryPoints.options.length = 0;
+            deliveryPoints.options[0] = new Option('Seleccione un punto de recogida', '');
+            deliveryPoints.disabled = true;
+            price.innerHTML = total.toFixed(1).replace(".",",") + ' €';
+        }
+
+        /* Set the value to the original one if its within the available options*/
+        if (Array.from(deliveryPoints.options).some(option => option.value.toString() === original_value)) {
+            deliveryPoints.value = original_value;
+        } else {
+            deliveryPoints.value = deliveryPoints.options[0].toString();
+        }
+
+    }
+
+    function updatePaymentForm() {
+        paymentMethod = document.getElementById('id_payment_method');
+        paymentForm = document.getElementById('payment-form');
+        stripePaymentMethods = document.getElementById('stripe-payment-methods');
+
+        if (paymentMethod.value == 'Tarjeta de crédito') {
+            stripePaymentMethods.hidden = false;
+
+            {% if user.is_authenticated %}
+                paymentMethods = document.getElementById('id_stripe_payment_methods');
+                if (paymentMethods.value == 'Nueva Tarjeta') {
+                    paymentForm.hidden = false;
+                } else {
+                    paymentForm.hidden = true;
+                }
+            {% else %}
+                paymentForm.hidden = false;
+            {% endif %}
+        } else {
+            stripePaymentMethods.hidden = true;
+            paymentForm.hidden = true;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const buyButton = document.querySelector('.button-buy');
         buyButton.addEventListener('click', () => {
@@ -103,6 +245,11 @@
     async function addOrder(){
         const paymentMethod = document.querySelector('#id_payment_method').value;
         const deliveryPoint = document.querySelector('#id_preferred_delivery_point').value;
+        {%if user.is_authenticated %}
+            saveCard = document.getElementById('save-card').checked;
+        {% else %}
+            saveCard = false;
+        {% endif %}
         const response = await fetch("/orders/add",{
             method: 'POST',
             headers: {
@@ -112,8 +259,10 @@
             body: JSON.stringify({
                 'payment_method': paymentMethod,
                 'delivery_point': deliveryPoint,
+                'client_secret': clientSecret,
+                'save_card': saveCard,
                 {% if not user.is_authenticated %}
-                    'email': document.querySelector('#id_email').value,
+                'email': document.querySelector('#id_email').value,
                 {% endif %}
             }) 
         });
@@ -143,12 +292,133 @@
             modal.style.display = 'none';
         });
         const confirm = document.querySelector('#confirm-btn');
-        confirm.addEventListener('click', () => {
-            addOrder();
+        confirm.addEventListener('click', async () => {
+            const success = await handleSubmit();
+            if (success){
+                addOrder();
+            } else {
+                closeModal();
+            }
         });
         
     }
 
+    /* STRIPE */
+
+    const stripe = Stripe("pk_test_51OGlWZAFXp3GBC3KvH4MnUio1STFLt5EfUgDPS61cQiQIGjLOzxbLS8f8OU5gzz2GqNAeenPwnYhfMEhAAugrxAk00sZJUIPUO");
+
+    var elements
+    var clientSecret
+
+    async function getClientSecret() {
+        {% if user.is_authenticated %}
+            saveCard = document.getElementById('save-card').checked;
+        {% else %}
+            saveCard = false;
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            paymentMethod = document.getElementById('id_stripe_payment_methods').value;
+        {% else %}
+            paymentMethod = 'Nueva Tarjeta';
+        {% endif %}
+
+        const response = await fetch("/orders/create-payment-intent", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'save_card': saveCard,
+                'payment_method': paymentMethod,
+            })
+        });
+        const data = await response.json();
+        clientSecret = data.client_secret;
+
+        const appearance = {
+            theme: 'stripe',
+        }; 
+        elements = stripe.elements({ appearance, clientSecret });
+        const paymentElementOptions = {
+            layout: "tabs",
+        };
+
+        const paymentElement = elements.create("payment", paymentElementOptions);
+        paymentElement.mount("#payment-element");
+    }
+
+    async function handleSubmit() {
+        paymentMethod = document.querySelector('#id_payment_method').value;
+        if (paymentMethod == 'A contrareembolso') {
+            return true;
+        }
+        setLoading(true);
+
+        {% if user.is_authenticated %}
+            payment_method = document.getElementById('id_stripe_payment_methods').value;
+            if (payment_method == 'Nueva Tarjeta') {
+                const response = await stripe.confirmPayment({
+                    type: 'card',
+                    elements,
+                    redirect: 'if_required'
+                });
+            } else {
+                const response = await stripe.confirmPayment(
+                    {
+                        clientSecret: clientSecret,
+                        payment_method: payment_method,
+                        redirect: 'if_required'
+                    }
+                );
+            }
+        {% else %}
+            const response = await stripe.confirmPayment({
+                type: 'card',
+                elements,
+                redirect: 'if_required'
+            });
+        {% endif %}
+
+        // This point will only be reached if there is an immediate error when
+        // confirming the payment. Otherwise, your customer will be redirected to
+        // your `return_url`. For some payment methods like iDEAL, your customer will
+        // be redirected to an intermediate site first to authorize the payment, then
+        // redirected to the `return_url`.
+        setLoading(false);
+        if (response.error && (response.error.type === "card_error" || response.error.type === "validation_error")) {
+            showMessage(response.message);
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function showMessage(messageText) {
+        const messageContainer = document.querySelector("#payment-message");
+
+        messageContainer.classList.remove("hidden");
+        messageContainer.textContent = messageText;
+
+        setTimeout(function () {
+            messageContainer.classList.add("hidden");
+            messageContainer.textContent = "";
+        }, 4000);
+    }
+
+    // Show a spinner on payment submission
+    function setLoading(isLoading) {
+        const buyButton = document.querySelector("#buy-btn");
+        if (isLoading) {
+            // Disable the button and show a spinner
+            buyButton.classList.add('disabled-btn');
+        } else {
+            buyButton.classList.remove('disabled-btn');
+        }
+    }
+
+
     {% endblock %}
 </script>
-

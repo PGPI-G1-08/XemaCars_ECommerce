@@ -22,5 +22,10 @@ urlpatterns = [
         views.cancel_order,
         name="cancel_order",
     ),
+    path(
+        "create-payment-intent",
+        views.create_payment_intent,
+        name="create-payment-intent",
+    ),
     path("client_orders", views.client_orders, name="client-orders"),
 ]

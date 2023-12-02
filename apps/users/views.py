@@ -12,13 +12,14 @@ from .forms import LoginForm
 from .models import Customer
 
 from django.shortcuts import get_object_or_404
+import stripe
 
 
 from apps.users.forms import (
     LoginForm,
     RegisterForm,
     EditForm,
-    EditDeliveryPointAndPaymentMethodForm,
+    DeliveryAndPaymentForm,
 )
 
 
@@ -32,7 +33,7 @@ def profile(request):
     if request.method == "POST":
         data = request.POST.copy()
         data["delivery_points"] = delivery_point
-        form = EditDeliveryPointAndPaymentMethodForm(data)
+        form = DeliveryAndPaymentForm(data)
         if form.is_valid():
             user = request.user
 
@@ -56,9 +57,12 @@ def profile(request):
     if request.method == "GET":
         user = request.user
         customer = Customer.objects.get(user=user)
-        form = EditDeliveryPointAndPaymentMethodForm(
+        form = DeliveryAndPaymentForm(
             data={
                 "delivery_points": delivery_point,
+                "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
+                if customer.preferred_delivery_point
+                else None,
                 "preferred_delivery_point": customer.preferred_delivery_point,
                 "payment_method": customer.preferred_payment_method,
             },
@@ -194,3 +198,21 @@ class UserEditView(TemplateView):
                 )
         else:
             return render(request, "forbidden.html")
+
+
+@login_required(login_url="/signin")
+def get_stripe_payment_methods(request):
+    customer = request.user.customer
+    payment_methods = customer.get_stripe_payment_methods()
+    return render(
+        request, "users/payment_methods.html", {"payment_methods": payment_methods}
+    )
+
+
+@login_required(login_url="/signin")
+def delete_user(request):
+    user = request.user
+    customer = user.customer
+    customer.delete()
+    user.delete()
+    return redirect("/")

@@ -12,6 +12,7 @@ drf-spectacular-sidecar==2022.10.1
 gunicorn==21.2.0
 psycopg2-binary==2.9.4
 python-decouple==3.4
+stripe==7.6.0
 Unipath==1.1
 Werkzeug==2.2.2
 whitenoise==6.2.0

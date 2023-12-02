@@ -1,13 +1,11 @@
 from datetime import datetime
 import json
 
-from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from apps.cart.forms import EditDeliveryPointAndPaymentMethodForm
+from apps.users.forms import DeliveryAndPaymentForm
 from apps.cart.anon_cart import AnonCart
 from apps.products.models import Product
 from apps.users.models import Customer
@@ -16,6 +14,9 @@ from .models import CartProduct
 
 from apps.products.models import DeliveryPoint
 from apps.payments.models import PaymentMethod
+import stripe
+
+from django.shortcuts import redirect
 
 
 def get_cart(request):
@@ -127,38 +128,53 @@ def order_summary(request):
         if request.user == None or request.user.is_anonymous:
             cart = AnonCart(request)
             cart_products = cart.get_products()
+            if len(cart_products) == 0:
+                return redirect("/")
+
             total = cart.total()
 
-            form = EditDeliveryPointAndPaymentMethodForm(
-                data={"delivery_points": delivery_point}
-            )
+            form = DeliveryAndPaymentForm(data={"delivery_points": delivery_point})
 
         else:
             user = request.user
             customer = Customer.objects.get(user=user)
             cart_products = CartProduct.objects.filter(cart=customer.cart)
+            if len(cart_products) == 0:
+                return redirect("/")
             total = customer.cart.total
 
             if customer.preferred_payment_method == None:
                 customer.preferred_payment_method = PaymentMethod.objects.get_or_create(
                     payment_type="A contrareembolso"
                 )[0]
-            payment_method = customer.preferred_payment_method
 
-            form = EditDeliveryPointAndPaymentMethodForm(
+            stripe_payment_methods = customer.get_stripe_payment_methods()
+            stripe_payment_methods = [
+                (
+                    payment_method.id,
+                    f"{payment_method.card.brand}, termina en {payment_method.card.last4}",
+                )
+                for payment_method in stripe_payment_methods
+            ]
+            stripe_payment_methods.append(("Nueva Tarjeta", "Nueva Tarjeta"))
+
+            form = DeliveryAndPaymentForm(
                 data={
                     "delivery_points": delivery_point,
+                    "preferred_delivery_method": customer.preferred_delivery_point.delivery_type
+                    if customer.preferred_delivery_point
+                    else None,
                     "preferred_delivery_point": customer.preferred_delivery_point,
-                    "payment_method": payment_method,
+                    "payment_method": customer.preferred_payment_method,
+                    "stripe_payment_methods": stripe_payment_methods,
                 },
             )
-
-    return render(
-        request,
-        "order-summary.html",
-        {
-            "form": form,
-            "cart_products": cart_products,
-            "total": total,
-        },
-    )
+        return render(
+            request,
+            "order-summary.html",
+            {
+                "form": form,
+                "cart_products": cart_products,
+                "total": total,
+            },
+        )
