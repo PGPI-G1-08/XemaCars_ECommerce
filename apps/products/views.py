@@ -55,13 +55,15 @@ class ProductListView(TemplateView):
         if request.session.get("products") is not None:
             products_session = request.session["products"]
             products = (
-                Product.objects.filter(id__in=products_session).all().order_by("brand")
+                Product.objects.filter(id__in=products_session)
+                .all()
+                .order_by("combustion_type")
             )
             form = FilterForm(request.session["form"])
             del request.session["products"]
             del request.session["form"]
         else:
-            products = Product.objects.all().order_by("brand")
+            products = Product.objects.all().order_by("combustion_type")
         return render(
             request, "product-list.html", {"products": products, "form": form}
         )
