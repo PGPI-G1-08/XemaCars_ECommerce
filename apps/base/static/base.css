@@ -390,6 +390,11 @@ footer a {
   gap: 5px;
 }
 
+.icon-link:hover {
+  cursor: pointer;
+  color: var(--dark-orange);
+}
+
 /* CARD */
 
 .card-container {

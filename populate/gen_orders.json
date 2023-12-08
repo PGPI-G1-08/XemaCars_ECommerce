@@ -6,7 +6,8 @@
             "customer": 2,
             "date": "2023-11-20",
             "delivery_point": 1,
-            "identifier": "A1B2C 3D4E5 F6G7H 8I9J0"
+            "identifier": "A1B2C 3D4E5 F6G7H 8I9J0",
+            "status": "No pagado"
         }
     },
     {
@@ -16,7 +17,8 @@
             "customer": 2,
             "date": "2023-11-21",
             "delivery_point": 2,
-            "identifier": "K1L2M 3N4O5 P6Q7R 8S9T0"
+            "identifier": "K1L2M 3N4O5 P6Q7R 8S9T0",
+            "status": "Pagado"
         }
     },
     {
@@ -26,7 +28,8 @@
             "customer": 2,
             "date": "2023-11-22",
             "delivery_point": 3,
-            "identifier": "U1V2W 3X4Y5 Z6A7B 8C9D0"
+            "identifier": "U1V2W 3X4Y5 Z6A7B 8C9D0",
+            "status": "No pagado"
         }
     },
     {
@@ -36,7 +39,8 @@
             "customer": 2,
             "date": "2023-11-23",
             "delivery_point": 4,
-            "identifier": "E1F2G 3H4I5 J6K7L 8M9N0"
+            "identifier": "E1F2G 3H4I5 J6K7L 8M9N0",
+            "status": "Pagado"
         }
     },
     {
@@ -46,7 +50,8 @@
             "customer": 3,
             "date": "2023-11-24",
             "delivery_point": 5,
-            "identifier": "O1P2Q 3R4S5 T6U7V 8W9X0"
+            "identifier": "O1P2Q 3R4S5 T6U7V 8W9X0",
+            "status": "No pagado"
         }
     },
     {
@@ -56,7 +61,8 @@
             "customer": 3,
             "date": "2023-11-25",
             "delivery_point": 6,
-            "identifier": "Y1Z2A 3B4C5 D6E7F 8G9H1"
+            "identifier": "Y1Z2A 3B4C5 D6E7F 8G9H1",
+            "status": "Pagado"
         }
     },
     {
@@ -66,7 +72,8 @@
             "customer": 4,
             "date": "2023-11-26",
             "delivery_point": 7,
-            "identifier": "I1J2K 3L4M5 N6O7P 8Q9R1"
+            "identifier": "I1J2K 3L4M5 N6O7P 8Q9R1",
+            "status": "No pagado"
         }
     },
     {
@@ -76,7 +83,8 @@
             "customer": 4,
             "date": "2023-11-27",
             "delivery_point": 8,
-            "identifier": "S1T2U 3V4W5 X6Y7Z 8A9B1"
+            "identifier": "S1T2U 3V4W5 X6Y7Z 8A9B1",
+            "status": "Pagado"
         }
     },
     {
@@ -86,7 +94,8 @@
             "customer": 5,
             "date": "2023-11-28",
             "delivery_point": 9,
-            "identifier": "C1D2E 3F4G5 H6I7J 8K9L1"
+            "identifier": "C1D2E 3F4G5 H6I7J 8K9L1",
+            "status": "No pagado"
         }
     },
     {
@@ -96,7 +105,8 @@
             "customer": 5,
             "date": "2023-11-29",
             "delivery_point": 10,
-            "identifier": "M1N2O 3P4Q5 R6S7T 8U9V1"
+            "identifier": "M1N2O 3P4Q5 R6S7T 8U9V1",
+            "status": "Pagado"
         }
     },
     {
@@ -106,7 +116,8 @@
             "customer": 6,
             "date": "2023-11-30",
             "delivery_point": 1,
-            "identifier": "W1X2Y 3Z4A5 B6C7D 8E9F1"
+            "identifier": "W1X2Y 3Z4A5 B6C7D 8E9F1",
+            "status": "No pagado"
         }
     },
     {
@@ -116,7 +127,8 @@
             "customer": 6,
             "date": "2023-12-01",
             "delivery_point": 2,
-            "identifier": "G1H2I 3J4K5 L6M7N 8O9P1"
+            "identifier": "G1H2I 3J4K5 L6M7N 8O9P1",
+            "status": "Pagado"
         }
     },
     {
@@ -126,7 +138,8 @@
             "customer": 7,
             "date": "2023-12-02",
             "delivery_point": 3,
-            "identifier": "Q1R2S 3T4U5 V6W7X 8Y9Z1"
+            "identifier": "Q1R2S 3T4U5 V6W7X 8Y9Z1",
+            "status": "No pagado"
         }
     },
     {
@@ -136,7 +149,8 @@
             "customer": 7,
             "date": "2023-12-03",
             "delivery_point": 4,
-            "identifier": "A1B2C 3D4E5 F6G7H 8I9J1"
+            "identifier": "A1B2C 3D4E5 F6G7H 8I9J1",
+            "status": "Pagado"
         }
     },
     {
@@ -146,7 +160,8 @@
             "customer": 8,
             "date": "2023-12-04",
             "delivery_point": 5,
-            "identifier": "K1L2M 3N4O5 P6Q7R 8S9T1"
+            "identifier": "K1L2M 3N4O5 P6Q7R 8S9T1",
+            "status": "No pagado"
         }
     },
     {
@@ -156,7 +171,8 @@
             "customer": 9,
             "date": "2023-12-05",
             "delivery_point": 6,
-            "identifier": "U1V2W 3X4Y5 Z6A7B 8C9D1"
+            "identifier": "U1V2W 3X4Y5 Z6A7B 8C9D1",
+            "status": "Pagado"
         }
     },
     {
@@ -166,7 +182,8 @@
             "customer": 10,
             "date": "2023-12-06",
             "delivery_point": 7,
-            "identifier": "E1F2G 3H4I5 J6K7L 8M9N1"
+            "identifier": "E1F2G 3H4I5 J6K7L 8M9N1",
+            "status": "No pagado"
         }
     }
 ]
