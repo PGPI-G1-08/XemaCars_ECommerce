@@ -410,12 +410,12 @@
 
     // Show a spinner on payment submission
     function setLoading(isLoading) {
-        const buyButton = document.querySelector("#buy-btn");
+        const confirmButton = document.querySelector("#confirm-btn");
         if (isLoading) {
             // Disable the button and show a spinner
-            buyButton.classList.add('disabled-btn');
+            confirmButton.classList.add('disabled-btn');
         } else {
-            buyButton.classList.remove('disabled-btn');
+            confirmButton.classList.remove('disabled-btn');
         }
     }
 
