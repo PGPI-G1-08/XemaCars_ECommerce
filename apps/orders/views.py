@@ -51,7 +51,7 @@ def add_order(request):
                 delivery_point=delivery_point,
                 payment_form=payment_method,
                 status="No pagado"
-                if payment_method == "A contrareembolso"
+                if payment_method.payment_type == "A contrareembolso"
                 else "Pagado",
             )
 
@@ -76,8 +76,6 @@ def add_order(request):
                 )
                 order_product.save()
 
-            order.save()
-
         else:
             customer = request.user.customer
             if payment_method == "A contrareembolso":
@@ -95,7 +93,7 @@ def add_order(request):
                 delivery_point=delivery_point,
                 payment_form=payment_method,
                 status="No pagado"
-                if payment_method == "A contrareembolso"
+                if payment_method.payment_type == "A contrareembolso"
                 else "Pagado",
             )
 
@@ -113,12 +111,14 @@ def add_order(request):
 
             email = request.user.email
 
+        if len(order.orderproduct_set.all()) == 0:
+            order.delete()
+        else:
             order.save()
+            send_mail_after_order(order, email)
 
     except ValidationError as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
-
-    send_mail_after_order(order, email)
 
     return HttpResponse(
         json.dumps({"order_id": order.id}), status=200, content_type="application/json"
