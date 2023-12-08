@@ -8,7 +8,7 @@ from apps.products.models import Product
 def index(request):
     form = FilterForm(request.POST)
     products = Product.objects.all()
-    top_products = sorted(products, key=lambda x: x.average_rating, reverse=True)[:4]
+    top_products = sorted(products, key=lambda x: x.average_rating, reverse=True)[:3]
     print(top_products)
     if form.is_valid():
         if form.cleaned_data["nombre"]:

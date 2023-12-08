@@ -460,14 +460,14 @@ footer a {
 }
 
 /* CAROUSEL */
+
+#top-products {
+  padding: 1em;
+}
+
 .carousel-container {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
-}
-
-.card-carousel:not(:first-child) {
-  margin-left: -50px;
 }
 
 .card-carousel:hover {
