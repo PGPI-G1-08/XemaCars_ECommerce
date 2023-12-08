@@ -1,4 +1,4 @@
-img {
+img:not(.carousel-image) {
     top: 0;
     left: 0;
     height: 100vh;

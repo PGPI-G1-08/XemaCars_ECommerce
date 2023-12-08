@@ -459,6 +459,26 @@ footer a {
   align-items: center;
 }
 
+/* CAROUSEL */
+.carousel-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card-carousel:not(:first-child) {
+  margin-left: -50px;
+}
+
+.card-carousel:hover {
+  transform: translateY(-20px);
+}
+
+.card-carousel:hover ~ .card-carousel {
+  left: 50px;
+}
+
+
 /* FORM */
 
 .form {
