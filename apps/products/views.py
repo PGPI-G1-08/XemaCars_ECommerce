@@ -72,22 +72,11 @@ class ProductListView(TemplateView):
         form = FilterForm(request.POST)
         if form.is_valid():
             products = Product.objects.all()
-            available = form.cleaned_data["solo_disponibles"]
-            if available is True:
-                products = products.filter(available=available)
-            else:
-                products = Product.objects.all()
-            if form.cleaned_data["año_mínimo"]:
-                year = form.cleaned_data["año_mínimo"]
-                products = products.filter(year__gte=year)
-            if form.cleaned_data["marca"]:
-                brand = form.cleaned_data["marca"]
-                products = products.filter(brand__icontains=brand)
             if form.cleaned_data["tipo_de_combustión"]:
                 combustion_type = form.cleaned_data["tipo_de_combustión"]
                 if combustion_type != "No_Filtrar":
                     products = products.filter(combustion_type=combustion_type)
-            if form.cleaned_data["precio_máximo"]:
+            if isinstance(form.cleaned_data["precio_máximo"], float):
                 price = form.cleaned_data["precio_máximo"]
                 products = products.filter(price__lte=price)
             if form.cleaned_data["nombre"]:
