@@ -14,7 +14,7 @@
         "model": "products.DeliveryPoint",
         "pk": 2,
         "fields": {
-            "delivery_type": "Recogida en tienda",
+            "delivery_type": "Recogida en Tienda",
             "name": "Tienda B",
             "address": "Calle B",
             "city": "Ciudad B",
@@ -36,7 +36,7 @@
         "model": "products.DeliveryPoint",
         "pk": 4,
         "fields": {
-            "delivery_type": "Recogida en tienda",
+            "delivery_type": "Recogida en Tienda",
             "name": "Tienda D",
             "address": "Calle D",
             "city": "Ciudad D",
@@ -58,7 +58,7 @@
         "model": "products.DeliveryPoint",
         "pk": 6,
         "fields": {
-            "delivery_type": "Recogida en tienda",
+            "delivery_type": "Recogida en Tienda",
             "name": "Tienda F",
             "address": "Calle F",
             "city": "Ciudad F",
@@ -80,7 +80,7 @@
         "model": "products.DeliveryPoint",
         "pk": 8,
         "fields": {
-            "delivery_type": "Recogida en tienda",
+            "delivery_type": "Recogida en Tienda",
             "name": "Tienda H",
             "address": "Calle H",
             "city": "Ciudad H",
@@ -102,7 +102,7 @@
         "model": "products.DeliveryPoint",
         "pk": 10,
         "fields": {
-            "delivery_type": "Recogida en tienda",
+            "delivery_type": "Recogida en Tienda",
             "name": "Tienda J",
             "address": "Calle J",
             "city": "Ciudad J",
