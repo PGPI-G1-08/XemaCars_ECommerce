@@ -472,6 +472,7 @@ footer a {
 
 .card-carousel:hover {
   transform: translateY(-20px);
+  transition: 0.3s ease;
 }
 
 .card-carousel:hover ~ .card-carousel {

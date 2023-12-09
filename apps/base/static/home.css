@@ -1,7 +1,8 @@
 img:not(.carousel-image) {
     top: 0;
     left: 0;
-    height: 100vh;
+    min-height: 100vh;
+    height: 80em;
     width: 100vw;
     opacity: 0.1    ;
     position:absolute;
@@ -13,7 +14,8 @@ img:not(.carousel-image) {
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    height: 80vh;
+    height: 80em;
+    min-height: 80vh;
 }
 
 #xemacars {
