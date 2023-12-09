@@ -1,6 +1,5 @@
 from apps.orders import views
 from django.urls import path
-from .views import add_order
 
 urlpatterns = [
     path(
@@ -28,4 +27,5 @@ urlpatterns = [
         name="create-payment-intent",
     ),
     path("client_orders", views.client_orders, name="client-orders"),
+    path("change-status", views.change_status, name="change-status"),
 ]

@@ -1,28 +1,23 @@
 from datetime import datetime
 import json
-from django.conf import settings
 
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-
-from apps.orders.models import Order
-from apps.orders.models import OrderProduct
-from apps.payments.models import PaymentMethod
-
-import json
-
-from .forms import FilterOrders
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
-
-from apps.products.models import DeliveryPoint, Product
-from apps.cart.anon_cart import AnonCart
-from apps.cart.models import CartProduct
-from .forms import SearchIdentifierOrderForm
-
 import stripe
 
-from django.core.mail import send_mail
+from apps.cart.anon_cart import AnonCart
+from apps.cart.models import CartProduct
+from apps.orders.models import Order, OrderProduct
+from apps.payments.models import PaymentMethod
+from apps.products.models import DeliveryPoint, Product
+
+from .forms import FilterOrders, SearchIdentifierOrderForm
 
 
 def add_order(request):
@@ -55,6 +50,9 @@ def add_order(request):
                 email=email,
                 delivery_point=delivery_point,
                 payment_form=payment_method,
+                status="No pagado"
+                if payment_method.payment_type == "A contrareembolso"
+                else "Pagado",
             )
 
             cart = AnonCart(request)
@@ -78,8 +76,6 @@ def add_order(request):
                 )
                 order_product.save()
 
-            order.save()
-
         else:
             customer = request.user.customer
             if payment_method == "A contrareembolso":
@@ -96,6 +92,9 @@ def add_order(request):
                 customer=customer,
                 delivery_point=delivery_point,
                 payment_form=payment_method,
+                status="No pagado"
+                if payment_method.payment_type == "A contrareembolso"
+                else "Pagado",
             )
 
             cart_products = CartProduct.objects.filter(cart=customer.cart)
@@ -112,12 +111,14 @@ def add_order(request):
 
             email = request.user.email
 
+        if len(order.orderproduct_set.all()) == 0:
+            order.delete()
+        else:
             order.save()
+            send_mail_after_order(order, email)
 
     except ValidationError as e:
         return HttpResponse(json.dumps({"error": e.message}), status=400)
-
-    send_mail_after_order(order, email)
 
     return HttpResponse(
         json.dumps({"order_id": order.id}), status=200, content_type="application/json"
@@ -396,4 +397,25 @@ def create_payment_intent(request):
         json.dumps({"client_secret": intent["client_secret"]}),
         status=200,
         content_type="application/json",
+    )
+
+
+@require_POST
+@login_required
+def change_status(request):
+    user = request.user
+    if not user.is_superuser:
+        return HttpResponse(
+            json.dumps({"error": "No tienes permisos para realizar esta acción"}),
+            status=401,
+            content_type="application/json",
+        )
+    data = json.loads(request.body)
+    order_id = data["order_id"]
+    status = data["status"]
+    order = Order.objects.get(id=order_id)
+    order.status = status
+    order.save()
+    return HttpResponse(
+        json.dumps({"order_id": order.id}), status=200, content_type="application/json"
     )

@@ -31,14 +31,6 @@ class FilterForm(forms.Form):
         widget=forms.TextInput(attrs={"placeholder": "¿Qué coche deseas?"}),
     )
 
-    año_mínimo = forms.IntegerField(
-        required=False,
-    )
-
-    marca = forms.CharField(
-        required=False,
-    )
-
     class combustion_type(models.TextChoices):
         NO_FILTRAR = "No_Filtrar"
         GASOLINA = "Gasolina"
@@ -54,12 +46,6 @@ class FilterForm(forms.Form):
     precio_máximo = forms.FloatField(
         required=False,
         min_value=0,
-    )
-
-    solo_disponibles = forms.BooleanField(
-        widget=forms.CheckboxInput(attrs={"placeholder": "Disponible"}),
-        initial=False,
-        required=False,
     )
 
 

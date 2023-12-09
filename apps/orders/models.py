@@ -28,6 +28,11 @@ class Order(models.Model):
         "products.DeliveryPoint", on_delete=models.SET_NULL, null=True
     )
     identifier = models.CharField(max_length=30, unique=True)
+    status = models.CharField(
+        max_length=30,
+        choices=(("No pagado", "No pagado"), ("Pagado", "Pagado")),
+        default="No pagado",
+    )
 
     def save(self, *args, **kwargs):
         while not self.identifier:
@@ -78,6 +83,8 @@ class OrderProduct(models.Model):
     def status(self):
         if self.cancelled:
             return "Cancelado"
+        elif self.order.status == "No pagado":
+            return "No pagado"
         else:
             if self.start_date > date.today():
                 return "No empezado"
