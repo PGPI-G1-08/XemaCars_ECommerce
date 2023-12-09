@@ -61,12 +61,7 @@
                 <p class="not-available-text">No Disponible</p>
                 {% endif %}
             </div>          
-        </a> 
-        {% if product.available %}
-        <a id="buy-btn-{{ product.id }}" class="buy-btn primary-button" >Reservar</a>
-        {% else %}
-        <a class="buy-btn primary-button disabled-btn" >Producto no disponible</a>
-        {% endif %}
+        </a>
     </div>
     {% endfor %}
 </section>
