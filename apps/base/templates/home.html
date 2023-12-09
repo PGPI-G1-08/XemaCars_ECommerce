@@ -3,34 +3,67 @@
 
 {% block title %}Homepage{% endblock %}
 
-{% block extrahead %}<link rel="stylesheet" href="{% static "home.css" %}">{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "home.css" %}">
+<link rel="stylesheet" href="{% static "product-list.css" %}">
+{% endblock %}
+
 
 {% block content %}
-    <img src="{% static 'hero.jpg' %}" alt="hero">
-    <h1 id="xemacars">XemaCars</h1>
-    <h3 id="slogan">Alquiler de coches de lujo a precio de amigo</h3>
-    <form id="form-header" method="post">
-        {% csrf_token %}
-            {{ form.nombre }}
-            <div id="hidden-form">
-                {{ form.año_mínimo.label_tag }}
-                {{ form.año_mínimo }}
-                {{ form.marca.label_tag }}
-                {{ form.marca }}
-                {{ form.tipo_de_combustión.label_tag }}
-                {{ form.tipo_de_combustión }}
-                {{ form.precio_máximo.label_tag }}
-                {{ form.precio_máximo }}
-                {{ form.non_field_errors }}
-                <div class="field-wrapper">
-                    {{ form.solo_disponibles.label_tag }}
-                    {{ form.solo_disponibles }}
-                </div>
-                <div class="links">
-                    <input type="submit" value="Filtrar">
-                    <a href="/products">Resetear Filtros</a>
-                </div>
-            </div>
-            <button type="submit">Buscar <span class="material-icons">search</span></button>
-    </form>
+<img src="{% static 'hero.jpg' %}" alt="hero">
+<h1 id="xemacars">XemaCars</h1>
+<h3 id="slogan">Alquiler de coches de lujo a precio de amigo</h3>
+<form id="form-header" method="post">
+    {% csrf_token %}
+    {{ form.nombre }}
+    <div id="hidden-form">
+        {{ form.año_mínimo.label_tag }}
+        {{ form.año_mínimo }}
+        {{ form.marca.label_tag }}
+        {{ form.marca }}
+        {{ form.tipo_de_combustión.label_tag }}
+        {{ form.tipo_de_combustión }}
+        {{ form.precio_máximo.label_tag }}
+        {{ form.precio_máximo }}
+        {{ form.non_field_errors }}
+        <div class="field-wrapper">
+            {{ form.solo_disponibles.label_tag }}
+            {{ form.solo_disponibles }}
+        </div>
+        <div class="links">
+            <input type="submit" value="Filtrar">
+            <a href="/products">Resetear Filtros</a>
+        </div>
+    </div>
+    <button type="submit">Buscar <span class="material-icons">search</span></button>
+</form>
+{% if top_products %}
+<h2 id="top-products" class="text-white">Nuestros mejores productos</h2>
+<section class="carousel-container">
+    {% for product in top_products %}
+    <div class="card-carousel card product-catalog-card">
+        <a class="product-link" href="/products/details/{{ product.id }}">
+            <img class="carousel-image" src= "{{ product.image_url }}" alt="{{ product.name }}">
+            <h2 class="card-title">{{ product.name }}</h2>
+            <p class="card-rating">
+                <span class="material-icons">star</span>
+                {% if product.average_rating %}
+                {{ product.average_rating|floatformat:1 }}
+                {% else %}
+                -
+                {% endif %}
+            </p>
+            <div id="price-available">
+                <p class="card-price">{{ product.price|floatformat:2 }} € / día</p>
+                {% if product.available %}
+                <p class="available-text">Disponible</p>
+                {% else %}
+                <p class="not-available-text">No Disponible</p>
+                {% endif %}
+            </div>          
+        </a>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
 {% endblock %}

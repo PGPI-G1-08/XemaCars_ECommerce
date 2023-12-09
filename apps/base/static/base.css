@@ -464,6 +464,30 @@ footer a {
   align-items: center;
 }
 
+/* CAROUSEL */
+
+#top-products {
+  padding: 1em;
+}
+
+.carousel-container {
+  display: flex;
+  gap: 10px;
+}
+
+.card-carousel {
+  transition: 0.3s ease;
+}
+
+.card-carousel:hover {
+  transform: translateY(-20px);
+}
+
+.card-carousel:hover ~ .card-carousel {
+  left: 50px;
+}
+
+
 /* FORM */
 
 .form {

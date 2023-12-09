@@ -7,8 +7,10 @@ from apps.products.models import Product
 # Create your views here.
 def index(request):
     form = FilterForm(request.POST)
+    products = Product.objects.all()
+    top_products = sorted(products, key=lambda x: x.average_rating, reverse=True)[:3]
+    print(top_products)
     if form.is_valid():
-        products = Product.objects.all()
         if form.cleaned_data["nombre"]:
             name = form.cleaned_data["nombre"]
             for product in products:
@@ -25,7 +27,9 @@ def index(request):
         request.session["form"] = form.cleaned_data
         return redirect("/products")
     else:
-        return render(request, "home.html", {"form": form})
+        return render(
+            request, "home.html", {"form": form, "top_products": top_products}
+        )
 
 
 def about_us(request):
