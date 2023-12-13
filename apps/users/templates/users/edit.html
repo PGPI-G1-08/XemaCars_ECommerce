@@ -1,0 +1,49 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Borrar usuarios{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
+
+{% endblock %}
+
+{% block content %}
+<img src="{% static 'hero.jpg' %}" alt="hero">
+            {% if form.errors %}
+            {% for field, errors in form.errors.items %}
+            <section class="form-errors">
+                <p class="text-white">{{ errors|striptags }}</p>
+            </section>
+            {% endfor %}
+            {% endif %}
+            <form method=POST class="form">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label for="id_first_name">
+                        Nombre
+                    </label>
+                    <input type="text" name="first_name" id="id_first_name" value="{{ customer.user.first_name }}">
+                </div>
+                <div class="form-field">
+                    <label for="id_last_name">
+                        Apellido
+                    </label>
+                    <input type="text" name="last_name" id="id_last_name" value="{{ customer.user.last_name }}">
+                </div>
+                <div class="form-field">
+                    <label for="id_email">
+                        Correo
+                    </label>
+                    <input type="email" name="email" id="id_email" value="{{ customer.user.email }}">
+                </div>
+                <div class="form-field">
+                    <label for="id_phone_number ">
+                        Telefono
+                    </label>
+                    <input type="text" name="phone_number" id="id_phone_number" value="{{ customer.phone_number }}">
+                </div>
+                <button type="submit">Guardar</button>
+            </form>
+{% endblock %}

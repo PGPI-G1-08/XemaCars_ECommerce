@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static "base.css" %}">
+    <link rel="stylesheet" href="{% static "home.css" %}">
+{% endblock %}
+
+{% block content %}
+    <img src="{% static 'hero.jpg' %}" alt="hero">
+    {% if form.errors %}
+        <section class="form-errors-container">
+            {% for field, errors in form.errors.items %}
+                <section class="form-errors">
+                    <p class="text-white">{{ errors|striptags }}</p>
+                </section>
+            {% endfor %}
+        </section>
+
+    {% endif %}
+    <form method=POST class="form">
+        <h3 class="card-title">Bienvenido a XemaCars Ltd.</h3>
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="id_first_name">
+                Nombre
+            </label>
+            {{ form.first_name }}
+        </div>
+        <div class="form-field">
+            <label for="id_last_name">
+                Apellido
+            </label>
+            {{ form.last_name }}
+        </div>
+        <div class="form-field">
+            <label for="id_phone_number">
+                Teléfono
+            </label>
+            {{ form.phone_number }}
+        </div>
+        <div class="form-field">
+            <label for="id_email">
+                Email
+            </label>
+            {{ form.email }}
+        </div>
+        <div class="form-field">
+            <label for="id_username">
+                Usuario
+            </label>
+            {{ form.username }}
+        </div>
+        <div class="form-field">
+            <label for="id_password1">
+                Contraseña
+            </label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-field">
+            <label for="id_password2">
+                Confirmar contraseña
+            </label>
+            {{ form.password2 }}
+        </div>
+        <button type="submit">Registrarse</button>
+    </form>
+{% endblock %}

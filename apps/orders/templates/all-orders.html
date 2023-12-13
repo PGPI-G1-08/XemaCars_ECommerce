@@ -1,0 +1,144 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Todos los Pedidos{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static "base.css" %}">
+    <link rel="stylesheet" href="{% static "all-orders.css" %}">
+    <script src="{% static "edit-orders.js" %}" defer></script>
+{% endblock %}
+
+{% block content %}
+    {% if form %}
+    <pre> 
+        <h1>Pedidos</h1>
+    </pre>
+    <form method="post" class="filter">
+        {% csrf_token %}
+        {{ form.customer.label_tag }}
+        {{ form.customer }}
+        {{ form.status.label_tag }}
+        {{ form.status }}
+        <div class="field-wrapper">
+            {{ form.no_cancelados.label_tag }}
+            {{ form.no_cancelados }}
+        </div>
+        <div class="links">
+            <input type="submit" value="Filtrar">
+            <a href="all_orders">Resetear Filtros</a>
+        </div>
+    </form>
+    {% endif %}
+    <br>
+    <br>
+    {% if orders %}
+        {% for order in orders %}
+        <div class="order">
+            <div class="card">
+                <div id="customer-date">
+                    {% if order.customer != null %}
+                        <h2>{{ order.customer }} ({{ order.customer.user.email }})</h2>
+                    {% else %}
+                        <h2>{{ order.email }}</h2>
+                        {% endif %}
+                    <h3>{{ order.date|date:"d/m/Y" }}</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Inicio</th>
+                            <th>Final</th>
+                            <th>Estado</th>
+                            <th>Cancelar Producto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in order.order_products %}
+                            <tr>
+                                <td>{{ product.product.name }}</td>
+                                <td>{{ product.product.price }} € / día</td>
+                                <td>{{ product.start_date|date:"d/m/Y" }}</td>
+                                <td>{{ product.end_date|date:"d/m/Y" }}</td>
+                                <td>{{ product.status }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'cancel_orderproduct' product.id %}">
+                                        {% csrf_token %}
+                                        {% if product.cancelled %}
+                                            <button type="submit" value="X" class="circle-disabled-btn" style="color:var(--black)">
+                                                <span class="material-symbols-outlined">cancel</span>
+                                            </button>
+                                        {% else %}
+                                            <button type="submit" value="X" class="circle-button">
+                                                <span class="material-symbols-outlined">cancel</span>
+                                            </button>
+                                        {% endif %}
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for product in order.order_status %}
+                            <tr>
+                                <td>{{ product.order_status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="customer-date">
+                    <h3>Total: {{ order.total }} €</h3>
+                    <div class="row">
+                        <a id="edit-status-{{ order.id }}" class="edit-status icon-link"><span class="material-icons" >edit</span></a>
+                        <h3 id="order-{{ order.id }}-status">Estado: {{ order.status }}</h3>
+                    </div>
+                </div>
+            </div>
+            <form method="post" action="{% url 'cancel_order' order.id %}">
+                {% csrf_token %}
+                {% if order.completely_cancelled %}
+                    <button type="submit" value="X" class="disabled-btn" style="color:var(--black)">
+                        Cancelado
+                    </button>
+                {% else %}
+                    <button type="submit" value="X" class="delete-button">
+                        Cancelar Pedido
+                    </button>
+                {% endif %}
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h1>No Se Ha Realizado Ningun Pedido</h1>
+    {% endif %}
+    </br>
+    </br>
+    <div class="modal">
+        <div class="modal-content form card-container">
+            <h2>Cambiar estado del pedido</h2>
+            <span class="close material-icons">close</span>
+            <article class="form-field">
+                <label for="status">Estado</label>
+                <select id="status-select" name="status">
+                    <option id="status-nopagado" value="No pagado">No pagado</option>
+                    <option id="status-pagado" value="Pagado">Pagado</option>
+                </select>
+            </article>
+            <p id="error-msg"></p>
+            <a id="confirm-btn" class="primary-button">Confirmar</a>
+        </div>
+    </div>
+{% endblock %}
+
+<script>
+    {% block extrajs %}
+        document.addEventListener('DOMContentLoaded', () => {
+            const editBtns = document.querySelectorAll('.edit-status');
+
+            editBtns.forEach(btn => {
+                updateButton(btn.id.split('-')[2], btn, '{{ csrf_token|safe }}');
+            });
+        });
+
+    {% endblock %}
+</script>

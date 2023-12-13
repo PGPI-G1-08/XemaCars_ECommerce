@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Design Kit{% endblock %}
+
+{% block content %}
+    <h1>This is a h1</h1>
+    <h2>This is a h2</h2>
+    <h3>This is a h3</h3>
+    <h4>This is a h4</h4>
+    <h5>This is a h5</h5>
+    <h6>This is a h6</h6>
+    <p>This is a paragraph</p>
+
+    <h1>Button</h1>
+    <button class="primary-button">Click me</button>
+    <button class="secondary-button">Click me</button>
+
+    <h1>Dropdown</h1>
+    <div class="dropdown">
+        <button class="drop-btn"><span
+                class="material-icons header-profile">account_circle<span>{{ user.username }}</span></span></button>
+        <div class="dropdown-content">
+            <a href="/profile">Perfil</a>
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    
+    <h1>Forms</h1>
+    <section class="form-errors-container">
+        <section class="form-errors">
+            <p class="text-white">error1</p>
+        </section>
+        <section class="form-errors">
+            <p class="text-white">error2</p>
+        </section>
+        <section class="form-errors">
+            <p class="text-white">error3</p>
+        </section>
+    </section>
+    <form id="form-header">
+        <input type="text" placeholder="¿Qué coche deseas?" name="search">
+        <button type="submit">Buscar <span class="material-icons">search</span></button>
+    </form>
+    <form class="form">
+        <div class="form-field">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+        </div>
+
+        <div class="form-field">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+
+        <div class="form-field">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+        </div>
+
+        <div class="form-field">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob">
+        </div>
+
+        <div class="form-field">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="">Select...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="agree">I agree to the terms and conditions</label>
+            <input type="checkbox" id="agree" name="agree">
+        </div>
+
+        <input type="submit" value="Submit" class="primary-button">
+    </form>
+
+    <h1>Cards</h1>
+    <div class="card-container">
+        <!-- Card 1 -->
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+        <!-- Card 2 -->
+        <article class="card">
+            <img src="https://cdn.ferrari.com/cms/network/media/img/resize/5d70e7d4ee5f7e58630608ed-d-2.0-812gts-dynamic-focuson?"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.This is some text inside of a card.This is some text
+                inside of a card.This is some text inside of a card.This is some text inside of a card.This is some text
+                inside of a card.</p>
+        </article>
+        <!-- Add more cards as needed -->
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+        <article class="card">
+            <img src="https://phantom-expansion.unidadeditorial.es/d99e9afff02c3ac173b6d6f827f3a551/crop/0x725/2043x1875/resize/828/f/webp/assets/multimedia/imagenes/2022/05/20/16530388017130.jpg"
+                 alt="Description of the image">
+            <h2 class="card-title">Card Title</h2>
+            <p class="card-text">This is some text inside of a card.</p>
+        </article>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}Reclamaciones{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "complain_list.css" %}">
+{% endblock %}
+
+{% block content %}
+    {% if complaints %}
+        <div class="hero-add">
+            <h1>Mis Reclamaciones</h1>
+            <a href="/complaints/add" class="primary-button">Añadir</a>
+        </div>
+        {% for complaint in complaints %}
+            <div class="card">
+                <div class="title-date">
+                    <h3 class="title">{{ complaint.title }}</h3>
+                    <div class="status-date">
+                        {% if complaint.status == "Abierto" %}
+                            <h3 class="available-text">Abierto</h3>
+                        {% else %}
+                            <h3 class="not-available-text">Solucionado</h3>
+                        {% endif %}
+                        <h6>{{ complaint.date|date:"d/m/Y H:i" }}</h6>
+                    </div>
+                </div>
+                <p>{{ complaint.description }}</p>
+                {% if complaint.status == "Cerrado" %}
+                    <br>
+                    <strong>Respuesta: </strong><span>{{ complaint.answer }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="hero-add">
+            <h1 style="margin: 40px 0">No hay reclamaciones</h1>
+            <a href="/complaints/add" class="primary-button">Añadir</a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,5 +1,5 @@
-pathlib==1.0.1
-pathspec==0.11.1
+Brotli==1.1.0
+dj-database-url==2.1.0
 Django==4.1.2
 django-allauth==0.52.0
 django-cors-headers==3.13.0
@@ -9,8 +9,10 @@ django-rest-auth==0.9.5
 djangorestframework==3.14.0
 drf-spectacular==0.24.2
 drf-spectacular-sidecar==2022.10.1
+gunicorn==21.2.0
 psycopg2-binary==2.9.4
 python-decouple==3.4
+stripe==7.6.0
 Unipath==1.1
 Werkzeug==2.2.2
 whitenoise==6.2.0

@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import stripe
+from django.conf import settings
 
 
 def main():
@@ -15,6 +17,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    stripe.api_key = settings.STRIPE_SECRET_KEY
     execute_from_command_line(sys.argv)
 
 

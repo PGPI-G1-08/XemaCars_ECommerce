@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "base.css" %}">
+<link rel="stylesheet" href="{% static "home.css" %}">
+{% endblock %}
+
+{% block content %}
+<img src="{% static 'hero.jpg' %}" alt="hero">
+{% if form.errors %}
+<section class="form-errors-container">
+    {% for field, errors in form.errors.items %}
+    <section class="form-errors">
+        <p class="text-white">{{ errors|striptags }}</p>
+    </section>
+    {% endfor %}
+</section>
+{% endif %}
+<form method="post" class="form">
+    <h3 class="card-title">Bienvenido a XemaCars Ltd.</h3>
+    {% csrf_token %}
+    <div class="form-field">
+        <label for="id_email">
+            Email
+        </label>
+        {{ form.email }}
+    </div>
+    <div class="form-field">
+        <label for="id_password">
+            Contraseña
+        </label>
+        {{ form.password }}
+    </div>
+    <div class="form-field">
+        <label for="id_remember_me">Recuérdame</label><span>{{ form.remember_me }}</span>
+    </div>
+    <button class="primary-button" type="submit">Iniciar Sesión</button>
+</form>
+{% endblock %}

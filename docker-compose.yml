@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  db:
+    restart: always
+    image: postgres:latest
+    container_name: xemacars_db
+    networks:
+      - xemacars
+    environment:
+      POSTGRES_DB: xemacarsdb
+      POSTGRES_USER: xemacars
+      POSTGRES_PASSWORD: xemacars
+  web:
+    restart: always
+    container_name: xemacars_web
+    image: xemacars_web:latest
+    build: .
+    command: /bin/bash -c "python manage.py migrate && python manage.py loaddata populate/* && gunicorn -w 5 XemaCars_ECommerce.wsgi --timeout=500 -b 0.0.0.0:8000"
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - xemacars
+    depends_on:
+      - db
+
+networks:
+  xemacars:
+    driver: bridge
+    ipam:
+     driver: default
